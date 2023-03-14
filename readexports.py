@@ -14,9 +14,10 @@ def main():
     driver = webdriver.Firefox()
     driver.get("https://read.amazon.com/")
     assert "Kindle" in driver.title
+    x = input()
     driver.find_element(By.ID, "top-sign-in-btn").click() #sign in on main page
 
-
+    x = input()
 
     #login
     elem = driver.find_element(By.ID, 'ap_email')
