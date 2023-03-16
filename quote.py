@@ -31,7 +31,7 @@ class Book:
         return retval
     
 
-#test code]
+#test code
 
 # q1 = Quote('text here', 239, 'yellow', 'heading', 'me')
 # q2 = Quote('text here again', 560, 'purple', 'heading2', 'myself')
