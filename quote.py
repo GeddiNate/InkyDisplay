@@ -1,6 +1,6 @@
 import json
 
-# class for storeing highlights as quotes
+# class for storing highlights as quotes
 class Quote:
     def __init__(self, text, page, color, heading, speaker = "") -> None:
         self.text = text

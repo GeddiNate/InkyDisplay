@@ -26,7 +26,7 @@ def main():
     #set chrome webdriver options
     chromeOptions = webdriver.ChromeOptions()
     chromeOptions.add_argument(f"--user-data-dir={profile}")
-    chromeOptions.add_argument(f'window-size=800,600')
+    #chromeOptions.add_argument(f'window-size=800,600')
     #print(f"--user-data-dir={profile}") #FOR TESTING
     
     #Start webdriver
@@ -100,14 +100,51 @@ def main():
         print(titles)
         print(authors)
 
-
+        # for each book
         for book in booklist:
+            #select the book so highlights and notes show on the page
             book.find_element(By.CLASS_NAME, 'a-link-normal').click()
             time.sleep(5)
-            notebook = driver.find_element(By.ID, 'annotation-section')
-            lastAccessed = notebook.find_element(By.ID, 'kp-notebook-annotated-date').text
-            print(lastAccessed)
 
+            #find the notebook section of the page
+            notebook = driver.find_element(By.ID, 'annotation-section')
+            #get the data last accessed
+            lastAccessed = notebook.find_element(By.ID, 'kp-notebook-annotated-date').text
+            #TODO add a check if this date is more recent than the last sync date
+            
+            #get color of highlight
+            colorsAndNumbers = []
+            for color in notebook.find_elements(By.ID, 'annotationHighlightHeader'):
+                colorsAndNumbers.append(color.text)
+                #TODO add option to ignore highlights of a certain color
+
+            #get page number
+            notePage = []
+            for note in notebook.find_elements(By.ID, 'annotationNoteHeader'):
+                notePage.append(note.text)
+
+            
+            #get quote text
+            quoteText = []
+            for quote in notebook.find_elements(By.ID, 'highlight'):
+                quoteText.append(quote.text)
+
+            #get notes
+            notes = []
+            for note in notebook.find_elements(By.ID, 'note'):
+                notes.append(note.text)
+            
+            
+            print(lastAccessed)
+            print(colorsAndNumbers)
+            print(notePage)
+            print(quoteText)
+            print(notes)
+    
+    # id=annotationHighlightHeader contains quote color, page number
+    # id=annotationNoteHeader contains note page number
+    # id=highlight contains quote text
+    # id="note" contains note text
     
 
     #library.
@@ -121,21 +158,6 @@ def main():
             #write to file
     #exit browser
     #return to wait loop
-
-# <div id="B000XUBFE2" class="a-row kp-notebook-library-each-book">
-#     <span class="a-declarative" data-action="get-annotations-for-asin" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-get-annotations-for-asin" data-get-annotations-for-asin="{&quot;asin&quot;:&quot;B000XUBFE2&quot;}" data-csa-c-id="x98rml-r916se-27b5y3-8bal8v">
-#         <a class="a-link-normal a-text-normal" href="javascript:void(0);">
-#             <div class="a-row">
-#                 <div class="a-column a-span4 a-push4 a-spacing-medium a-spacing-top-medium">    
-#                     <img alt="" src="https://m.media-amazon.com/images/I/81TLlGqEFyL._SY160.jpg" class="kp-notebook-cover-image kp-notebook-cover-image-border">
-#                 </div>
-#             </div>
-#             <h2 class="a-size-base a-color-base a-text-center kp-notebook-searchable a-text-bold">The Book Thief</h2>
-#             <p class="a-spacing-base a-spacing-top-mini a-text-center a-size-base a-color-secondary kp-notebook-searchable">By: Markus Zusak</p>
-#         </a>
-#     </span>
-#     <input type="hidden" name="" value="Friday March 10, 2023" id="kp-notebook-annotated-date-B000XUBFE2">
-# </div>
     
 
     # #login
