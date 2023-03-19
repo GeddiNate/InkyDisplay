@@ -2,16 +2,14 @@ import json
 
 # class for storing highlights as quotes
 class Quote:
-    def __init__(self, text, page, color, heading, speaker = "") -> None:
+    def __init__(self, text, color, note) -> None:
         self.text = text
-        self.page = page
         self.color = color
-        self.heading = heading
-        self.speaker = speaker
+        self.note = note
 
     # convert to dict for serialization
     def toJSON(self):
-        return {'text': self.text, 'page': self.page, 'color': self.color, 'heading': self.heading, 'speaker': self.speaker}
+        return {'text': self.text, 'color': self.color, 'note': self.note}
 
 
 # class for storing all quotes from a particular book

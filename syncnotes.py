@@ -7,13 +7,15 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from ast import literal_eval
 
 # select chrome profile path based on which device im using
 if platform.system() == 'Linux':
     profile = '/home/ngeddis/.config/google-chrome/Default' #Laptop
 else:
     profile = 'C:\\Users\\natha\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1' #Desktop
-
+days = ['Monday ', 'Tuesday ', 'Wednesday ', 'Thursday ', 'Friday ', 'Satruday ', 'Sunday ']
+books = []
 # Opening JSON file
 with open('settings.json') as json_file:
     data = json.load(json_file)
@@ -84,7 +86,6 @@ def main():
         time.sleep(10)        
 
         library = driver.find_element(By.ID, 'kp-notebook-library')
-        print(library.text)
         booklist = library.find_elements(By.CLASS_NAME, 'kp-notebook-library-each-book')
         
         
@@ -96,38 +97,53 @@ def main():
             if item.startswith("By:"):
                 authors.append(item)
             else:
-                titles.append(item)
+                #remove subtitle if there
+                idx = max(item.find(':'), item.find('('))
+                if idx < 0:
+                    titles.append(item)
+                else:
+                    titles.append(item[:idx])
+
         print(titles)
         print(authors)
-
+        count = 0
         # for each book
         for book in booklist:
             #select the book so highlights and notes show on the page
             book.find_element(By.CLASS_NAME, 'a-link-normal').click()
             time.sleep(5)
 
+            numHighlights = literal_eval(driver.find_element(By.ID, 'kp-notebook-highlights-count').text)
+
             #find the notebook section of the page
             notebook = driver.find_element(By.ID, 'annotation-section')
+
+            
+
             #get the data last accessed
             lastAccessed = notebook.find_element(By.ID, 'kp-notebook-annotated-date').text
+            # remove day of the week
+            for day in days:
+                lastAccessed = lastAccessed.replace(day, '')
             #TODO add a check if this date is more recent than the last sync date
             
             #get color of highlight
-            colorsAndNumbers = []
+            colors = []
             for color in notebook.find_elements(By.ID, 'annotationHighlightHeader'):
-                colorsAndNumbers.append(color.text)
+                # color is the first word in text
+                colors.append(color.text.split(' ', 1)[0])
                 #TODO add option to ignore highlights of a certain color
 
-            #get page number
-            notePage = []
-            for note in notebook.find_elements(By.ID, 'annotationNoteHeader'):
-                notePage.append(note.text)
+            # #get page number
+            # notePage = []
+            # for note in notebook.find_elements(By.ID, 'annotationNoteHeader'):
+            #     notePage.append(note.text)
 
             
             #get quote text
             quoteText = []
-            for quote in notebook.find_elements(By.ID, 'highlight'):
-                quoteText.append(quote.text)
+            for txt in notebook.find_elements(By.ID, 'highlight'):
+                quoteText.append(txt.text)
 
             #get notes
             notes = []
@@ -135,12 +151,17 @@ def main():
                 notes.append(note.text)
             
             
+            
             print(lastAccessed)
-            print(colorsAndNumbers)
-            print(notePage)
+            print(colors)
             print(quoteText)
             print(notes)
-    
+            assert numHighlights == len(colors) and numHighlights == len(quoteText) and numHighlights == len(notes)
+            b = quote.Book(titles[count], authors[count])
+            for i in range(numHighlights):
+                b.quotes.append(quote.Quote(quoteText[i], colors[i], notes[i]))
+            books.append(b)
+            count = count + 1
     # id=annotationHighlightHeader contains quote color, page number
     # id=annotationNoteHeader contains note page number
     # id=highlight contains quote text
@@ -199,6 +220,11 @@ def main():
 
     # close the browser
     x=input()
+    print('===============================================')
+    print(books)
+    with open('output.json', 'w') as json_file:
+        
+        json_file.write(json.dumps(books, default=vars))
     driver.quit()
 
 
