@@ -1,0 +1,225 @@
+https://read.amazon.com/
+
+if www.amazon.com/ap/signin
+
+<button id="top-sign-in-btn" class="auth-btn sign-in-btn" onclick="window.location.href = 'https://www.amazon.com/ap/signin?openid.pape.max_auth_age=1209600&amp;openid.return_to=https%3A%2F%2Fread.amazon.com%2Fkindle-library&amp;openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&amp;openid.assoc_handle=amzn_kindle_mykindle_us&amp;openid.mode=checkid_setup&amp;language=en_US&amp;openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&amp;pageId=amzn_kindle_mykindle_us&amp;openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0'">
+            <img class="amazon-a-logo" src="https://m.media-amazon.com/images/G/01/kfw/landing/icon-amazon-a2x._CB611757832_.png" srcset="https://m.media-amazon.com/images/G/01/kfw/landing/icon-amazon-a._CB611757832_.png" alt="Amazon"><span>Sign in with your account</span>
+        </button>
+
+
+<input type="email" maxlength="128" id="ap_email" name="email" tabindex="1" class="a-input-text a-span12 auth-autofocus auth-required-field">
+
+<input type="password" maxlength="1024" id="ap_password" name="password" tabindex="2" class="a-input-text a-span12 auth-required-field">
+
+<input type="checkbox" name="rememberMe" value="true" tabindex="4">
+
+<input id="signInSubmit" tabindex="5" class="a-button-input" type="submit" aria-labelledby="a-autoid-0-announce">
+
+if https://www.amazon.com/ap/mfa
+
+<input type="tel" maxlength="20" id="auth-mfa-otpcode" autocomplete="off" name="otpCode" class="a-input-text a-span12 auth-autofocus auth-required-field">
+
+<input id="auth-mfa-remember-device" type="checkbox" name="rememberDevice" value="">
+
+<input id="auth-signin-button" name="mfaSubmit" class="a-button-input" type="submit" aria-labelledby="a-autoid-0-announce">
+
+if https://read.amazon.com/kindle-library
+
+<h3 class="_3aOUuiXjJOIxhej5oV-IaC _1AXbsW_TP3OFD9lZw7qo3R">Notes &amp; Highlights</h3>
+
+for each <div id="kp-notebook-library" class="a-row"><div id="B003P2WO5E" class="a-row kp-notebook-library-each-book a-color-base-background"><span class="a-declarative" data-action="get-annotations-for-asin" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-get-annotations-for-asin" data-get-annotations-for-asin="{&quot;asin&quot;:&quot;B003P2WO5E&quot;}" data-csa-c-id="3o9kbn-p5plzc-3y20fn-y7cy1r"><a class="a-link-normal a-text-normal" href="javascript:void(0);"><div class="a-row"><div class="a-column a-span4 a-push4 a-spacing-medium a-spacing-top-medium"><img alt="" src="https://m.media-amazon.com/images/I/91SkYC1TRHL._SY160.jpg" class="kp-notebook-cover-image kp-notebook-cover-image-border"></div></div><h2 class="a-size-base a-color-base a-text-center kp-notebook-searchable a-text-bold">The Way of Kings (The Stormlight Archive, Book 1)</h2><p class="a-spacing-base a-spacing-top-mini a-text-center a-size-base a-color-secondary kp-notebook-searchable">By: Brandon Sanderson</p></a></span><input type="hidden" name="" value="Sunday March 12, 2023" id="kp-notebook-annotated-date-B003P2WO5E"></div><div id="B000XUBFE2" class="a-row kp-notebook-library-each-book"><span class="a-declarative" data-action="get-annotations-for-asin" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-get-annotations-for-asin" data-get-annotations-for-asin="{&quot;asin&quot;:&quot;B000XUBFE2&quot;}" data-csa-c-id="69roax-c7zm2k-s4adt-ra36x"><a class="a-link-normal a-text-normal" href="javascript:void(0);"><div class="a-row"><div class="a-column a-span4 a-push4 a-spacing-medium a-spacing-top-medium"><img alt="" src="https://m.media-amazon.com/images/I/81TLlGqEFyL._SY160.jpg" class="kp-notebook-cover-image kp-notebook-cover-image-border"></div></div><h2 class="a-size-base a-color-base a-text-center kp-notebook-searchable a-text-bold">The Book Thief</h2><p class="a-spacing-base a-spacing-top-mini a-text-center a-size-base a-color-secondary kp-notebook-searchable">By: Markus Zusak</p></a></span><input type="hidden" name="" value="Friday March 10, 2023" id="kp-notebook-annotated-date-B000XUBFE2"></div><div id="B07D23CFGR" class="a-row kp-notebook-library-each-book"><span class="a-declarative" data-action="get-annotations-for-asin" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-get-annotations-for-asin" data-get-annotations-for-asin="{&quot;asin&quot;:&quot;B07D23CFGR&quot;}" data-csa-c-id="te2y1g-v1tmh5-dsubv6-wp6u5r"><a class="a-link-normal a-text-normal" href="javascript:void(0);"><div class="a-row"><div class="a-column a-span4 a-push4 a-spacing-medium a-spacing-top-medium"><img alt="" src="https://m.media-amazon.com/images/I/81FbjLL8MRL._SY160.jpg" class="kp-notebook-cover-image kp-notebook-cover-image-border"></div></div><h2 class="a-size-base a-color-base a-text-center kp-notebook-searchable a-text-bold">Atomic Habits: An Easy &amp; Proven Way to Build Good Habits &amp; Break Bad Ones</h2><p class="a-spacing-base a-spacing-top-mini a-text-center a-size-base a-color-secondary kp-notebook-searchable">By: James Clear</p></a></span><input type="hidden" name="" value="Tuesday March 7, 2023" id="kp-notebook-annotated-date-B07D23CFGR"></div><div id="B09NT6WN65" class="a-row kp-notebook-library-each-book"><span class="a-declarative" data-action="get-annotations-for-asin" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-get-annotations-for-asin" data-get-annotations-for-asin="{&quot;asin&quot;:&quot;B09NT6WN65&quot;}" data-csa-c-id="bk6gzj-obqsk9-hfp0n7-x7r22n"><a class="a-link-normal a-text-normal" href="javascript:void(0);"><div class="a-row"><div class="a-column a-span4 a-push4 a-spacing-medium a-spacing-top-medium"><img alt="" src="https://m.media-amazon.com/images/I/61IKsgr3-lL._SY160.jpg" class="kp-notebook-cover-image kp-notebook-cover-image-border"></div></div><h2 class="a-size-base a-color-base a-text-center kp-notebook-searchable a-text-bold">The Creed of Compromised Christianity: Scripture &amp; Sexuality at Seattle Pacific University</h2><p class="a-spacing-base a-spacing-top-mini a-text-center a-size-base a-color-secondary kp-notebook-searchable">By: Lincoln Keller and Hannah May Keller</p></a></span><input type="hidden" name="" value="Wednesday February 16, 2022" id="kp-notebook-annotated-date-B09NT6WN65"></div><div id="B017I2GIEO" class="a-row kp-notebook-library-each-book"><span class="a-declarative" data-action="get-annotations-for-asin" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-get-annotations-for-asin" data-get-annotations-for-asin="{&quot;asin&quot;:&quot;B017I2GIEO&quot;}" data-csa-c-id="amax9c-6dz8ul-r14y8v-qiengz"><a class="a-link-normal a-text-normal" href="javascript:void(0);"><div class="a-row"><div class="a-column a-span4 a-push4 a-spacing-medium a-spacing-top-medium"><img alt="" src="https://m.media-amazon.com/images/I/716YaOSkdIL._SY160.jpg" class="kp-notebook-cover-image kp-notebook-cover-image-border"></div></div><h2 class="a-size-base a-color-base a-text-center kp-notebook-searchable a-text-bold">Database Systems: A Practical Approach to Design, Implementation, and Management</h2><p class="a-spacing-base a-spacing-top-mini a-text-center a-size-base a-color-secondary kp-notebook-searchable">By: Thomas Connolly</p></a></span><input type="hidden" name="" value="Wednesday November 20, 2019" id="kp-notebook-annotated-date-B017I2GIEO"></div><div id="B00MBTY6X0" class="a-row kp-notebook-library-each-book"><span class="a-declarative" data-action="get-annotations-for-asin" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-get-annotations-for-asin" data-get-annotations-for-asin="{&quot;asin&quot;:&quot;B00MBTY6X0&quot;}" data-csa-c-id="ywi745-2ldw0m-5w05ad-lzw7yx"><a class="a-link-normal a-text-normal" href="javascript:void(0);"><div class="a-row"><div class="a-column a-span4 a-push4 a-spacing-medium a-spacing-top-medium"><img alt="" src="https://m.media-amazon.com/images/I/91To3pJH8NL._SY160.jpg" class="kp-notebook-cover-image kp-notebook-cover-image-border"></div></div><h2 class="a-size-base a-color-base a-text-center kp-notebook-searchable a-text-bold">A Compact Guide to the Whole Bible: Learning to Read Scripture's Story</h2><p class="a-spacing-base a-spacing-top-mini a-text-center a-size-base a-color-secondary kp-notebook-searchable">By: Wall, Robert W. Wall, and David R. Nienhuis</p></a></span><input type="hidden" name="" value="Wednesday March 13, 2019" id="kp-notebook-annotated-date-B00MBTY6X0"></div><input type="hidden" name="" class="kp-notebook-library-next-page-start"></div>
+
+if <span id="kp-notebook-annotated-date">Sunday March 12, 2023</span>
+
+for each 
+<div id="kp-notebook-annotations" class="a-row">
+	<input type="hidden" name="" value="kf1rIWxgIhsn1GUrKmHClBXCxoQJudk886X0cy0p0KigHP0WKkm98A%3D%3D" class="kp-notebook-content-limit-state">
+	<input type="hidden" name="" class="kp-notebook-annotations-next-page-start">
+		<div id="QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzA2MTpISUdITElHSFQ6YThkNWVlMWU0LTRmN2EtNGJkYi05YTM3LTU5MmRiZjdmNDZlNg" class="a-row a-spacing-base">
+			<div class="a-column a-span10 kp-notebook-row-separator">
+				<!-- Header row containing: optionally a star, note/highlight label, page/location information, and an options dropdown -->
+				<div class="a-row">
+					<input type="hidden" name="" value="154" id="kp-annotation-location">
+					<!-- optional star, note/highlight label, page/location -->
+					<div class="a-column a-span8">
+						<!-- Star, if necessary -->
+						<!-- Highlight -->
+						<!-- Highlight header -->
+						<span id="annotationHighlightHeader" class="a-size-small a-color-secondary kp-notebook-selectable kp-notebook-metadata">
+							Yellow highlight | Page:&nbsp;7
+						</span>
+						<!-- Note header in case highlight is deleted, and we need to have the note header -->
+						<span id="annotationNoteHeader" class="a-size-small a-color-secondary aok-hidden kp-notebook-selectable kp-notebook-metadata">
+							Note | Page:&nbsp;7
+						</span>
+						<!-- Freestanding note header -->
+					</div>
+					<!-- the Options menu -->
+					<div class="a-column a-span4 a-text-right a-span-last">
+						<span class="a-declarative" data-action="a-popover" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-a-popover" data-a-popover="{&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;Close&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;width&quot;:&quot;200&quot;,&quot;name&quot;:&quot;optionsPopover&quot;,&quot;position&quot;:&quot;triggerVerticalAlignLeft&quot;,&quot;popoverLabel&quot;:&quot;Options for annotations at Page 7&quot;}" id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzA2MTpISUdITElHSFQ6YThkNWVlMWU0LTRmN2EtNGJkYi05YTM3LTU5MmRiZjdmNDZlNg-action" data-csa-c-id="gv3jm5-iopi56-g9tjzr-7cyd6g">
+							<a id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzA2MTpISUdITElHSFQ6YThkNWVlMWU0LTRmN2EtNGJkYi05YTM3LTU5MmRiZjdmNDZlNg" href="javascript:void(0)" role="button" class="a-popover-trigger a-declarative">Options<i class="a-icon a-icon-popover">
+								</i>
+							</a>
+						</span>
+					</div>
+				</div>
+				<!-- Container for text content of the note / highlight -->
+				<div class="a-row a-spacing-top-medium">
+					<div class="a-column a-span10 a-spacing-small kp-notebook-print-override">
+						<!-- Highlight with a child note -->
+						<!-- Highlight without a child note -->
+						<!-- Highlight text -->
+						<div id="highlight-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzA2MTpISUdITElHSFQ6YThkNWVlMWU0LTRmN2EtNGJkYi05YTM3LTU5MmRiZjdmNDZlNg" class="a-row kp-notebook-highlight kp-notebook-selectable kp-notebook-highlight-yellow">
+							<span id="highlight" class="a-size-base-plus a-color-base">
+								Szeth-son-son-Vallano, Truthless of Shinovar, wore white on the day he was to kill a king.
+							</span>
+							<div>
+							</div>
+						</div>
+						<!-- Placeholder for if a child note is added by the customer -->
+						<div id="note-" class="a-row a-spacing-top-base kp-notebook-note aok-hidden kp-notebook-selectable">
+							<span id="note-label" class="a-size-small a-color-secondary">
+								Note:
+								<span class="a-letter-space">
+								</span>
+							</span>
+							<span id="note" class="a-size-base-plus a-color-base">
+							</span>
+						</div>
+						<!-- Orphaned note without associated highlight -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="QTNLWUoyUDczTExFMVg6QjAwM1AyV081RTo5MDE5MDk6SElHSExJR0hUOmFiODQ2YjlkYy1kNjkxLTQ1ZTYtYTcyOC1hMmIzYmEwZWM3NTI" class="a-row a-spacing-base">
+			<div class="a-column a-span10 kp-notebook-row-separator">
+				<!-- Header row containing: optionally a star, note/highlight label, page/location information, and an options dropdown -->
+					<div class="a-row"><input type="hidden" name="" value="6013" id="kp-annotation-location">
+						<!-- optional star, note/highlight label, page/location -->
+						<div class="a-column a-span8">
+							<!-- Star, if necessary -->
+							<!-- Highlight -->
+							<!-- Highlight header -->
+							<span id="annotationHighlightHeader" class="a-size-small a-color-secondary kp-notebook-selectable kp-notebook-metadata">
+								Yellow highlight | Page:&nbsp;343
+							</span>
+							<!-- Note header in case highlight is deleted, and we need to have the note header -->
+							<span id="annotationNoteHeader" class="a-size-small a-color-secondary aok-hidden kp-notebook-selectable kp-notebook-metadata">
+								Note | Page:&nbsp;343
+							</span>
+							<!-- Freestanding note header -->
+						</div>
+						<!-- the Options menu -->
+						<div class="a-column a-span4 a-text-right a-span-last">
+							<span class="a-declarative" data-action="a-popover" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-a-popover" data-a-popover="{&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;Close&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;width&quot;:&quot;200&quot;,&quot;name&quot;:&quot;optionsPopover&quot;,&quot;position&quot;:&quot;triggerVerticalAlignLeft&quot;,&quot;popoverLabel&quot;:&quot;Options for annotations at Page 343&quot;}" id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RTo5MDE5MDk6SElHSExJR0hUOmFiODQ2YjlkYy1kNjkxLTQ1ZTYtYTcyOC1hMmIzYmEwZWM3NTI-action" data-csa-c-id="5ud9jp-wuihv9-5li0b5-t9u9d5"><a id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RTo5MDE5MDk6SElHSExJR0hUOmFiODQ2YjlkYy1kNjkxLTQ1ZTYtYTcyOC1hMmIzYmEwZWM3NTI" href="javascript:void(0)" role="button" class="a-popover-trigger a-declarative">Options<i class="a-icon a-icon-popover"></i></a></span></div></div><!-- Container for text content of the note / highlight -->
+        <div class="a-row a-spacing-top-medium"><div class="a-column a-span10 a-spacing-small kp-notebook-print-override"><!-- Highlight with a child note -->
+                <!-- Highlight text -->
+                    <div id="highlight-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RTo5MDE5MDk6SElHSExJR0hUOmFiODQ2YjlkYy1kNjkxLTQ1ZTYtYTcyOC1hMmIzYmEwZWM3NTI" class="a-row kp-notebook-highlight kp-notebook-selectable kp-notebook-highlight-yellow"><span id="highlight" class="a-size-base-plus a-color-base">We remember the good times and the bad ones, forgetting that most times are neither good nor bad. They just are.”</span><div></div>
+                </div><!-- Child note text -->
+                    <!-- FIX HERE!! -->
+                    <div id="note-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RTo5MDIwMjE6Tk9URTphMDYwYTQzNDYtZGY3Yy00ZjE2LThkYWEtZTFjZjU3ZjA1NDY0" class="a-row a-spacing-top-base kp-notebook-note kp-notebook-selectable"><span id="note-label" class="a-size-small a-color-secondary">Note:<span class="a-letter-space"></span></span><span id="note" class="a-size-base-plus a-color-base">Kaladin</span></div><!-- END HERE!! -->
+                <!-- Highlight without a child note -->
+                <!-- Orphaned note without associated highlight -->
+                </div></div></div></div><div id="QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzY3MDQwOkhJR0hMSUdIVDphNDE4MzAxNTAtZjgwZC00NTdmLWExNDQtMTg5MTRkMjA1ZDJm" class="a-row a-spacing-base"><div class="a-column a-span10 kp-notebook-row-separator"><!-- Header row containing: optionally a star, note/highlight label, page/location information, and an
+            options dropdown -->
+        <div class="a-row"><input type="hidden" name="" value="15781" id="kp-annotation-location"><!-- optional star, note/highlight label, page/location -->
+            <div class="a-column a-span8"><!-- Star, if necessary -->
+                <!-- Highlight -->
+                <!-- Highlight header -->
+                    <span id="annotationHighlightHeader" class="a-size-small a-color-secondary kp-notebook-selectable kp-notebook-metadata">Yellow highlight | Page:&nbsp;897</span><!-- Note header in case highlight is deleted, and we need to have the note header -->
+                    <span id="annotationNoteHeader" class="a-size-small a-color-secondary aok-hidden kp-notebook-selectable kp-notebook-metadata">Note | Page:&nbsp;897</span><!-- Freestanding note header -->
+                </div><!-- the Options menu -->
+            <div class="a-column a-span4 a-text-right a-span-last"><span class="a-declarative" data-action="a-popover" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-a-popover" data-a-popover="{&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;Close&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;width&quot;:&quot;200&quot;,&quot;name&quot;:&quot;optionsPopover&quot;,&quot;position&quot;:&quot;triggerVerticalAlignLeft&quot;,&quot;popoverLabel&quot;:&quot;Options for annotations at Page 897&quot;}" id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzY3MDQwOkhJR0hMSUdIVDphNDE4MzAxNTAtZjgwZC00NTdmLWExNDQtMTg5MTRkMjA1ZDJm-action" data-csa-c-id="fjpe9i-onkg7o-c4j89i-8thgyu"><a id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzY3MDQwOkhJR0hMSUdIVDphNDE4MzAxNTAtZjgwZC00NTdmLWExNDQtMTg5MTRkMjA1ZDJm" href="javascript:void(0)" role="button" class="a-popover-trigger a-declarative">Options<i class="a-icon a-icon-popover"></i></a></span></div></div><!-- Container for text content of the note / highlight -->
+        <div class="a-row a-spacing-top-medium"><div class="a-column a-span10 a-spacing-small kp-notebook-print-override"><!-- Highlight with a child note -->
+                <!-- Highlight text -->
+                    <div id="highlight-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzY3MDQwOkhJR0hMSUdIVDphNDE4MzAxNTAtZjgwZC00NTdmLWExNDQtMTg5MTRkMjA1ZDJm" class="a-row kp-notebook-highlight kp-notebook-selectable kp-notebook-highlight-yellow"><span id="highlight" class="a-size-base-plus a-color-base">“The purpose of a storyteller is not to tell you how to think, but to give you questions to think upon. Too often, we forget that.”</span><div></div>
+                </div><!-- Child note text -->
+                    <!-- FIX HERE!! -->
+                    <div id="note-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzY3MTc3Ok5PVEU6YTE0MTVhNDdjLWEyMTAtNDMzMC04ZDVlLWNmOGU1NGFlYTUyZQ" class="a-row a-spacing-top-base kp-notebook-note kp-notebook-selectable"><span id="note-label" class="a-size-small a-color-secondary">Note:<span class="a-letter-space"></span></span><span id="note" class="a-size-base-plus a-color-base">Wit</span></div><!-- END HERE!! -->
+                <!-- Highlight without a child note -->
+                <!-- Orphaned note without associated highlight -->
+                </div></div></div></div><div id="QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzk5MjAzOkhJR0hMSUdIVDphN2E1OTUzYWYtYTcxZC00M2EwLTg4NjEtNTdhNWIwZDdhYmEw" class="a-row a-spacing-base"><div class="a-column a-span10 kp-notebook-row-separator"><!-- Header row containing: optionally a star, note/highlight label, page/location information, and an
+            options dropdown -->
+        <div class="a-row"><input type="hidden" name="" value="15995" id="kp-annotation-location"><!-- optional star, note/highlight label, page/location -->
+            <div class="a-column a-span8"><!-- Star, if necessary -->
+                <!-- Highlight -->
+                <!-- Highlight header -->
+                    <span id="annotationHighlightHeader" class="a-size-small a-color-secondary kp-notebook-selectable kp-notebook-metadata">Yellow highlight | Page:&nbsp;909</span><!-- Note header in case highlight is deleted, and we need to have the note header -->
+                    <span id="annotationNoteHeader" class="a-size-small a-color-secondary aok-hidden kp-notebook-selectable kp-notebook-metadata">Note | Page:&nbsp;909</span><!-- Freestanding note header -->
+                </div><!-- the Options menu -->
+            <div class="a-column a-span4 a-text-right a-span-last"><span class="a-declarative" data-action="a-popover" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-a-popover" data-a-popover="{&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;Close&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;width&quot;:&quot;200&quot;,&quot;name&quot;:&quot;optionsPopover&quot;,&quot;position&quot;:&quot;triggerVerticalAlignLeft&quot;,&quot;popoverLabel&quot;:&quot;Options for annotations at Page 909&quot;}" id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzk5MjAzOkhJR0hMSUdIVDphN2E1OTUzYWYtYTcxZC00M2EwLTg4NjEtNTdhNWIwZDdhYmEw-action" data-csa-c-id="k1e7zu-u5qgll-1fvcu4-r4pqfk"><a id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzk5MjAzOkhJR0hMSUdIVDphN2E1OTUzYWYtYTcxZC00M2EwLTg4NjEtNTdhNWIwZDdhYmEw" href="javascript:void(0)" role="button" class="a-popover-trigger a-declarative">Options<i class="a-icon a-icon-popover"></i></a></span></div></div><!-- Container for text content of the note / highlight -->
+        <div class="a-row a-spacing-top-medium"><div class="a-column a-span10 a-spacing-small kp-notebook-print-override"><!-- Highlight with a child note -->
+                <!-- Highlight text -->
+                    <div id="highlight-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzk5MjAzOkhJR0hMSUdIVDphN2E1OTUzYWYtYTcxZC00M2EwLTg4NjEtNTdhNWIwZDdhYmEw" class="a-row kp-notebook-highlight kp-notebook-selectable kp-notebook-highlight-yellow"><span id="highlight" class="a-size-base-plus a-color-base">‘Those dear to me took fright for my safety and, perhaps, my sanity. Kings, they explained, do not walk like beggars for hundreds of miles. My response was that if a beggar could manage the feat, then why not a king?</span><div></div>
+                </div><!-- Child note text -->
+                    <!-- FIX HERE!! -->
+                    <div id="note-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyMzk5NDI1Ok5PVEU6YTBjYTAxZjg4LWZmOGYtNGJhMi1hMDllLTRjNGIyMjU2ZDQ4Yw" class="a-row a-spacing-top-base kp-notebook-note kp-notebook-selectable"><span id="note-label" class="a-size-small a-color-secondary">Note:<span class="a-letter-space"></span></span><span id="note" class="a-size-base-plus a-color-base">Nohadon, The Way Of Kings</span></div><!-- END HERE!! -->
+                <!-- Highlight without a child note -->
+                <!-- Orphaned note without associated highlight -->
+                </div></div></div></div><div id="QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDAyMzUzOkhJR0hMSUdIVDphNjE3MzgwZjctMzA4NS00NmM5LWIzNGQtYWJmZTA3M2ZhOGMy" class="a-row a-spacing-base"><div class="a-column a-span10 kp-notebook-row-separator"><!-- Header row containing: optionally a star, note/highlight label, page/location information, and an
+            options dropdown -->
+        <div class="a-row"><input type="hidden" name="" value="16016" id="kp-annotation-location"><!-- optional star, note/highlight label, page/location -->
+            <div class="a-column a-span8"><!-- Star, if necessary -->
+                <!-- Highlight -->
+                <!-- Highlight header -->
+                    <span id="annotationHighlightHeader" class="a-size-small a-color-secondary kp-notebook-selectable kp-notebook-metadata">Yellow highlight | Page:&nbsp;910</span><!-- Note header in case highlight is deleted, and we need to have the note header -->
+                    <span id="annotationNoteHeader" class="a-size-small a-color-secondary aok-hidden kp-notebook-selectable kp-notebook-metadata">Note | Page:&nbsp;910</span><!-- Freestanding note header -->
+                </div><!-- the Options menu -->
+            <div class="a-column a-span4 a-text-right a-span-last"><span class="a-declarative" data-action="a-popover" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-a-popover" data-a-popover="{&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;Close&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;width&quot;:&quot;200&quot;,&quot;name&quot;:&quot;optionsPopover&quot;,&quot;position&quot;:&quot;triggerVerticalAlignLeft&quot;,&quot;popoverLabel&quot;:&quot;Options for annotations at Page 910&quot;}" id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDAyMzUzOkhJR0hMSUdIVDphNjE3MzgwZjctMzA4NS00NmM5LWIzNGQtYWJmZTA3M2ZhOGMy-action" data-csa-c-id="zhx2k7-dwmo4p-wsqa9l-k3v5so"><a id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDAyMzUzOkhJR0hMSUdIVDphNjE3MzgwZjctMzA4NS00NmM5LWIzNGQtYWJmZTA3M2ZhOGMy" href="javascript:void(0)" role="button" class="a-popover-trigger a-declarative">Options<i class="a-icon a-icon-popover"></i></a></span></div></div><!-- Container for text content of the note / highlight -->
+        <div class="a-row a-spacing-top-medium"><div class="a-column a-span10 a-spacing-small kp-notebook-print-override"><!-- Highlight with a child note -->
+                <!-- Highlight text -->
+                    <div id="highlight-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDAyMzUzOkhJR0hMSUdIVDphNjE3MzgwZjctMzA4NS00NmM5LWIzNGQtYWJmZTA3M2ZhOGMy" class="a-row kp-notebook-highlight kp-notebook-selectable kp-notebook-highlight-yellow"><span id="highlight" class="a-size-base-plus a-color-base">‘And so, does the destination matter? Or is it the path we take? I declare that no accomplishment has substance nearly as great as the road used to achieve it. We are not creatures of destinations. It is the journey that shapes us. Our callused feet, our backs strong from carrying the weight of our travels, our eyes open with the fresh delight of experiences lived. “ ‘In the end, I must proclaim that no good can be achieved of false means. For the substance of our existence is not in the achievement, but in the method. The Monarch must understand this; he must not become so focused on what he wishes to accomplish that he diverts his gaze from the path he must take to arrive there.’</span><div></div>
+                </div><!-- Child note text -->
+                    <!-- FIX HERE!! -->
+                    <div id="note-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDAzMDk4Ok5PVEU6YWJlZTkxN2UzLTM2ZDAtNDJiNy04ODhlLTNjYTRlMGFjZDQ1ZA" class="a-row a-spacing-top-base kp-notebook-note kp-notebook-selectable"><span id="note-label" class="a-size-small a-color-secondary">Note:<span class="a-letter-space"></span></span><span id="note" class="a-size-base-plus a-color-base">Nohadon, The Way of Kings</span></div><!-- END HERE!! -->
+                <!-- Highlight without a child note -->
+                <!-- Orphaned note without associated highlight -->
+                </div></div></div></div><div id="QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDQxOTE3OkhJR0hMSUdIVDphODFjMDY5NWQtMzI5Ni00OTJmLWFmZTEtMDU5YjRmNmVhMmE1" class="a-row a-spacing-base"><div class="a-column a-span10 kp-notebook-row-separator"><!-- Header row containing: optionally a star, note/highlight label, page/location information, and an
+            options dropdown -->
+        <div class="a-row"><input type="hidden" name="" value="16280" id="kp-annotation-location"><!-- optional star, note/highlight label, page/location -->
+            <div class="a-column a-span8"><!-- Star, if necessary -->
+                <!-- Highlight -->
+                <!-- Highlight header -->
+                    <span id="annotationHighlightHeader" class="a-size-small a-color-secondary kp-notebook-selectable kp-notebook-metadata">Yellow highlight | Page:&nbsp;924</span><!-- Note header in case highlight is deleted, and we need to have the note header -->
+                    <span id="annotationNoteHeader" class="a-size-small a-color-secondary aok-hidden kp-notebook-selectable kp-notebook-metadata">Note | Page:&nbsp;924</span><!-- Freestanding note header -->
+                </div><!-- the Options menu -->
+            <div class="a-column a-span4 a-text-right a-span-last"><span class="a-declarative" data-action="a-popover" data-csa-c-type="widget" data-csa-c-func-deps="aui-da-a-popover" data-a-popover="{&quot;closeButton&quot;:&quot;false&quot;,&quot;closeButtonLabel&quot;:&quot;Close&quot;,&quot;activate&quot;:&quot;onclick&quot;,&quot;width&quot;:&quot;200&quot;,&quot;name&quot;:&quot;optionsPopover&quot;,&quot;position&quot;:&quot;triggerVerticalAlignLeft&quot;,&quot;popoverLabel&quot;:&quot;Options for annotations at Page 924&quot;}" id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDQxOTE3OkhJR0hMSUdIVDphODFjMDY5NWQtMzI5Ni00OTJmLWFmZTEtMDU5YjRmNmVhMmE1-action" data-csa-c-id="k1l3bm-x3jegf-1a7g5m-46d7uj"><a id="popover-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDQxOTE3OkhJR0hMSUdIVDphODFjMDY5NWQtMzI5Ni00OTJmLWFmZTEtMDU5YjRmNmVhMmE1" href="javascript:void(0)" role="button" class="a-popover-trigger a-declarative">Options<i class="a-icon a-icon-popover"></i></a></span></div></div><!-- Container for text content of the note / highlight -->
+        <div class="a-row a-spacing-top-medium"><div class="a-column a-span10 a-spacing-small kp-notebook-print-override"><!-- Highlight with a child note -->
+                <!-- Highlight text -->
+                    <div id="highlight-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDQxOTE3OkhJR0hMSUdIVDphODFjMDY5NWQtMzI5Ni00OTJmLWFmZTEtMDU5YjRmNmVhMmE1" class="a-row kp-notebook-highlight kp-notebook-selectable kp-notebook-highlight-yellow"><span id="highlight" class="a-size-base-plus a-color-base">“Life before death. Strength before weakness. Journey before destination.</span><div></div>
+                </div><!-- Child note text -->
+                    <!-- FIX HERE!! -->
+                    <div id="note-QTNLWUoyUDczTExFMVg6QjAwM1AyV081RToyNDQxOTk2Ok5PVEU6YTFhMWVlYTY2LTI0MTQtNDM0OC1hOTQyLWViZDYwZWJiZDZlNQ" class="a-row a-spacing-top-base kp-notebook-note kp-notebook-selectable"><span id="note-label" class="a-size-small a-color-secondary">Note:<span class="a-letter-space"></span></span><span id="note" class="a-size-base-plus a-color-base">The First Ideal</span></div><!-- END HERE!! -->
+                <!-- Highlight without a child note -->
+                <!-- Orphaned note without associated highlight -->
+                </div></div></div></div><div id="empty-annotations-pane" class="a-row aok-hidden"><div class="a-column a-span6 a-push3">
+
+
+
+
+
+
+
+<div class="a-box a-spacing-top-extra-large a-box-normal a-text-center"><div class="a-box-inner">
+    <div class="a-row a-spacing-large a-spacing-top-medium">
+        <div class="a-column a-span4 a-push4">
+            <img alt="" src="img/Note_icon.png" class="kp-notebook-cover-image" height="44">
+        </div>
+    </div>
+    <p class="a-spacing-medium a-size-medium a-text-bold"> Would you like to take some notes?</p>
+    <span>
+        You haven’t created any notes for this book yet. You can add or remove bookmarks, highlights, and notes at any location in a Kindle book. 
+    </span>
+    <div class="a-row a-spacing-extra-large a-spacing-top-medium"><a class="a-link-emphasis" target="_blank" rel="noopener" href="https://www.amazon.com/b/?node=11627044011&amp;ref=k4w_ms_ynh_empty"> Learn more about notes and highlights</a></div>
+</div></div>
+</div></div></div>
+
+
+
+
+
+
+
+
+
+
