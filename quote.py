@@ -40,7 +40,7 @@ def loadQuotes(filename):
         
         # for each book in file create book object
         for item in data:
-            b = Book(item['title'], item['author'])
+            b = Book(item['title'], item['author'], item['lastAccessed'])
             
             # for each quote in book create a quote object
             for q in item['quotes']:
