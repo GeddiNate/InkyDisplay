@@ -1,0 +1,29 @@
+waiting loop
+    if highlight mode  
+        if top pressed
+            display next quote
+        if upMid pressed
+            display previous quote
+        if lowMid pressed
+            update background
+        if bottom pressed
+            ??? change mode?
+        await update time 
+            automatically display next quote
+    
+    if spotify
+        passive update now playing song
+        
+        if top pressed
+            next track
+        if upMid pressed
+            last track (restart track??)
+        if lowMid pressed
+            (pause track)
+        if bottom pressed
+            change mode / like??
+    at 3 am sync quotes
+
+    if top and bottom held for 5 seconds 
+        shutdown
+

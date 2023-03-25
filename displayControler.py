@@ -9,67 +9,45 @@ def randomQuote(data):
     book = random.choice(data) # random book
     return random.choice(book.quotes) # random quote from book
 
-def displayQuote(quote):
-    img = Image.open('testImage.jpg')
-    
-    out = Image.new("RGB", (150, 100), (255, 255, 255))
-    
-    d = ImageDraw.Draw(out)
+def displayQuote():
+    from PIL import Image, ImageDraw, ImageFont
 
-    # # get a font
-    # fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 40)
+    # Load the image
+    img = Image.open("testImage.jpg")
 
-    # # draw multiline text
-    d.multiline_text((10, 10), quote.text, fill=(0, 0, 0))
+    # Get the width and height of the image
+    width, height = img.size
 
-    # out.show()
-    out.save("imageOut.png", 'PNG')
+    # Create a new ImageDraw object
+    draw = ImageDraw.Draw(img)
 
+    # Define the font and size for the text
+    font = ImageFont.truetype("arial.ttf", 24)
 
-# load kindle highlight data
-data = quote.loadQuotes('output.json')
+    # Define the text to display
+    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor."
 
+    # Wrap the text to fit on the image
+    lines = []
+    words = text.split(" ")
+    current_line = words[0]
+    for word in words[1:]:
+        if font.getsize(current_line + " " + word)[0] < width:
+            current_line += " " + word
+        else:
+            lines.append(current_line)
+            current_line = word
+    lines.append(current_line)
 
-with Image.open("testImage.jpg") as im:
-    print(im.format, im.size, im.mode)
-    im.show()
-    
+    # Draw the text on the image
+    y_text = height - (len(lines) * 30) # adjust the 30 value to set the line spacing
+    for line in lines:
+        line_width, line_height = font.getsize(line)
+        x_text = (width - line_width) / 2
+        draw.text((x_text, y_text), line, font=font, fill=(255, 255, 255))
+        y_text += line_height
 
-    # inky Example:
-    # automatically get display info from EEPROM 
-    # display = auto()
+    # Save the image with the text
+    img.save("example_with_text.jpg")
 
-
-    # print(display.colour)
-    # print(display.resolution)
-
-    # display.set_image(im)
-
-    # display.show()
-
-
-
-
-
-    # # Example: Draw Partial Opacity Text
-
-    # # make a blank image for the text, initialized to transparent text color
-    # txt = Image.new("RGBA", im.size, (255, 255, 255, 0))
-
-    # # get a font
-    # #fnt = ImageFont.truetype("Pillow/Tests/fonts/FreeMono.ttf", 40)
-    # # get a drawing context
-    # d = ImageDraw.Draw(txt)
-
-    # # draw text, half opacity
-    # #d.text((10, 10), "Hello", font=fnt, fill=(255, 255, 255, 128))
-    # d.text((10, 10), "Hello", fill=(0, 0, 0, 128))
-    # # draw text, full opacity
-    # #d.text((10, 60), "World", font=fnt, fill=(255, 255, 255, 255))
-    # d.text((10, 60), "World", fill=(0, 0, 0, 255))
-    # im = im.convert("RGBA")
-    # print(im, txt)
-    # out = Image.alpha_composite(im, txt)
-
-
-
+displayQuote()
