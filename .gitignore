@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # user settings
-settings.json
+credentials.json
 output.json
 imageOut.png

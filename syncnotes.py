@@ -11,8 +11,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from ast import literal_eval
 
-
-
 # strs to be removed from kindle date
 DAYS = [
     "Monday ",
@@ -27,32 +25,11 @@ DAYS = [
 # time to wait for webpages to load
 SLEEP_TIME = 7
 
-
-def main():
-    # select chrome profile path based on which device im using
-    if platform.system() == "Linux":
-        profile = "/home/ngeddis/.config/google-chrome/Default"  # Laptop
-    else:
-        profile = "C:\\Users\\natha\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"  # Desktop
-
-
-    # try to open saved quotes
-    try:
-        f = open("output.json")
-    # if file not found create empty array to store data
-    except FileNotFoundError:
-        books = []
-    # if unknown exception
-    except Exception as e:
-        logging.exception(e)
-        books = []
-    # if file found load data from file
-    else:
-        books = quote.loadQuotes(f)
-    # close file
-    f.close()
+# function to sync local saved quotes with Kindle app
+def syncQuotes(data, settings):
 
     # set chrome webdriver options
+    profile = settings["profile"]   
     chromeOptions = webdriver.ChromeOptions()
     chromeOptions.add_argument(f"--user-data-dir={profile}")
 
@@ -63,31 +40,24 @@ def main():
     driver.get("https://read.amazon.com/")
     time.sleep(SLEEP_TIME)
 
-
     # check if on landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
-        print("On landing page")
+        logging.INFO("On landing page")
+
         # click sign in button
         driver.find_element(By.ID, "top-sign-in-btn").click()
         time.sleep(SLEEP_TIME)
 
-        assert "Amazon Sign-In" in driver.title
         # if on sign in page attempt to sign in
         if "Amazon Sign-In" in driver.title:
-            print("on Sign in page")
-            # Opening JSON file
-            with open("settings.json") as json_file:
-                data = json.load(json_file)
+            logging.INFO("on Sign in page")
 
-                # get email and password from settings
-                email = data["email"]
-                password = data["password"]
-                # enter login info, click remember me and submit
-                driver.find_element(By.ID, "ap_email").send_keys(email)
-                driver.find_element(By.ID, "ap_password").send_keys(password)
-                driver.find_element(By.NAME, "rememberMe").click()
-                driver.find_element(By.ID, "signInSubmit").click()
-                time.sleep(SLEEP_TIME)
+            # enter login info, click remember me and submit
+            driver.find_element(By.ID, "ap_email").send_keys(settings["email"])
+            driver.find_element(By.ID, "ap_password").send_keys(settings["password"])
+            driver.find_element(By.NAME, "rememberMe").click()
+            driver.find_element(By.ID, "signInSubmit").click()
+            time.sleep(SLEEP_TIME)
 
         # if 2FA required notify user
         if "Two-Step Verification" in driver.title:
@@ -96,13 +66,13 @@ def main():
 
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
-        print("Login successful!")
+        logging.INFO("Login successful")
     # if log in failed notify user
     else:
-        print("Login failed.")
+        logging.ERROR("Login failed")
         # TODO send notification if this is reached
         driver.quit()
-        exit()
+        return
 
 
     # navigate to notes page
@@ -114,7 +84,7 @@ def main():
 
     # check if on highlights page
     if "Your Notes and Highlights" in driver.title:
-        print("Reached Notes page successful")
+        logging.INFO("Reached Notes page successful")
 
         library = driver.find_element(By.ID, "kp-notebook-library")
         booklist = library.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
@@ -139,13 +109,20 @@ def main():
 
         # used to get titles and authors
         # TODO get title and author from notebook section and remove above loop
+        
         count = 0 
-
+        books = []
         # for each book
         for book in booklist:
             # select the book so highlights and notes show on the page
+            tmp = book.find_element(By.CLASS_NAME, "a-link-normal").text
+            print(tmp)
+
             book.find_element(By.CLASS_NAME, "a-link-normal").click()
             time.sleep(5)
+            
+            # find the notes page
+
             
             # get number of of highlights in this book
             numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
@@ -163,8 +140,7 @@ def main():
 
             # get color of highlight
             colors = []
-            for color in notebook.find_elements(By.ID,
-                                                "annotationHighlightHeader"):
+            for color in notebook.find_elements(By.ID, "annotationHighlightHeader"):
                 # color is the first word in text
                 colors.append(color.text.split(" ", 1)[0])
                 # TODO add option to ignore highlights of a certain color
@@ -203,6 +179,3 @@ def main():
         json_file.write(json.dumps(books, default=vars))
     driver.quit()
 
-
-if __name__ == "__main__":
-    main()
