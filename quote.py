@@ -31,22 +31,21 @@ class Book:
         return retval
 
 # load stored quotes from json file
-def loadQuotes(filename):
+def loadQuotes(f):
     
     # open file and load data
     retval = []
-    with open(filename) as f:
-        data = json.load(f)
+    data = json.load(f)
         
-        # for each book in file create book object
-        for item in data:
-            b = Book(item['title'], item['author'], item['lastAccessed'])
+    # for each book in file create book object
+    for item in data:
+        b = Book(item['title'], item['author'], item['lastAccessed'])
+           
+        # for each quote in book create a quote object
+        for q in item['quotes']:
+            b.quotes.append(Quote(q['text'], q['color'], q['note']))
             
-            # for each quote in book create a quote object
-            for q in item['quotes']:
-                b.quotes.append(Quote(q['text'], q['color'], q['note']))
-            
-            retval.append(b)
+        retval.append(b)
 
     return retval
 

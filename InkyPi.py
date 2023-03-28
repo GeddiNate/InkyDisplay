@@ -7,7 +7,7 @@ import os
 import json
 import signal
 import logging
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 from enum import Enum
 
 import quote

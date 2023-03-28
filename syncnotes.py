@@ -42,7 +42,7 @@ def syncQuotes(data, settings):
 
     # check if on landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
-        logging.INFO("On landing page")
+        logging.info("On landing page")
 
         # click sign in button
         driver.find_element(By.ID, "top-sign-in-btn").click()
@@ -50,7 +50,7 @@ def syncQuotes(data, settings):
 
         # if on sign in page attempt to sign in
         if "Amazon Sign-In" in driver.title:
-            logging.INFO("on Sign in page")
+            logging.info("on Sign in page")
 
             # enter login info, click remember me and submit
             driver.find_element(By.ID, "ap_email").send_keys(settings["email"])
@@ -66,10 +66,10 @@ def syncQuotes(data, settings):
 
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
-        logging.INFO("Login successful")
+        logging.info("Login successful")
     # if log in failed notify user
     else:
-        logging.ERROR("Login failed")
+        logging.error("Login failed")
         # TODO send notification if this is reached
         driver.quit()
         return
@@ -84,41 +84,31 @@ def syncQuotes(data, settings):
 
     # check if on highlights page
     if "Your Notes and Highlights" in driver.title:
-        logging.INFO("Reached Notes page successful")
+        logging.info("Reached Notes page successful")
 
         library = driver.find_element(By.ID, "kp-notebook-library")
         booklist = library.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
-
-        # split library.text to get authors and titles for all books
-        titles = []
-        authors = []
-
-        for item in library.text.splitlines():
-            # if item is author name
-            if item.startswith("By:"):
-                authors.append(item)
-            # if item is book title
-            else:
-                # remove subtitle if there
-                idx = max(item.find(":"), item.find("("))
-                # TODO this won't work if a title has : and ( hasn't been a problem yet but might be
-                if idx < 0:
-                    titles.append(item)
-                else:
-                    titles.append(item[:idx])
-
-        # used to get titles and authors
-        # TODO get title and author from notebook section and remove above loop
         
-        count = 0 
         books = []
         # for each book
         for book in booklist:
             # select the book so highlights and notes show on the page
-            tmp = book.find_element(By.CLASS_NAME, "a-link-normal").text
-            print(tmp)
+            selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
+            
+            # contains title and author
+            tmp = selectedBook.text.splitlines()
+            
+            # remove subtitle if there
+            idx = max(tmp[0].find(":"), tmp[0].find("("))
+            # TODO this won't work if a title has : and ( hasn't been a problem yet but might be
+            if idx < 0:
+                title = (tmp[0])
+            else:
+                title = (tmp[0][:idx])
+            
+            author = tmp[1]
 
-            book.find_element(By.CLASS_NAME, "a-link-normal").click()
+            selectedBook.click()
             time.sleep(5)
             
             # find the notes page
@@ -155,18 +145,13 @@ def syncQuotes(data, settings):
             for note in notebook.find_elements(By.ID, "note"):
                 notes.append(note.text)
 
-            print(lastAccessed)
-            print(colors)
-            print(quoteText)
-            print(notes)
             assert (numHighlights == len(colors)
                     and numHighlights == len(quoteText)
                     and numHighlights == len(notes))
-            b = quote.Book(titles[count], authors[count], lastAccessed)
+            b = quote.Book(title, author, lastAccessed)
             for i in range(numHighlights):
                 b.quotes.append(quote.Quote(quoteText[i], colors[i], notes[i]))
             books.append(b)
-            count = count + 1
             
     # id=annotationHighlightHeader contains quote color, page number
     # id=annotationNoteHeader contains note page number
