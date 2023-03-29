@@ -1,29 +1,62 @@
 import quote
 import json
 import time
-import platform
 import logging
 import datetime
 import undetected_chromedriver as webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from ast import literal_eval
 
 # strs to be removed from kindle date
-DAYS = [
-    "Monday ",
-    "Tuesday ",
-    "Wednesday ",
-    "Thursday ",
-    "Friday ",
-    "Saturday ",
-    "Sunday ",
-]
+DATE_FORMAT = "%A %B %d %Y"
 
 # time to wait for webpages to load
 SLEEP_TIME = 7
+ 
+
+# search data for book with matching title
+def findBook(bookList, bookTitle):
+    for book in bookList:
+        if book["title"] == bookTitle:
+            return book
+    
+    return None
+
+
+def getBookData(webDriver, book):
+    # get number of of highlights in this book
+    numHighlights = literal_eval(webDriver.find_element(By.ID, "kp-notebook-highlights-count").text)
+
+    # find the notebook section of the page
+    notebook = webDriver.find_element(By.ID, "annotation-section")
+
+    
+    #lastAccessed = notebook.find_element(By.ID, "kp-notebook-annotated-date").text
+    
+    # get color of highlight
+    colors = []
+    for color in notebook.find_elements(By.ID, "annotationHighlightHeader"):
+        # color is the first word in text
+        colors.append(color.text.split(" ", 1)[0])
+        # TODO add option to ignore highlights of a certain color
+
+    # get quote text
+    quoteText = []
+    for txt in notebook.find_elements(By.ID, "highlight"):
+        quoteText.append(txt.text)
+
+    # get notes
+    notes = []
+    for note in notebook.find_elements(By.ID, "note"):
+        notes.append(note.text)
+
+    assert (numHighlights == len(colors) and numHighlights == len(quoteText) and numHighlights == len(notes))
+    for i in range(numHighlights):
+        book.quotes.append(quote.Quote(quoteText[i], colors[i], notes[i]))
+    return book
+
 
 # function to sync local saved quotes with Kindle app
 def syncQuotes(data, settings):
@@ -102,56 +135,36 @@ def syncQuotes(data, settings):
             idx = max(tmp[0].find(":"), tmp[0].find("("))
             # TODO this won't work if a title has : and ( hasn't been a problem yet but might be
             if idx < 0:
-                title = (tmp[0])
+                title = tmp[0]
             else:
-                title = (tmp[0][:idx])
+                title = tmp[0][:idx]
             
             author = tmp[1]
 
             selectedBook.click()
             time.sleep(5)
-            
             # find the notes page
 
+            # get the date the book was last accessed as python date object
+            lastAccessed = datetime.datetime.strptime(driver.find_element(By.ID, "kp-notebook-annotated-date").text, DATE_FORMAT).date()
+
+            # find book in stored data
+            foundBook = findBook(data, title)
             
-            # get number of of highlights in this book
-            numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
+            # if book not found sync book and add to 
+            if foundBook == None:
+                #if not sync
+                newBook = quote.Book(title, author, lastAccessed)
+                data.append(getBookData(driver, newBook))
+            # if book found and has been updated since last sync
+            elif lastAccessed > foundBook["lastAccessed"]:
+                # sync book and replace old data
+                newBook = quote.Book(title, author, lastAccessed)
+                data.remove(foundBook)
+                data.append(getBookData(driver, newBook))
 
-            # find the notebook section of the page
-            notebook = driver.find_element(By.ID, "annotation-section")
-
-            # get the date the book was last accessed
-            lastAccessed = notebook.find_element(By.ID, "kp-notebook-annotated-date").text
             
-            # remove day of the week from last accessed date
-            for day in DAYS:
-                lastAccessed = lastAccessed.replace(day, "")
-            # TODO add a check if this date is more recent than the last sync date
-
-            # get color of highlight
-            colors = []
-            for color in notebook.find_elements(By.ID, "annotationHighlightHeader"):
-                # color is the first word in text
-                colors.append(color.text.split(" ", 1)[0])
-                # TODO add option to ignore highlights of a certain color
-
-            # get quote text
-            quoteText = []
-            for txt in notebook.find_elements(By.ID, "highlight"):
-                quoteText.append(txt.text)
-
-            # get notes
-            notes = []
-            for note in notebook.find_elements(By.ID, "note"):
-                notes.append(note.text)
-
-            assert (numHighlights == len(colors)
-                    and numHighlights == len(quoteText)
-                    and numHighlights == len(notes))
-            b = quote.Book(title, author, lastAccessed)
-            for i in range(numHighlights):
-                b.quotes.append(quote.Quote(quoteText[i], colors[i], notes[i]))
-            books.append(b)
+            
             
     # id=annotationHighlightHeader contains quote color, page number
     # id=annotationNoteHeader contains note page number
@@ -163,4 +176,3 @@ def syncQuotes(data, settings):
     with open("output.json", "w") as json_file:
         json_file.write(json.dumps(books, default=vars))
     driver.quit()
-

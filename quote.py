@@ -20,10 +20,11 @@ class Book:
         self.author = author
         self.lastAccessed = lastAccessed
         self.quotes = []
+    
 
     # convert to dict for serialization
     def toJSON(self):
-        retval = {'title': self.title, 'author':self.author, 'quotes':self.quotes}
+        retval = {'title': self.title, 'author':self.author, 'lastAccessed': datetime.date.isoformat(self.lastAccessed)}
         q = [] 
         for quote in self.quotes:
             q.append(quote.toJSON())
@@ -39,7 +40,7 @@ def loadQuotes(f):
         
     # for each book in file create book object
     for item in data:
-        b = Book(item['title'], item['author'], item['lastAccessed'])
+        b = Book(item['title'], item['author'], datetime.date.fromisoformat(item['lastAccessed']))
            
         # for each quote in book create a quote object
         for q in item['quotes']:
