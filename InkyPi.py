@@ -12,6 +12,7 @@ from enum import Enum
 
 import quote
 import syncnotes
+import displayControler
 
 
 # Enum for different modes
@@ -27,8 +28,17 @@ def Shutdown():
 # "handle_button" will be called every time a button is pressed
 # It receives one argument: the associated input pin.
 # def handle_button(pin):
+#     # if top button pressed
+#     if pin == BUTTONS[0]:
+#         nextQuote()
+#     # if top mid button pressed
+#     elif pin == BUTTONS[1]:
+#         prevQuote()
+#     # if low min button pressed
+#     elif pin == BUTTONS[2]:
+#         changeBackground()
     
-#     # if bottom button pressed
+#if bottom button pressed
 #     if pin == BUTTONS[3]:
 #         # change current mode to SPOTIFY
 #         if currentMode == Mode.KINDLE:
@@ -39,15 +49,7 @@ def Shutdown():
 
 #     # if displaying kindle highlights
 #     elif currentMode == Mode.KINDLE:
-#         # if top button pressed
-#         if pin == BUTTONS[0]:
-#             nextQuote()
-#         # if top mid button pressed
-#         elif pin == BUTTONS[1]:
-#             prevQuote()
-#         # if low min button pressed
-#         elif pin == BUTTONS[2]:
-#             changeBackground()
+#         
 
 #     # if displaying current spotify track  
 #     elif currentMode == Mode.SPOTIFY:
@@ -97,13 +99,17 @@ try:
 # if open fails create empty array to store data and log exception
 except Exception as e:
     logging.exception(e)
-    library = quote.BookList
+    library = quote.BookList()
 # if file found load data from file
 else:
     library = quote.loadQuotes(f)
+    f.close()
 # close file
-f.close()
+
 settings = {}
+
+# l = library.randomQuote()
+# print(l[0].text, l[1].title, l[1].author)
 
 # get settings from JSON file
 with open("settings.json") as json_file:
@@ -119,5 +125,16 @@ with open("credentials.json") as json_file:
     # get email and password from settings
     settings["email"] = data["email"]
     settings["password"] = data["password"]
-    
-syncnotes.syncQuotes(library, settings)
+
+# FOR TESTING sync quotes
+library = syncnotes.syncQuotes(library, settings)
+library.save()
+
+# FOR TESTING display a random quote
+# q = library.randomQuote()
+# displayControler.displayQuote(q[0],q[1])
+
+# FOR TESTING find a specific quote
+# b = [book for book in library.books if book.title == "A Compact Guide to the Whole Bible"]
+# q = [quote for quote in b[0].quotes if quote.text == "A third quality of God is God\u2019s power, but this quality can be both positive and negative. God\u2019s power to create, to rescue, and to punish the wicked is seen as a positive thing, but God\u2019s power is also frightening, particularly when it is directed against humans (cf. Job 9:1\u201319)."]
+# displayControler.displayQuote(q[0],b[0])

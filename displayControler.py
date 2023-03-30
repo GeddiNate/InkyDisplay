@@ -3,17 +3,18 @@ from PIL import Image, ImageDraw, ImageFont
 import quote
 import random
 
-# get a random quote form the list of books 
-# @params data list of book objects
-def randomQuote(data):
-    book = random.choice(data) # random book
-    return random.choice(book.quotes) # random quote from book
+WIDTH = 600 
+HEIGHT = 448
+H_MARGIN = 30
+V_MARGIN = 30
+FONT_SIZE = 24
+LINE_PADDING = 6
 
-def displayQuote():
-    from PIL import Image, ImageDraw, ImageFont
+def displayQuote(q, b):
 
-    # Load the image
-    img = Image.open("testImage.jpg")
+    # Load the image and resize it to fit screen
+    img = Image.open("nightSkytest.png")
+    img = img.resize((WIDTH, HEIGHT)) # TODO move elsewhere
 
     # Get the width and height of the image
     width, height = img.size
@@ -22,32 +23,46 @@ def displayQuote():
     draw = ImageDraw.Draw(img)
 
     # Define the font and size for the text
-    font = ImageFont.truetype("arial.ttf", 24)
+    textFont = ImageFont.truetype("DejaVuSerif.ttf", FONT_SIZE)
+    titleFont = ImageFont.truetype("DejaVuSerif.ttf", round(FONT_SIZE*0.6))
+    authorFont = ImageFont.truetype("DejaVuSerif.ttf", round(FONT_SIZE*0.4))
 
-    # Define the text to display
-    text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor."
+    # display book title and author
+    title, author = str(b).splitlines()
+
+    length = max(titleFont.getlength(title), authorFont.getlength(author))
+    authorHeight = titleFont.getbbox(author)[3]
+    titleHeight = titleFont.getbbox(title)[3] + authorHeight
+
+    draw.text((WIDTH - H_MARGIN - length, HEIGHT - V_MARGIN - titleHeight), title, font=titleFont, fill=(255, 255, 0))
+    draw.text((WIDTH - H_MARGIN - length, HEIGHT - V_MARGIN - authorHeight), author, font=authorFont, fill=(255, 255, 0))
 
     # Wrap the text to fit on the image
     lines = []
-    words = text.split(" ")
-    current_line = words[0]
+    words = str(q).replace('\n',' ').split(" ")
+    currentLine = words[0]
+    # for each word in the quote
     for word in words[1:]:
-        if font.getsize(current_line + " " + word)[0] < width:
-            current_line += " " + word
+        # if the current line plus the next word is shorter than the image width minus the hoizontal padding
+        if textFont.getlength(currentLine + " " + word) < width - (H_MARGIN * 2):
+            # add word to current line
+            currentLine += " " + word
         else:
-            lines.append(current_line)
-            current_line = word
-    lines.append(current_line)
+            # end current line and start next line
+            lines.append(currentLine)
+            currentLine = word
+    lines.append(currentLine)
 
     # Draw the text on the image
-    y_text = height - (len(lines) * 30) # adjust the 30 value to set the line spacing
+    #yText = height - (len(lines) * 30) # adjust the 30 value to set the line spacing
+    yText = V_MARGIN
+    # for each line
     for line in lines:
-        line_width, line_height = font.getsize(line)
-        x_text = (width - line_width) / 2
-        draw.text((x_text, y_text), line, font=font, fill=(255, 255, 255))
-        y_text += line_height
+        # get witdth and hiehgt of line
+        lineWidth, lineHeight = textFont.getbbox(line)[2:]
+        xText = H_MARGIN
+        draw.text((xText, yText), line, font=textFont, fill=(255, 255, 255))
+        yText += lineHeight
 
     # Save the image with the text
-    img.save("example_with_text.jpg")
-
-displayQuote()
+    img.save("imageOut.png")

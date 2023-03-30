@@ -60,6 +60,7 @@ def syncQuotes(library, settings):
         # if 2FA required notify user
         if "Two-Step Verification" in driver.title:
             logging.warn(f"Manual 2FA required for {profile}")
+            x=input() # FOR TESTING ONLY REMOVE BEFORE RELEASE
             # TODO send notification if this is reached
 
     # check if past login page
@@ -87,27 +88,32 @@ def syncQuotes(library, settings):
         # get list of books from sidebar
         booklist = driver.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
 
-        # for each book
+        # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
             selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
             
             # get title and author from the link
             tmp = selectedBook.text.splitlines()
+            title = tmp[0].strip()
+            # remove By: from author string and leading space
+            author = tmp[1][tmp[1].find(':') + 2:]
 
             # remove subtitle from title
             # TODO add subtitle support to quote object
-            idx = min(tmp[0].find(":"), tmp[0].find("(")) 
-            
-            # if no subtitle
-            if idx < 0:
-                title = tmp[0]
-            # if subtitle found store only main title
+            indexs = (title.find(":"), title.find("(")) 
+
+            # if ':' and '(' not found assume no subtitle
+            if indexs[0] < 0 and indexs[1] < 0:
+                title = title
+            # if one of the values is negative (only one found)
+            elif indexs[0] * indexs[1] < 0:
+                # slice all text after the largest value
+                title = title[:max(indexs[0], indexs[1])]
+            # if both ':' and '(' found
             else:
-                title = tmp[0][:idx]
-            
-            # Store author remove By: from author string
-            author = tmp[1][tmp[1].find(':'):]
+                # slice all text after the first occurance
+                title = title[:min(indexs[0], indexs[1])]
             
             # load Highlights for this book
             selectedBook.click()
@@ -116,38 +122,38 @@ def syncQuotes(library, settings):
             # get the date the book was last accessed as python date object
             lastAccessed = datetime.datetime.strptime(driver.find_element(By.ID, "kp-notebook-annotated-date").text, DATE_FORMAT).date()
 
-            # attempt to find book in stored data
-            foundBook = library.findBook(title)
+            # sync all books that have been updated since last successful sync
+            if lastAccessed > library.lastSuccessfulSync:
+                # sync new book data
+                newBook = quote.Book(title, author)
+                # get number of of highlights in this book
+                numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
             
-            # if book found and has not been updated don't sync else sync
-            if foundBook != None:
-                # has not been updated since last sync
-                if lastAccessed > foundBook.lastAccessed:
-                    # no need to sync continue
-                    continue
-                # if it has been updated delete the old book
-                else:
-                    library.removeBook(foundBook)
+                # get quote text, color and, notes
+                quoteTexts = driver.find_elements(By.ID, "highlight")
+                colors = driver.find_elements(By.ID, "annotationHighlightHeader")
+                notes = driver.find_elements(By.ID, "note")
 
-            # sync new book data
-            newBook = quote.Book(title, author, lastAccessed)
-            # get number of of highlights in this book
-            numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
-            
-            # get quote text, color and, notes
-            quoteTexts = driver.find_elements(By.ID, "highlight")
-            colors = driver.find_elements(By.ID, "annotationHighlightHeader")
-            notes = driver.find_elements(By.ID, "note")
+                # the color is the first word in the text
+                colors = [color.text.split(" ", 1)[0] for color in colors]
 
-            assert (numHighlights == len(colors) and numHighlights == len(quoteTexts) and numHighlights == len(notes))
-            for i in range(numHighlights):
-                # if color is in list of colors to sync
-                if colors[i] in settings["colorsToSync"]:
-                    newBook.addQuote(quote.Quote(quoteTexts[i], colors[i], notes[i]))
+                assert (numHighlights == len(colors) and numHighlights == len(quoteTexts) and numHighlights == len(notes))
+                for i in range(numHighlights):
+                    # if color is in list of colors to sync
+                    if colors[i] in settings["colorsToSync"]:
+                        newBook.addQuote(quote.Quote(quoteTexts[i].text, colors[i], notes[i].text))
                 
 
-            # add book to library
-            library.addBook(newBook)
+                # add book to library
+
+                # attempt to find book with matching title 
+                # TODO books may have matching titles this will keep only one of those books check if subtitle and author matches as well
+                foundBook = library.findBook(title)
+                # if book already exist remove it
+                if foundBook != None:
+                    library.removeBook(foundBook)
+                library.addBook(newBook)
+                
 
             # ==== Keeping this till TODO test a note without highlight in kindle
             # # get color of highlight
@@ -155,7 +161,6 @@ def syncQuotes(library, settings):
             # for color in driver.find_elements(By.ID, "annotationHighlightHeader"):
             #     # color is the first word in text
             #     colors.append(color.text.split(" ", 1)[0])
-            #     # TODO add option to ignore highlights of a certain color
 
             # # get quote text
             # quoteText = []
@@ -175,12 +180,11 @@ def syncQuotes(library, settings):
     # id=highlight contains quote text
     # id="note" contains note text
 
-    # write new data to file
-    with open("output.json", "w") as json_file:
-        json_file.write(json.dumps(library.toJSON()))
+    
 
     # close the browser
     driver.quit()
+    library.lastSuccessfulSync = datetime.date.today()
 
     # return new data
     return library

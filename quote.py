@@ -1,10 +1,11 @@
 import json
-import datetime
+from datetime import date
 import random
+import logging
 
 # class for storing highlights as quotes
 class Quote:
-    
+
     def __init__(self, text, color, note) -> None:
         """Constructor
 
@@ -15,6 +16,15 @@ class Quote:
         self.text = text
         self.color = color
         self.note = note
+    
+    def __str__(self):
+        """returns string representation of Quote object for display
+
+        :return string: string representation of Quote object
+        """
+        if self.note == "":
+            return self.text
+        return f"{self.text} - {self.note}"
 
     def toJSON(self):
         """convert Quote to dict for serialization
@@ -25,9 +35,10 @@ class Quote:
 
 
 # class for storing all quotes from a particular book
-# TODO support of multiple authors
+# TODO support for multiple authors
+# TODO support for subtitles
 class Book:
-    def __init__(self, title, author, lastAccessed) -> None:
+    def __init__(self, title, author) -> None:
         """Constructor
 
         :param string title: contains the title of the book
@@ -36,8 +47,14 @@ class Book:
         """
         self.title = title
         self.author = author
-        self.lastAccessed = lastAccessed
         self.quotes = []
+    
+    def __str__(self):
+        """returns string representation of Book object for display
+
+        :return string: string representation of Book object
+        """
+        return f"{self.title} \nBy: {self.author}"
     
 
     def toJSON(self):
@@ -45,11 +62,8 @@ class Book:
 
         :return dictionary: dict representation of Book object
         """
-        retval = {'title': self.title, 'author':self.author, 'lastAccessed': datetime.date.isoformat(self.lastAccessed)}
-        q = [] 
-        for quote in self.quotes:
-            q.append(quote.toJSON())
-        retval['quotes'] = q
+        retval = {'title': self.title, 'author':self.author}
+        retval['quotes'] = [quote.toJSON() for quote in self.quotes]
         return retval
     
     def addQuote(self, q):
@@ -61,17 +75,21 @@ class Book:
 
 
 # class to contain a collection of books and helper methods 
-# @books(list[Book]) contains a list of Book objects with all books synced to device
-# TODO add metadata to this class a lastSynced var could replace lastAccessed
+
 class BookList:
+
+    # Filename where data should be stored and read from
+    # TODO if there are multipule BookList's this may break
+    FILENAME = 'notebookData.json'
+
     def __init__(self):
         """Constructor
         """
+        # a list of Book objects with all the books synced
         self.books = []
+        # set last synced to min data so all data will be synced
+        self.lastSuccessfulSync = date.min
     
-    # search data for book with matching title
-    # @bookTitle title of book to search for
-    # @return the book object if it is found, None if not found 
     def findBook(self, bookTitle):
         """Seach this BookList for a book with matching title
 
@@ -98,89 +116,84 @@ class BookList:
         """
         self.books.remove(b)
 
-    
     def randomQuote(self):
         """Get a random quote from all the quotes in all the books in this list
 
-        :return qut: _description_
+        :return tuple (Quote, Book): a tuple containing the randomly selected quote object and the book the quote came from
         """
-        allQuotes = [x for sublist in self.books for x in sublist.quotes]
-        print(allQuotes)
+
+        # Create a list of weights for each book, where the weight is the number of quotes
+        weights = [len(book.quotes) for book in self.books]
+
+        # Use the weights to get the index a random book
+        b = random.choices(range(len(self.books)), weights=weights)[0]
+
+        # Select a random quote from the selected book
+        q = random.choice(self.books[b].quotes)
         
+        return (q, self.books[b])
 
+    def save(self):
+        """serialize object to JSON and write to file
         """
-        Selects a random value from a jagged array and returns the index of the nested array it came from.
-        
-        Args:
-            jagged_array (list): A jagged array containing one or more nested arrays of varying lengths.
-            
-        Returns:
-            A tuple containing the randomly selected value and the index of the nested array it came from.
+        with open(self.FILENAME, "w") as jsonFile:
+            jsonFile.write(json.dumps(self.toJSON()))
+
+    def load(self):
+        """attempt to load JSON data from file
         """
-        # flat_array = [element for sublist in jagged_array for element in sublist]
-        # index = random.randrange(len(jagged_array))
-        # subarray_length = len(jagged_array[index])
-        # random_index = random.randrange(subarray_length)
-        # return (flat_array[random_index], index)
-
-
+        try:
+            # open file and load data
+            with open(self.FILENAME) as jsonFile:
+                data = json.load(jsonFile)
+                self.lastSuccessfulSync = date.fromisoformat(data["lastSuccessfulSync"])
+                # for each book in file create book object
+                for item in data["books"]:
+                    b = Book(item['title'], item['author'])
+                    # for each quote in book create a quote object
+                    for q in item['quotes']:
+                        b.addQuote(Quote(q['text'], q['color'], q['note']))
+                    self.addBook(b)
+        except Exception as e:
+            logging.exception(e)
 
     def toJSON(self):
         """convert BookList to dict for serialization
 
         :return dictionary: dict representation of BookList object
         """
-        retval = {}
-        b = [] 
-        for book in self.books:
-            b.append(book.toJSON())
-        retval['books'] = b
+        retval = {'lastSuccessfulSync': self.lastSuccessfulSync.isoformat()}
+        retval['books'] = [book.toJSON() for book in self.books]
         return retval
-
-# load stored quotes from json file
-# @f an open file to read from 
-# @return BookList conating all books and quotes that were found in file f
-def loadQuotes(f):
-    
-    # open file and load data
-    retval = BookList()
-    data = json.load(f)
-        
-    # for each book in file create book object
-    for item in data["books"]:
-        b = Book(item['title'], item['author'], datetime.date.fromisoformat(item['lastAccessed']))
-           
-        # for each quote in book create a quote object
-        for q in item['quotes']:
-            b.addQuote(Quote(q['text'], q['color'], q['note']))
-            
-        retval.addBook(b)
-
-    return retval
-
 
 #test code
 
-# q1 = Quote('text here', 239, 'yellow', 'heading', 'me')
-# q2 = Quote('text here again', 560, 'purple', 'heading2', 'myself')
+# q1 = Quote('text here', 'yellow', 'heading')
+# q2 = Quote('text here again', 'purple', 'heading2')
+# q3 = Quote('text here now', 'orange', 'heading3')
+# q4 = Quote('text not there', 'pink', 'heading4')
+# q5 = Quote('text here as well', 'orange', 'heading5')
 
-# b = Book("the book", 'some idiot')
-# b.addQuote(q1)
-# b.addQuote(q2)
+# b1 = Book("the book", 'some idiot')
+# b1.addQuote(q1)
+# b1.addQuote(q2)
+# b2 = Book("the next book", 'same idiot')
+# b2.addQuote(q3)
+# b2.addQuote(q4)
+# b3 = Book("the last book", 'another idiot')
+# b3.addQuote(q5)
 
-# print(b.toJSON())
+# bl = BookList()
+# bl.addBook(b1)
+# bl.addBook(b2)
+# bl.addBook(b3)
+# print(bl.toJSON())
+# print(type(bl))
 
-# print(json.dumps(b.toJSON()))
-
+# print(json.dumps(bl.toJSON()))
 
 # test code for loadQuotes
 
-# r = loadQuotes('output.json')
-# print(r)
-# print(type(r))
-# print(len(r))
-# for i in r:
-#     print ('===============')
-#     print(type(i))
-#     for j in i.quotes:
-#         print(type(j))
+# bl.load()
+# print(bl.toJSON())
+
