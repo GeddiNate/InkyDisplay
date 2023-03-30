@@ -106,6 +106,17 @@ class BookList:
         """
         allQuotes = [x for sublist in self.books for x in sublist.quotes]
         print(allQuotes)
+
+        # # Create a list of weights for each nested array, where the weight is the length of the nested array
+        # weights = [len(subarray) for subarray in jagged_array]
+        
+        # # Use the weights to select a random nested array
+        # nested_index = random.choices(range(len(jagged_array)), weights=weights)[0]
+        
+        # # Select a random value from the selected nested array
+        # random_value = random.choice(jagged_array[nested_index])
+        
+        # return (random_value, nested_index)
         
 
         """
