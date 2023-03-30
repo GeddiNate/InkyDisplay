@@ -97,17 +97,24 @@ def syncQuotes(library, settings):
 
             # remove subtitle from title
             # TODO add subtitle support to quote object
-            idx = min(tmp[0].find(":"), tmp[0].find("(")) 
+            indexs = (tmp[0].find(":"), tmp[0].find("(")) 
+
             
-            # if no subtitle
-            if idx < 0:
+            # if ':' and '(' not found assume no subtitle
+            if indexs[0] < 0 and indexs[1] < 0:
                 title = tmp[0]
-            # if subtitle found store only main title
+            # if one of the values is negative (only one found)
+            elif indexs[0] * indexs[1] < 0:
+                # slice all text after the largest value
+                title = tmp[0][:max(indexs[0], indexs[1])]
+            # if both ':' and '(' found
             else:
-                title = tmp[0][:idx]
+                # slice all text after the first occurance
+                title = tmp[0][:min(indexs[0], indexs[1])]
             
-            # Store author remove By: from author string
-            author = tmp[1][tmp[1].find(':'):]
+            
+            # Store author remove By: from author string and leading space
+            author = tmp[1][tmp[1].find(':') + 2:]
             
             # load Highlights for this book
             selectedBook.click()
@@ -139,11 +146,14 @@ def syncQuotes(library, settings):
             colors = driver.find_elements(By.ID, "annotationHighlightHeader")
             notes = driver.find_elements(By.ID, "note")
 
+            # the color is the first word in the text
+            colors = [color.text.split(" ", 1)[0] for color in colors]
+
             assert (numHighlights == len(colors) and numHighlights == len(quoteTexts) and numHighlights == len(notes))
             for i in range(numHighlights):
                 # if color is in list of colors to sync
                 if colors[i] in settings["colorsToSync"]:
-                    newBook.addQuote(quote.Quote(quoteTexts[i], colors[i], notes[i]))
+                    newBook.addQuote(quote.Quote(quoteTexts[i].text, colors[i], notes[i].text))
                 
 
             # add book to library

@@ -97,13 +97,17 @@ try:
 # if open fails create empty array to store data and log exception
 except Exception as e:
     logging.exception(e)
-    library = quote.BookList
+    library = quote.BookList()
 # if file found load data from file
 else:
     library = quote.loadQuotes(f)
+    f.close()
 # close file
-f.close()
+
 settings = {}
+
+# l = library.randomQuote()
+# print(l[0].text, l[1].title, l[1].author)
 
 # get settings from JSON file
 with open("settings.json") as json_file:

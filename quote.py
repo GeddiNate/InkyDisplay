@@ -102,21 +102,19 @@ class BookList:
     def randomQuote(self):
         """Get a random quote from all the quotes in all the books in this list
 
-        :return qut: _description_
+        :return tuple (Quote, Book): a tuple containing the randomly selected quote object and the book the quote came from
         """
-        allQuotes = [x for sublist in self.books for x in sublist.quotes]
-        print(allQuotes)
 
-        # # Create a list of weights for each nested array, where the weight is the length of the nested array
-        # weights = [len(subarray) for subarray in jagged_array]
+        # Create a list of weights for each book, where the weight is the number of quotes
+        weights = [len(book.quotes) for book in self.books]
         
-        # # Use the weights to select a random nested array
-        # nested_index = random.choices(range(len(jagged_array)), weights=weights)[0]
+        # Use the weights to get the index a random book
+        b = random.choices(range(len(self.books)), weights=weights)[0]
         
-        # # Select a random value from the selected nested array
-        # random_value = random.choice(jagged_array[nested_index])
+        # Select a random quote from the selected book
+        q = random.choice(self.books[b].quotes)
         
-        # return (random_value, nested_index)
+        return (q, self.books[b])
         
 
         """
