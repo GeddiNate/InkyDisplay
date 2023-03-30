@@ -1,5 +1,5 @@
 {
-  "colors": ["Yellow", "Blue", "Pink", "Orange"],
-  "linuxProfile": "/home/ngeddis/.config/google-chrome/Default",
-  "windowsProfile": "C:\\Users\\natha\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
+  "colorsToSync": ["Yellow", "Blue", "Pink", "Orange"],
+  "profile": "/home/nathangeddis/.config/google-chrome/Default",
+  "_profile": "C:\\Users\\natha\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
 }

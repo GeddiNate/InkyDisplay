@@ -10,56 +10,21 @@ from selenium.webdriver.common.by import By
 from ast import literal_eval
 
 # strs to be removed from kindle date
-DATE_FORMAT = "%A %B %d %Y"
+DATE_FORMAT = "%A %B %d, %Y"
 
 # time to wait for webpages to load
 SLEEP_TIME = 7
- 
-
-# search data for book with matching title
-def findBook(bookList, bookTitle):
-    for book in bookList:
-        if book["title"] == bookTitle:
-            return book
-    
-    return None
 
 
-def getBookData(webDriver, book):
-    # get number of of highlights in this book
-    numHighlights = literal_eval(webDriver.find_element(By.ID, "kp-notebook-highlights-count").text)
+def syncQuotes(library, settings):
+    """function to sync local saved quotes with Kindle app
 
-    # find the notebook section of the page
-    notebook = webDriver.find_element(By.ID, "annotation-section")
+    :param BookList library: a BookList object containg all synced books and quotes
+    :param dictionary settings: a dict containing system settings (requires profile, colors, email, password)
+    :return BookList: an updated libray containing new synced data 
+    """
 
-    
-    #lastAccessed = notebook.find_element(By.ID, "kp-notebook-annotated-date").text
-    
-    # get color of highlight
-    colors = []
-    for color in notebook.find_elements(By.ID, "annotationHighlightHeader"):
-        # color is the first word in text
-        colors.append(color.text.split(" ", 1)[0])
-        # TODO add option to ignore highlights of a certain color
-
-    # get quote text
-    quoteText = []
-    for txt in notebook.find_elements(By.ID, "highlight"):
-        quoteText.append(txt.text)
-
-    # get notes
-    notes = []
-    for note in notebook.find_elements(By.ID, "note"):
-        notes.append(note.text)
-
-    assert (numHighlights == len(colors) and numHighlights == len(quoteText) and numHighlights == len(notes))
-    for i in range(numHighlights):
-        book.quotes.append(quote.Quote(quoteText[i], colors[i], notes[i]))
-    return book
-
-
-# function to sync local saved quotes with Kindle app
-def syncQuotes(data, settings):
+    logging.info("Begin sync")
 
     # set chrome webdriver options
     profile = settings["profile"]   
@@ -71,15 +36,15 @@ def syncQuotes(data, settings):
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
-    time.sleep(SLEEP_TIME)
+    time.sleep(SLEEP_TIME) # wait for loading
 
-    # check if on landing page (not auto logged in)
+    # check if driver on kindle landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
         logging.info("On landing page")
 
         # click sign in button
         driver.find_element(By.ID, "top-sign-in-btn").click()
-        time.sleep(SLEEP_TIME)
+        time.sleep(SLEEP_TIME) # wait for loading
 
         # if on sign in page attempt to sign in
         if "Amazon Sign-In" in driver.title:
@@ -90,27 +55,27 @@ def syncQuotes(data, settings):
             driver.find_element(By.ID, "ap_password").send_keys(settings["password"])
             driver.find_element(By.NAME, "rememberMe").click()
             driver.find_element(By.ID, "signInSubmit").click()
-            time.sleep(SLEEP_TIME)
+            time.sleep(SLEEP_TIME) # wait for loading
 
         # if 2FA required notify user
         if "Two-Step Verification" in driver.title:
-            print(f"Manual 2FA required for {profile}")
+            logging.warn(f"Manual 2FA required for {profile}")
             # TODO send notification if this is reached
 
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
         logging.info("Login successful")
+   
     # if log in failed notify user
     else:
         logging.error("Login failed")
         # TODO send notification if this is reached
         driver.quit()
-        return
-
+        return library
 
     # navigate to notes page
     driver.find_element(By.ID, "notes_button").click()
-    time.sleep(SLEEP_TIME)
+    time.sleep(SLEEP_TIME) # wait for loading
 
     # this opens in new tab so switch tabs
     driver.switch_to.window(driver.window_handles[1])
@@ -119,60 +84,103 @@ def syncQuotes(data, settings):
     if "Your Notes and Highlights" in driver.title:
         logging.info("Reached Notes page successful")
 
-        library = driver.find_element(By.ID, "kp-notebook-library")
-        booklist = library.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
-        
-        books = []
+        # get list of books from sidebar
+        booklist = driver.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
+
         # for each book
         for book in booklist:
-            # select the book so highlights and notes show on the page
+            # select link to highlights for this book
             selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
             
-            # contains title and author
+            # get title and author from the link
             tmp = selectedBook.text.splitlines()
+
+            # remove subtitle from title
+            # TODO add subtitle support to quote object
+            idx = min(tmp[0].find(":"), tmp[0].find("(")) 
             
-            # remove subtitle if there
-            idx = max(tmp[0].find(":"), tmp[0].find("("))
-            # TODO this won't work if a title has : and ( hasn't been a problem yet but might be
+            # if no subtitle
             if idx < 0:
                 title = tmp[0]
+            # if subtitle found store only main title
             else:
                 title = tmp[0][:idx]
             
-            author = tmp[1]
-
+            # Store author remove By: from author string
+            author = tmp[1][tmp[1].find(':'):]
+            
+            # load Highlights for this book
             selectedBook.click()
-            time.sleep(5)
-            # find the notes page
+            time.sleep(SLEEP_TIME) # wait for loading
 
             # get the date the book was last accessed as python date object
             lastAccessed = datetime.datetime.strptime(driver.find_element(By.ID, "kp-notebook-annotated-date").text, DATE_FORMAT).date()
 
-            # find book in stored data
-            foundBook = findBook(data, title)
+            # attempt to find book in stored data
+            foundBook = library.findBook(title)
             
-            # if book not found sync book and add to 
-            if foundBook == None:
-                #if not sync
-                newBook = quote.Book(title, author, lastAccessed)
-                data.append(getBookData(driver, newBook))
-            # if book found and has been updated since last sync
-            elif lastAccessed > foundBook["lastAccessed"]:
-                # sync book and replace old data
-                newBook = quote.Book(title, author, lastAccessed)
-                data.remove(foundBook)
-                data.append(getBookData(driver, newBook))
+            # if book found and has not been updated don't sync else sync
+            if foundBook != None:
+                # has not been updated since last sync
+                if lastAccessed > foundBook.lastAccessed:
+                    # no need to sync continue
+                    continue
+                # if it has been updated delete the old book
+                else:
+                    library.removeBook(foundBook)
+
+            # sync new book data
+            newBook = quote.Book(title, author, lastAccessed)
+            # get number of of highlights in this book
+            numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
+            
+            # get quote text, color and, notes
+            quoteTexts = driver.find_elements(By.ID, "highlight")
+            colors = driver.find_elements(By.ID, "annotationHighlightHeader")
+            notes = driver.find_elements(By.ID, "note")
+
+            assert (numHighlights == len(colors) and numHighlights == len(quoteTexts) and numHighlights == len(notes))
+            for i in range(numHighlights):
+                # if color is in list of colors to sync
+                if colors[i] in settings["colorsToSync"]:
+                    newBook.addQuote(quote.Quote(quoteTexts[i], colors[i], notes[i]))
+                
+
+            # add book to library
+            library.addBook(newBook)
+
+            # ==== Keeping this till TODO test a note without highlight in kindle
+            # # get color of highlight
+            # colors = []
+            # for color in driver.find_elements(By.ID, "annotationHighlightHeader"):
+            #     # color is the first word in text
+            #     colors.append(color.text.split(" ", 1)[0])
+            #     # TODO add option to ignore highlights of a certain color
+
+            # # get quote text
+            # quoteText = []
+            # for txt in driver.find_elements(By.ID, "highlight"):
+            #     quoteText.append(txt.text)
+
+            # # get notes
+            # notes = []
+            # for note in driver.find_elements(By.ID, "note"):
+            #     notes.append(note.text)
 
             
-            
-            
+
+  
     # id=annotationHighlightHeader contains quote color, page number
     # id=annotationNoteHeader contains note page number
     # id=highlight contains quote text
     # id="note" contains note text
 
+    # write new data to file
+    with open("output.json", "w") as json_file:
+        json_file.write(json.dumps(library.toJSON()))
 
     # close the browser
-    with open("output.json", "w") as json_file:
-        json_file.write(json.dumps(books, default=vars))
     driver.quit()
+
+    # return new data
+    return library

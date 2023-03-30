@@ -26,45 +26,40 @@ def Shutdown():
 
 # "handle_button" will be called every time a button is pressed
 # It receives one argument: the associated input pin.
-def handle_button(pin):
+# def handle_button(pin):
     
-    # if bottom button pressed
-    if pin == BUTTONS[3]:
-        # change current mode to SPOTIFY
-        if currentMode == Mode.KINDLE:
-            currentMode = Mode.SPOTIFY
-        # change current mode to KINDLE
-        elif currentMode == Mode.SPOTIFY:
-            currentMode = Mode.KINDLE
+#     # if bottom button pressed
+#     if pin == BUTTONS[3]:
+#         # change current mode to SPOTIFY
+#         if currentMode == Mode.KINDLE:
+#             currentMode = Mode.SPOTIFY
+#         # change current mode to KINDLE
+#         elif currentMode == Mode.SPOTIFY:
+#             currentMode = Mode.KINDLE
 
-    # if displaying kindle highlights
-    elif currentMode == Mode.KINDLE:
-        # if top button pressed
-        if pin == BUTTONS[0]:
-            nextQuote()
-        # if top mid button pressed
-        elif pin == BUTTONS[1]:
-            prevQuote()
-        # if low min button pressed
-        elif pin == BUTTONS[2]:
-            changeBackground()
+#     # if displaying kindle highlights
+#     elif currentMode == Mode.KINDLE:
+#         # if top button pressed
+#         if pin == BUTTONS[0]:
+#             nextQuote()
+#         # if top mid button pressed
+#         elif pin == BUTTONS[1]:
+#             prevQuote()
+#         # if low min button pressed
+#         elif pin == BUTTONS[2]:
+#             changeBackground()
 
-    # if displaying current spotify track  
-    elif currentMode == Mode.SPOTIFY:
-         # if top button pressed
-        if pin == BUTTONS[0]:
-            nextTrack()
-        # if top mid button pressed
-        elif pin == BUTTONS[1]:
-            prevTrack()
-        # if low min button pressed
-        elif pin == BUTTONS[2]:
-            pause()
-
-
-
-        
-
+#     # if displaying current spotify track  
+#     elif currentMode == Mode.SPOTIFY:
+#          # if top button pressed
+#         if pin == BUTTONS[0]:
+#             nextTrack()
+#         # if top mid button pressed
+#         elif pin == BUTTONS[1]:
+#             prevTrack()
+#         # if low min button pressed
+#         elif pin == BUTTONS[2]:
+#             pause()
 
 
 # currentMode = Mode.KINDLE
@@ -79,11 +74,6 @@ def handle_button(pin):
 # GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 
-
-    
-
-
-
 # # Loop through out buttons and attach the "handle_button" function to each
 # # We're watching the "FALLING" edge (transition from 3.3V to Ground) and
 # # picking a generous bouncetime of 250ms to smooth out button presses.
@@ -94,16 +84,8 @@ def handle_button(pin):
 # # we pause the script to prevent it exiting immediately.
 # signal.pause()
 
-
-
-
-
-
-
 # # # main loop 
 # # def main():
-
-
 
 # # if __name__ == '__main__':
 # #     main()
@@ -112,22 +94,25 @@ def handle_button(pin):
 # try to open saved quotes
 try:
     f = open("output.json")
-# if file not found create empty array to store data
-except FileNotFoundError:
-    books = []
-# if unknown exception
+# if open fails create empty array to store data and log exception
 except Exception as e:
     logging.exception(e)
-    books = []
+    library = quote.BookList
 # if file found load data from file
 else:
-    books = quote.loadQuotes(f)
+    library = quote.loadQuotes(f)
 # close file
 f.close()
+settings = {}
 
+# get settings from JSON file
+with open("settings.json") as json_file:
+    data = json.load(json_file)
 
-settings = {"profile": "C:\\Users\\natha\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"}
+    settings["profile"] = data["profile"]
+    settings["colorsToSync"] = data["colorsToSync"]
 
+# get credentials for JSON file
 with open("credentials.json") as json_file:
     data = json.load(json_file)
 
@@ -135,6 +120,4 @@ with open("credentials.json") as json_file:
     settings["email"] = data["email"]
     settings["password"] = data["password"]
     
-
-
-syncnotes.syncQuotes(books, settings)
+syncnotes.syncQuotes(library, settings)
