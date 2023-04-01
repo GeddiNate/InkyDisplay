@@ -94,27 +94,25 @@ def syncQuotes(library, settings):
             
             # get title and author from the link
             tmp = selectedBook.text.splitlines()
+            title = tmp[0]
+            # remove By: from author string and leading space
+            author = tmp[1][tmp[1].find(':') + 2:]
 
             # remove subtitle from title
             # TODO add subtitle support to quote object
-            indexs = (tmp[0].find(":"), tmp[0].find("(")) 
+            indexs = (title.find(":"), title.find("(")) 
 
-            
             # if ':' and '(' not found assume no subtitle
             if indexs[0] < 0 and indexs[1] < 0:
-                title = tmp[0]
+                title = title
             # if one of the values is negative (only one found)
             elif indexs[0] * indexs[1] < 0:
                 # slice all text after the largest value
-                title = tmp[0][:max(indexs[0], indexs[1])]
+                title = title[:max(indexs[0], indexs[1])]
             # if both ':' and '(' found
             else:
                 # slice all text after the first occurance
-                title = tmp[0][:min(indexs[0], indexs[1])]
-            
-            
-            # Store author remove By: from author string and leading space
-            author = tmp[1][tmp[1].find(':') + 2:]
+                title = title[:min(indexs[0], indexs[1])]
             
             # load Highlights for this book
             selectedBook.click()

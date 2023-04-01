@@ -15,6 +15,11 @@ class Quote:
         self.text = text
         self.color = color
         self.note = note
+    
+    def __str__(self):
+        if self.note == "":
+            return self.text
+        return f"{self.text} - {self.note}"
 
     def toJSON(self):
         """convert Quote to dict for serialization
@@ -38,6 +43,9 @@ class Book:
         self.author = author
         self.lastAccessed = lastAccessed
         self.quotes = []
+    
+    def __str__(self):
+        return f"{self.title} \n By: {self.author}"
     
 
     def toJSON(self):
