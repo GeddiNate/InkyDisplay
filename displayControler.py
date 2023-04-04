@@ -13,7 +13,7 @@ LINE_PADDING = 6
 def displayQuote(q, b):
 
     # Load the image and resize it to fit screen
-    img = Image.open("nightSkytest.png")
+    img = Image.open("resources//nightSkytest.png")
     img = img.resize((WIDTH, HEIGHT)) # TODO move elsewhere
 
     # Get the width and height of the image
@@ -65,4 +65,4 @@ def displayQuote(q, b):
         yText += lineHeight
 
     # Save the image with the text
-    img.save("imageOut.png")
+    img.save("resources//imageOut.png")

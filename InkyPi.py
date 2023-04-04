@@ -8,17 +8,11 @@ import json
 import signal
 import logging
 #import RPi.GPIO as GPIO
-from enum import Enum
 
 import quote
 import syncnotes
 import displayControler
 
-
-# Enum for different modes
-class Mode(Enum):
-    KINDLE = 1
-    SPOTIFY = 2
 
 
 # Shutdown the device 
@@ -93,18 +87,8 @@ def Shutdown():
 # #     main()
 
 
-# try to open saved quotes
-try:
-    f = open("output.json")
-# if open fails create empty array to store data and log exception
-except Exception as e:
-    logging.exception(e)
-    library = quote.BookList()
-# if file found load data from file
-else:
-    library = quote.loadQuotes(f)
-    f.close()
-# close file
+library = quote.BookList()
+
 
 settings = {}
 
@@ -131,8 +115,8 @@ library = syncnotes.syncQuotes(library, settings)
 library.save()
 
 # FOR TESTING display a random quote
-# q = library.randomQuote()
-# displayControler.displayQuote(q[0],q[1])
+q = library.randomQuote()
+displayControler.displayQuote(q[0],q[1])
 
 # FOR TESTING find a specific quote
 # b = [book for book in library.books if book.title == "A Compact Guide to the Whole Bible"]
