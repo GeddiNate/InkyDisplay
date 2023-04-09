@@ -88,6 +88,7 @@ def Shutdown():
 
 
 library = quote.BookList()
+library.load()
 
 
 settings = {}
