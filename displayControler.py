@@ -50,7 +50,12 @@ def displayQuote(q, b):
         draw.text((xText, yText), line, font=font, fill=(255, 255, 255))
         yText += lineHeight
 
+    infolines = str(b).splitlines()
+    for line in infolines:
+        # get witdth and hiehgt of line
+        lineWidth, lineHeight = font.getbbox(line)[2:]
+        xText = lineWidth +
     # Save the image with the text
     img.save("imageOut.png")
 
-displayQuote("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.", 3)
+displayQuote()

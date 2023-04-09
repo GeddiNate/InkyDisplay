@@ -106,7 +106,6 @@ class BookList:
         """
         self.books.remove(b)
 
-    
     def randomQuote(self):
         """Get a random quote from all the quotes in all the books in this list
 
@@ -139,8 +138,6 @@ class BookList:
         # subarray_length = len(jagged_array[index])
         # random_index = random.randrange(subarray_length)
         # return (flat_array[random_index], index)
-
-
 
     def toJSON(self):
         """convert BookList to dict for serialization
