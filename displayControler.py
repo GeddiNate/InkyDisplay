@@ -9,6 +9,8 @@ H_MARGIN = 30
 V_MARGIN = 30
 FONT_SIZE = 24
 LINE_PADDING = 6
+FONT_LOC = "resources//DejaVuSerif.ttf"
+display = auto(ask_user=True, verbose=True)
 
 def displayQuote(q, b):
 
@@ -23,9 +25,9 @@ def displayQuote(q, b):
     draw = ImageDraw.Draw(img)
 
     # Define the font and size for the text
-    textFont = ImageFont.truetype("DejaVuSerif.ttf", FONT_SIZE)
-    titleFont = ImageFont.truetype("DejaVuSerif.ttf", round(FONT_SIZE*0.6))
-    authorFont = ImageFont.truetype("DejaVuSerif.ttf", round(FONT_SIZE*0.4))
+    textFont = ImageFont.truetype(FONT_LOC, FONT_SIZE)
+    titleFont = ImageFont.truetype(FONT_LOC, round(FONT_SIZE*0.6))
+    authorFont = ImageFont.truetype(FONT_LOC, round(FONT_SIZE*0.4))
 
     # display book title and author
     title, author = str(b).splitlines()
@@ -64,10 +66,7 @@ def displayQuote(q, b):
         draw.text((xText, yText), line, font=textFont, fill=(255, 255, 255))
         yText += lineHeight
 
-    infolines = str(b).splitlines()
-    for line in infolines:
-        # get witdth and hiehgt of line
-        lineWidth, lineHeight = font.getbbox(line)[2:]
-        xText = lineWidth +
     # Save the image with the text
     img.save("resources//imageOut.png")
+    display.set_image(img)
+    display.show()
