@@ -29,7 +29,8 @@ def syncQuotes(library, settings):
     # set chrome webdriver options
     profile = settings["profile"]   
     chromeOptions = webdriver.ChromeOptions()
-    chromeOptions.add_argument(f"--user-data-dir={profile}")
+    if profile != None:
+        chromeOptions.add_argument(f"--user-data-dir={profile}")
 
     # Start webdriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)

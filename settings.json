@@ -1,5 +1,6 @@
 {
   "colorsToSync": ["Yellow", "Blue", "Pink", "Orange"],
   "_profile": "/home/nathangeddis/.config/google-chrome/Default",
-  "profile": "C:\\Users\\natha\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
+  "__profile": "C:\\Users\\natha\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1",
+  "profile" : null
 }
