@@ -19,6 +19,7 @@ def Shutdown():
 
 def loadSettings():
     # get settings from JSON file
+    settings = {}
     with open("settings.json") as json_file:
         data = json.load(json_file)
 
