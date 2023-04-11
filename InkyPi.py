@@ -13,12 +13,6 @@ import quote
 import syncnotes
 import displayControler
 
-library = quote.BookList()
-library.load()
-library = syncnotes.syncQuotes(library, loadSettings())
-library.save()
-
-
 # Shutdown the device 
 def Shutdown():  
     os.system("sudo shutdown -h now")  
@@ -39,6 +33,14 @@ def loadSettings():
         settings["email"] = data["email"]
         settings["password"] = data["password"]
     return settings
+
+
+library = quote.BookList()
+library.load()
+library = syncnotes.syncQuotes(library, loadSettings())
+library.save()
+
+
 
 
 
