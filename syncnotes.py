@@ -33,7 +33,7 @@ def syncQuotes(library, settings):
         chromeOptions.add_argument(f"--user-data-dir={profile}")
 
     # Start webdriver
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
+    driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
