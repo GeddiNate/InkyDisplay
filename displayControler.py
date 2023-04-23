@@ -1,6 +1,6 @@
 from inky.auto import auto
 from PIL import Image, ImageDraw, ImageFont
-import quote
+import highlight
 import random
 
 WIDTH = 600 
@@ -12,7 +12,7 @@ LINE_PADDING = 6
 FONT_LOC = "resources//DejaVuSerif.ttf"
 display = auto()
 
-def displayQuote(q, b):
+def displayhighlight(q, b):
 
     # Load the image and resize it to fit screen
     img = Image.open("resources//nightSkytest.png")
@@ -43,7 +43,7 @@ def displayQuote(q, b):
     lines = []
     words = str(q).replace('\n',' ').split(" ")
     currentLine = words[0]
-    # for each word in the quote
+    # for each word in the highlight
     for word in words[1:]:
         # if the current line plus the next word is shorter than the image width minus the hoizontal padding
         if textFont.getlength(currentLine + " " + word) < width - (H_MARGIN * 2):

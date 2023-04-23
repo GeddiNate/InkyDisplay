@@ -9,8 +9,8 @@ import signal
 import logging
 import RPi.GPIO as GPIO
 
-import quote
-import syncnotes
+import highlight
+import synchighlights
 import displayControler
 
 # Shutdown the device 
@@ -36,9 +36,9 @@ def loadSettings():
     return settings
 
 
-library = quote.BookList()
+library = highlight.BookList()
 library.load()
-library = syncnotes.syncQuotes(library, loadSettings())
+library = synchighlights.syncHighlights(library, loadSettings())
 library.save()
 
 
@@ -63,8 +63,8 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 # "handle_button" will be called every time a button is pressed
 # It receives one argument: the associated input pin.
 def handle_button(pin):
-    q = library.randomQuote()
-    displayControler.displayQuote(q[0],q[1])
+    q = library.randomHighlight()
+    displayControler.displayHighlight(q[0],q[1])
     print("Button press detected on pin: {pin}")
 
 
@@ -81,19 +81,19 @@ signal.pause()
 
 
 
-# FOR TESTING sync quotes
-# library = syncnotes.syncQuotes(library, loadSettings())
+# FOR TESTING sync highlights
+# library = syncnotes.syncHighlights(library, loadSettings())
 # library.save()
 
-# FOR TESTING random quote
-# l = library.randomQuote()
+# FOR TESTING random highlight
+# l = library.randomHighlight()
 # print(l[0].text, l[1].title, l[1].author)
 
-# FOR TESTING display a random quote
-# q = library.randomQuote()
-# displayControler.displayQuote(q[0],q[1])
+# FOR TESTING display a random highlight
+# q = library.randomHighlight()
+# displayControler.displayHighlight(q[0],q[1])
 
-# FOR TESTING find a specific quote
+# FOR TESTING find a specific highlight
 # b = [book for book in library.books if book.title == "A Compact Guide to the Whole Bible"]
-# q = [quote for quote in b[0].quotes if quote.text == "A third quality of God is God\u2019s power, but this quality can be both positive and negative. God\u2019s power to create, to rescue, and to punish the wicked is seen as a positive thing, but God\u2019s power is also frightening, particularly when it is directed against humans (cf. Job 9:1\u201319)."]
-# displayControler.displayQuote(q[0],b[0])
+# q = [highlight for highlight in b[0].highlights if highlight.text == "A third quality of God is God\u2019s power, but this quality can be both positive and negative. God\u2019s power to create, to rescue, and to punish the wicked is seen as a positive thing, but God\u2019s power is also frightening, particularly when it is directed against humans (cf. Job 9:1\u201319)."]
+# displayControler.displayHighlight(q[0],b[0])

@@ -3,13 +3,13 @@ from datetime import date
 import random
 import logging
 
-# class for storing highlights as quotes
-class Quote:
+# class for storing highlights as highlights
+class Highlight:
 
     def __init__(self, text, color, note) -> None:
         """Constructor
 
-        :param string text: contains the text of the quote itself
+        :param string text: contains the text of the highlight itself
         :param string color: contains the color of higlight used
         :param string note: contains any notes associtated with the text
         """
@@ -18,23 +18,23 @@ class Quote:
         self.note = note
     
     def __str__(self):
-        """returns string representation of Quote object for display
+        """returns string representation of Highlight object for display
 
-        :return string: string representation of Quote object
+        :return string: string representation of Highlight object
         """
         if self.note == "":
             return self.text
         return f"{self.text} - {self.note}"
 
     def toJSON(self):
-        """convert Quote to dict for serialization
+        """convert Highlight to dict for serialization
 
-        :return dictrionary: dict representation of Quote object
+        :return dictrionary: dict representation of Highlight object
         """
         return {'text': self.text, 'color': self.color, 'note': self.note}
 
 
-# class for storing all quotes from a particular book
+# class for storing all highlights from a particular book
 # TODO support for multiple authors
 # TODO support for subtitles
 class Book:
@@ -47,7 +47,7 @@ class Book:
         """
         self.title = title
         self.author = author
-        self.quotes = []
+        self.highlights = []
     
     def __str__(self):
         """returns string representation of Book object for display
@@ -63,15 +63,15 @@ class Book:
         :return dictionary: dict representation of Book object
         """
         retval = {'title': self.title, 'author':self.author}
-        retval['quotes'] = [quote.toJSON() for quote in self.quotes]
+        retval['highlights'] = [highlight.toJSON() for highlight in self.highlights]
         return retval
     
-    def addQuote(self, q):
-        """Add a quote to the book
+    def addHighlight(self, q):
+        """Add a highlight to the book
 
-        :param Quote q: Quote object to be appended to self.quotes
+        :param Highlight q: Highlight object to be appended to self.highlights
         """
-        self.quotes.append(q)
+        self.highlights.append(q)
 
 
 # class to contain a collection of books and helper methods 
@@ -116,20 +116,20 @@ class BookList:
         """
         self.books.remove(b)
 
-    def randomQuote(self):
-        """Get a random quote from all the quotes in all the books in this list
+    def randomHighlight(self):
+        """Get a random highlight from all the highlights in all the books in this list
 
-        :return tuple (Quote, Book): a tuple containing the randomly selected quote object and the book the quote came from
+        :return tuple (Highlight, Book): a tuple containing the randomly selected highlight object and the book the highlight came from
         """
 
-        # Create a list of weights for each book, where the weight is the number of quotes
-        weights = [len(book.quotes) for book in self.books]
+        # Create a list of weights for each book, where the weight is the number of highlights
+        weights = [len(book.highlights) for book in self.books]
 
         # Use the weights to get the index a random book
         b = random.choices(range(len(self.books)), weights=weights)[0]
 
-        # Select a random quote from the selected book
-        q = random.choice(self.books[b].quotes)
+        # Select a random highlight from the selected book
+        q = random.choice(self.books[b].highlights)
         
         return (q, self.books[b])
 
@@ -150,9 +150,9 @@ class BookList:
                 # for each book in file create book object
                 for item in data["books"]:
                     b = Book(item['title'], item['author'])
-                    # for each quote in book create a quote object
-                    for q in item['quotes']:
-                        b.addQuote(Quote(q['text'], q['color'], q['note']))
+                    # for each highlight in book create a highlight object
+                    for q in item['highlights']:
+                        b.addHighlight(Highlight(q['text'], q['color'], q['note']))
                     self.addBook(b)
         except Exception as e:
             logging.exception(e)
@@ -168,20 +168,20 @@ class BookList:
 
 #test code
 
-# q1 = Quote('text here', 'yellow', 'heading')
-# q2 = Quote('text here again', 'purple', 'heading2')
-# q3 = Quote('text here now', 'orange', 'heading3')
-# q4 = Quote('text not there', 'pink', 'heading4')
-# q5 = Quote('text here as well', 'orange', 'heading5')
+# q1 = Highlight('text here', 'yellow', 'heading')
+# q2 = Highlight('text here again', 'purple', 'heading2')
+# q3 = Highlight('text here now', 'orange', 'heading3')
+# q4 = Highlight('text not there', 'pink', 'heading4')
+# q5 = Highlight('text here as well', 'orange', 'heading5')
 
 # b1 = Book("the book", 'some idiot')
-# b1.addQuote(q1)
-# b1.addQuote(q2)
+# b1.addHighlight(q1)
+# b1.addHighlight(q2)
 # b2 = Book("the next book", 'same idiot')
-# b2.addQuote(q3)
-# b2.addQuote(q4)
+# b2.addHighlight(q3)
+# b2.addHighlight(q4)
 # b3 = Book("the last book", 'another idiot')
-# b3.addQuote(q5)
+# b3.addHighlight(q5)
 
 # bl = BookList()
 # bl.addBook(b1)
@@ -192,7 +192,7 @@ class BookList:
 
 # print(json.dumps(bl.toJSON()))
 
-# test code for loadQuotes
+# test code for loadHighlights
 
 # bl.load()
 # print(bl.toJSON())

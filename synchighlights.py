@@ -1,4 +1,4 @@
-import quote
+import highlight
 import json
 import time
 import logging
@@ -18,10 +18,10 @@ DATE_FORMAT = "%A %B %d, %Y"
 SLEEP_TIME = 7
 
 
-def syncQuotes(library, settings):
-    """function to sync local saved quotes with Kindle app
+def syncHighlights(library, settings):
+    """function to sync local saved highlights with Kindle app
 
-    :param BookList library: a BookList object containg all synced books and quotes
+    :param BookList library: a BookList object containg all synced books and highlights
     :param dictionary settings: a dict containing system settings (requires profile, colors, email, password)
     :return BookList: an updated libray containing new synced data 
     """
@@ -64,9 +64,15 @@ def syncQuotes(library, settings):
 
         # if 2FA required notify user
         if "Two-Step Verification" in driver.title:
-            logging.warn(f"Manual 2FA required for {profile}")
-            x=input() # FOR TESTING ONLY REMOVE BEFORE RELEASE
             # TODO send notification if this is reached
+            logging.warn(f"Manual 2FA required for {profile}")
+            print("Enter 2FA code:")
+            otpcode=input()
+            driver.find_element(By.ID, "auth-mfa-otpcode").send_keys(otpcode)
+            driver.find_element(By.ID, "auth-mfa-remember-device").click()
+            driver.find_element(By.ID, "auth-signin-button").click()
+            time.sleep(SLEEP_TIME)
+            
 
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
@@ -105,7 +111,7 @@ def syncQuotes(library, settings):
             author = tmp[1][tmp[1].find(':') + 2:]
 
             # remove subtitle from title
-            # TODO add subtitle support to quote object
+            # TODO add subtitle support to highlight object
             indexs = (title.find(":"), title.find("(")) 
 
             # if ':' and '(' not found assume no subtitle
@@ -130,23 +136,23 @@ def syncQuotes(library, settings):
             # sync all books that have been updated since last successful sync
             if lastAccessed > library.lastSuccessfulSync:
                 # sync new book data
-                newBook = quote.Book(title, author)
+                newBook = highlight.Book(title, author)
                 # get number of of highlights in this book
                 numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
             
-                # get quote text, color and, notes
-                quoteTexts = driver.find_elements(By.ID, "highlight")
+                # get highlight text, color and, notes
+                highlightTexts = driver.find_elements(By.ID, "highlight")
                 colors = driver.find_elements(By.ID, "annotationHighlightHeader")
                 notes = driver.find_elements(By.ID, "note")
 
                 # the color is the first word in the text
                 colors = [color.text.split(" ", 1)[0] for color in colors]
 
-                assert (numHighlights == len(colors) and numHighlights == len(quoteTexts) and numHighlights == len(notes))
+                assert (numHighlights == len(colors) and numHighlights == len(highlightTexts) and numHighlights == len(notes))
                 for i in range(numHighlights):
                     # if color is in list of colors to sync
                     if colors[i] in settings["colorsToSync"]:
-                        newBook.addQuote(quote.Quote(quoteTexts[i].text, colors[i], notes[i].text))
+                        newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, colors[i], notes[i].text))
                 
 
                 # add book to library
@@ -167,10 +173,10 @@ def syncQuotes(library, settings):
             #     # color is the first word in text
             #     colors.append(color.text.split(" ", 1)[0])
 
-            # # get quote text
-            # quoteText = []
+            # # get highlight text
+            # highlightText = []
             # for txt in driver.find_elements(By.ID, "highlight"):
-            #     quoteText.append(txt.text)
+            #     highlightText.append(txt.text)
 
             # # get notes
             # notes = []
@@ -180,9 +186,9 @@ def syncQuotes(library, settings):
             
 
   
-    # id=annotationHighlightHeader contains quote color, page number
+    # id=annotationHighlightHeader contains highlight color, page number
     # id=annotationNoteHeader contains note page number
-    # id=highlight contains quote text
+    # id=highlight contains highlight text
     # id="note" contains note text
 
     
