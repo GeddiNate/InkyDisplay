@@ -6,6 +6,7 @@ import datetime
 # import undetected_chromedriver as webdriver
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.options import Options
 #from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from ast import literal_eval
@@ -29,13 +30,14 @@ def syncQuotes(library, settings):
 
     # set chrome webdriver options
     profile = settings["profile"]   
-    chromeOptions = webdriver.ChromeOptions()
+    chromeOptions = Options()
+    chromeOptions.add_argument('--no-sandbox')
     if profile != None:
         chromeOptions.add_argument(f"--user-data-dir={profile}")
 
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
-    driver = webdriver.Chrome(options=chromeOptions)
+    driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options=chromeOptions)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
