@@ -17,34 +17,8 @@ import displayControler
 def Shutdown():  
     os.system("sudo shutdown -h now")  
 
-def loadSettings():
-    # get settings from JSON file
-    settings = {}
-    with open("settings.json") as json_file:
-        data = json.load(json_file)
-
-        settings["profile"] = data["profile"]
-        settings["colorsToSync"] = data["colorsToSync"]
-
-    # get credentials for JSON file
-    with open("credentials.json") as json_file:
-        data = json.load(json_file)
-
-        # get email and password from settings
-        settings["email"] = data["email"]
-        settings["password"] = data["password"]
-    return settings
-
-
 library = highlight.BookList()
 library.load()
-library = synchighlights.syncHighlights(library, loadSettings())
-library.save()
-
-
-
-
-
 
 # Gpio pins for each button (from top to bottom)
 BUTTONS = [5, 6, 16, 24]

@@ -17,8 +17,29 @@ DATE_FORMAT = "%A %B %d, %Y"
 # time to wait for webpages to load
 SLEEP_TIME = 7
 
+def loadSettings():
+    """Load user settings and crednetials for syncing highlights
 
-def syncHighlights(library, settings):
+    :return dictionary: contains browser profile, colors of highlights to sycn and login credentrials
+    """
+    # get settings from JSON file
+    settings = {}
+    with open("settings.json") as json_file:
+        data = json.load(json_file)
+
+        settings["profile"] = data["profile"]
+        settings["colorsToSync"] = data["colorsToSync"]
+
+    # get credentials for JSON file
+    with open("credentials.json") as json_file:
+        data = json.load(json_file)
+
+        # get email and password from settings
+        settings["email"] = data["email"]
+        settings["password"] = data["password"]
+    return settings
+
+def syncKindleHighlights(library, settings):
     """function to sync local saved highlights with Kindle app
 
     :param BookList library: a BookList object containg all synced books and highlights
@@ -199,3 +220,16 @@ def syncHighlights(library, settings):
 
     # return new data
     return library
+
+def main():
+    """Loads settings and book data, syncs data with kindle and Clippit, saves data
+    """
+    settings = loadSettings()
+    library = highlight.BookList()
+    library.load()
+    library = syncKindleHighlights(library, settings)
+    # add sync from Clippit
+    library.save()
+
+if __name__=="__main__":
+    main()
