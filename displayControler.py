@@ -10,7 +10,7 @@ V_MARGIN = 30
 FONT_SIZE = 24
 LINE_PADDING = 6
 FONT_LOC = "resources//DejaVuSerif.ttf"
-display = auto(verbose=True)
+display = auto()
 
 def displayQuote(q, b):
 
