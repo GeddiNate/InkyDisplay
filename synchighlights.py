@@ -14,7 +14,7 @@ from ast import literal_eval
 DATE_FORMAT = "%A %B %d, %Y"
 
 # time to wait for webpages to load
-SLEEP_TIME = 10
+SLEEP_TIME = 5
 
 def loadSettings():
     """Load user settings and crednetials for syncing highlights
@@ -174,7 +174,10 @@ def syncKindleHighlights(library, settings):
             
             # load Highlights for this book
             selectedBook.location_once_scrolled_into_view
-            selectedBook.click()
+            try:
+                selectedBook.click()
+            except Exception as e:
+                print(e)
             time.sleep(SLEEP_TIME) # wait for loading
 
             # get the date the book was last accessed as python date object
