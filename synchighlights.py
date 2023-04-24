@@ -142,7 +142,7 @@ def syncKindleHighlights(library, settings):
         # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
-            selectedBook = book.find_elements(By.CLASS_NAME, "a-link-normal")
+            selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
             print(selectedBook)
             print('got book')
         
