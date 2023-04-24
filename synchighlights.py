@@ -83,9 +83,7 @@ def syncKindleHighlights(library, settings):
 
     # check if driver on kindle landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
-        logging.info("On landing page")
-        print("test")
-        quit()
+        print("On landing page")
 
         # click sign in button
         driver.find_element(By.ID, "top-sign-in-btn").click()
@@ -93,7 +91,7 @@ def syncKindleHighlights(library, settings):
 
         # if on sign in page attempt to sign in
         if "Amazon Sign-In" in driver.title:
-            logging.info("on Sign in page")
+            print("on Sign in page")
 
             # enter login info, click remember me and submit
             driver.find_element(By.ID, "ap_email").send_keys(settings["email"])
@@ -105,7 +103,7 @@ def syncKindleHighlights(library, settings):
         # if 2FA required notify user
         if "Two-Step Verification" in driver.title:
             # TODO send notification if this is reached
-            logging.warn(f"Manual 2FA required for {profile}")
+            logging.warning(f"Manual 2FA required for {profile}")
             print("Enter 2FA code:")
             otpcode=input()
             driver.find_element(By.ID, "auth-mfa-otpcode").send_keys(otpcode)
@@ -116,11 +114,11 @@ def syncKindleHighlights(library, settings):
 
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
-        logging.info("Login successful")
+        print("Login successful")
    
     # if log in failed notify user
     else:
-        logging.error("Login failed")
+        print("Login failed")
         # TODO send notification if this is reached
         driver.quit()
         return library
@@ -134,15 +132,18 @@ def syncKindleHighlights(library, settings):
 
     # check if on highlights page
     if "Your Notes and Highlights" in driver.title:
-        logging.info("Reached Notes page successful")
+        print("Reached Notes page successful")
 
         # get list of books from sidebar
         booklist = driver.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
+        print('got booklist')
 
         # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
             selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
+            print('got book')
+        
             
             # get title and author from the link
             tmp = selectedBook.text.splitlines()
@@ -172,6 +173,7 @@ def syncKindleHighlights(library, settings):
 
             # get the date the book was last accessed as python date object
             lastAccessed = datetime.datetime.strptime(driver.find_element(By.ID, "kp-notebook-annotated-date").text, DATE_FORMAT).date()
+            print('got last accessed')
 
             # sync all books that have been updated since last successful sync
             if lastAccessed > library.lastSuccessfulSync:
@@ -179,11 +181,13 @@ def syncKindleHighlights(library, settings):
                 newBook = highlight.Book(title, author)
                 # get number of of highlights in this book
                 numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
+                print('got num highlights')
             
                 # get highlight text, color and, notes
                 highlightTexts = driver.find_elements(By.ID, "highlight")
                 colors = driver.find_elements(By.ID, "annotationHighlightHeader")
                 notes = driver.find_elements(By.ID, "note")
+                print('got book data')
 
                 # the color is the first word in the text
                 colors = [color.text.split(" ", 1)[0] for color in colors]
