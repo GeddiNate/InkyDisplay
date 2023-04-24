@@ -142,9 +142,6 @@ def syncKindleHighlights(library, settings):
         for book in booklist:
             # select link to highlights for this book
             selectedBook = book.find_elements(By.CLASS_NAME, "a-link-normal")
-            print(selectedBook)
-            print(selectedBook.text)
-            quit()
             print('got book')
         
             
@@ -171,6 +168,7 @@ def syncKindleHighlights(library, settings):
                 title = title[:min(indexs[0], indexs[1])]
             
             # load Highlights for this book
+            selectedBook.location_once_scrolled_into_view
             selectedBook.click()
             time.sleep(SLEEP_TIME) # wait for loading
 
