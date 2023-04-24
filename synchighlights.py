@@ -14,7 +14,7 @@ from ast import literal_eval
 DATE_FORMAT = "%A %B %d, %Y"
 
 # time to wait for webpages to load
-SLEEP_TIME = 7
+SLEEP_TIME = 10
 
 def loadSettings():
     """Load user settings and crednetials for syncing highlights
@@ -48,7 +48,12 @@ def syncKindleHighlights(library, settings):
 
     logging.info("Begin sync")
 
+    fireFoxOpts = webdriver.FirefoxOptions()
+    fireFoxOpts.add_argument("--headless")
 
+    profile = None
+    if profile != None:
+        fireFoxOpts.add_argument(f"--user-data-dir={profile}")
 
     # myProxy = "10.0.x.x:yyyy"
     # proxy = Proxy({
@@ -66,12 +71,11 @@ def syncKindleHighlights(library, settings):
     # profile = settings["profile"]   
     # opts = webdriver.FirefoxOptions()
     # chromeOptions.add_argument('--no-sandbox')
-    # if profile != None:
-    #     chromeOptions.add_argument(f"--user-data-dir={profile}")
+    # 
 
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
-    driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options=chromeOptions)
+    driver = webdriver.Firefox(options=fireFoxOpts)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
