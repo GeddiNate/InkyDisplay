@@ -6,7 +6,6 @@ import datetime
 # import undetected_chromedriver as webdriver
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.chrome.options import Options
 #from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from ast import literal_eval
@@ -49,12 +48,26 @@ def syncKindleHighlights(library, settings):
 
     logging.info("Begin sync")
 
-    # set chrome webdriver options
-    profile = settings["profile"]   
-    chromeOptions = Options()
-    chromeOptions.add_argument('--no-sandbox')
-    if profile != None:
-        chromeOptions.add_argument(f"--user-data-dir={profile}")
+
+
+    # myProxy = "10.0.x.x:yyyy"
+    # proxy = Proxy({
+    # 'proxyType': ProxyType.MANUAL,
+    #     'httpProxy': myProxy,
+    #     'ftpProxy': myProxy,
+    #     'sslProxy': myProxy,
+    #     'noProxy': ''
+    # })
+    # driver = webdriver.Firefox(proxy=proxy)
+
+
+
+    # # set chrome webdriver options
+    # profile = settings["profile"]   
+    # opts = webdriver.FirefoxOptions()
+    # chromeOptions.add_argument('--no-sandbox')
+    # if profile != None:
+    #     chromeOptions.add_argument(f"--user-data-dir={profile}")
 
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
