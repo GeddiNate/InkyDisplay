@@ -50,6 +50,7 @@ def syncKindleHighlights(library, settings):
 
     #fireFoxOpts = webdriver.FirefoxOptions()
     fireFoxOpts = webdriver.firefox.options.Options()
+    fireFoxOpts.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
     
     #fireFoxOpts.add_argument("--headless")
 
