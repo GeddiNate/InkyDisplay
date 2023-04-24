@@ -48,8 +48,10 @@ def syncKindleHighlights(library, settings):
 
     logging.info("Begin sync")
 
-    fireFoxOpts = webdriver.FirefoxOptions()
-    fireFoxOpts.add_argument("--headless")
+    #fireFoxOpts = webdriver.FirefoxOptions()
+    fireFoxOpts = webdriver.firefox.options.Options()
+    
+    #fireFoxOpts.add_argument("--headless")
 
     profile = None
     if profile != None:
@@ -75,7 +77,7 @@ def syncKindleHighlights(library, settings):
 
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
-    driver = webdriver.Firefox(options=fireFoxOpts)
+    driver = webdriver.Firefox(executable_path=r'C:\WebDrivers\geckodriver.exe', options=fireFoxOpts)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
