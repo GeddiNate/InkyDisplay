@@ -136,12 +136,14 @@ def syncKindleHighlights(library, settings):
 
         # get list of books from sidebar
         booklist = driver.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
+        print(booklist)
         print('got booklist')
 
         # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
             selectedBook = book.find_elements(By.CLASS_NAME, "a-link-normal")
+            print(selectedBook)
             print('got book')
         
             
