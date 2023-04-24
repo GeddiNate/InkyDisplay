@@ -84,6 +84,8 @@ def syncKindleHighlights(library, settings):
     # check if driver on kindle landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
         logging.info("On landing page")
+        print("test")
+        quit()
 
         # click sign in button
         driver.find_element(By.ID, "top-sign-in-btn").click()
