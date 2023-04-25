@@ -145,6 +145,9 @@ def syncKindleHighlights(library, settings):
         # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
+            stuff = book.find_elements(By.CLASS_NAME, "a-link-normal")
+            for thing in stuff:
+                print(thing.get_attribute('outerHTML'))
             selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
             print(selectedBook)
             print('got book')
@@ -178,6 +181,7 @@ def syncKindleHighlights(library, settings):
                 selectedBook.click()
             except Exception as e:
                 print(e)
+            driver.execute_script("arguments[0].click()",driver.find_element_by_id(ariticle_ids[0]))
             time.sleep(SLEEP_TIME) # wait for loading
 
             # get the date the book was last accessed as python date object
