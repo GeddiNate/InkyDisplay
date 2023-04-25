@@ -6,6 +6,7 @@ import datetime
 # import undetected_chromedriver as webdriver
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service
 #from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from ast import literal_eval
@@ -48,12 +49,16 @@ def syncKindleHighlights(library, settings):
 
     logging.info("Begin sync")
 
-    profile = webdriver.FirefoxProfile(r'C:\SeleniumProfile')
+
 
     #fireFoxOpts = webdriver.FirefoxOptions()
     fireFoxOpts = webdriver.firefox.options.Options()
     fireFoxOpts.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
+    fireFoxOpts.profile = r'C:\SeleniumProfile'
     
+
+    service = Service('/path/to/geckodriver')
+
     #fireFoxOpts.add_argument("--headless")
 
     profile = None
@@ -80,7 +85,7 @@ def syncKindleHighlights(library, settings):
 
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
-    driver = webdriver.Firefox(executable_path=r'C:\WebDrivers\geckodriver.exe', options=fireFoxOpts, firefox_profile=profile)
+    driver = webdriver.Firefox(executable_path=r'C:\WebDrivers\geckodriver.exe', options=fireFoxOpts)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
