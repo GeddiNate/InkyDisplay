@@ -48,6 +48,8 @@ def syncKindleHighlights(library, settings):
 
     logging.info("Begin sync")
 
+    profile = webdriver.FirefoxProfile(r'C:\SeleniumProfile')
+
     #fireFoxOpts = webdriver.FirefoxOptions()
     fireFoxOpts = webdriver.firefox.options.Options()
     fireFoxOpts.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
@@ -78,7 +80,7 @@ def syncKindleHighlights(library, settings):
 
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
-    driver = webdriver.Firefox(executable_path=r'C:\WebDrivers\geckodriver.exe', options=fireFoxOpts)
+    driver = webdriver.Firefox(executable_path=r'C:\WebDrivers\geckodriver.exe', options=fireFoxOpts, firefox_profile=profile)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
