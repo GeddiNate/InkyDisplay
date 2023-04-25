@@ -191,11 +191,14 @@ def syncKindleHighlights(library, settings):
                 # slice all text after the first occurance
                 title = title[:min(indexs[0], indexs[1])]
             
+            driver.execute_script("arguments[0].scrollIntoView();", selectedBook)
+            selectedBook.click()
+
             # load Highlights for this book
-            selectedBook.location_once_scrolled_into_view
-            wait = WebDriverWait(driver, 10)
-            element = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'a-link-normal')))
-            element.click()
+            # selectedBook.location_once_scrolled_into_view
+            # wait = WebDriverWait(driver, 10)
+            # element = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'a-link-normal')))
+            # element.click()
             # try:
             #     selectedBook.click()
             # except Exception as e:
