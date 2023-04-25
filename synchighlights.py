@@ -54,7 +54,9 @@ def syncKindleHighlights(library, settings):
     #fireFoxOpts = webdriver.FirefoxOptions()
     fireFoxOpts = webdriver.firefox.options.Options()
     fireFoxOpts.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
-    fireFoxOpts.set_preference('profile', r'C:\SeleniumProfile')
+    fireFoxOpts.add_argument('--profile')
+    fireFoxOpts.add_argument(r'C:\SeleniumProfile')
+    #fireFoxOpts.set_preference('profile', r'C:\SeleniumProfile')
     
 
     service = Service(r'C:\WebDrivers\geckodriver.exe')
