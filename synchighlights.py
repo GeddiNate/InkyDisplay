@@ -9,6 +9,8 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.service import Service
 #from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from ast import literal_eval
 
 # strs to be removed from kindle date
@@ -191,10 +193,13 @@ def syncKindleHighlights(library, settings):
             
             # load Highlights for this book
             selectedBook.location_once_scrolled_into_view
-            try:
-                selectedBook.click()
-            except Exception as e:
-                print(e)
+            wait = WebDriverWait(driver, 10)
+            element = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'a-link-normal')))
+            element.click()
+            # try:
+            #     selectedBook.click()
+            # except Exception as e:
+            #     print(e)
             
 
             time.sleep(SLEEP_TIME) # wait for loading
