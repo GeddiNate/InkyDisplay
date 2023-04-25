@@ -57,7 +57,7 @@ def syncKindleHighlights(library, settings):
     fireFoxOpts.profile = r'C:\SeleniumProfile'
     
 
-    service = Service('/path/to/geckodriver')
+    service = Service(r'C:\WebDrivers\geckodriver.exe')
 
     #fireFoxOpts.add_argument("--headless")
 
