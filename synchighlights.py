@@ -151,13 +151,16 @@ def syncKindleHighlights(library, settings):
         print(booklist)
         print('got booklist')
 
-        stuff = book.find_elements(By.CLASS_NAME, "a-link-normal")
-        for thing in stuff:
-            print(thing.get_attribute('outerHTML'))
+        
 
         # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
+            stuff = book.find_elements(By.CLASS_NAME, "a-link-normal")
+            print("NUM LINKS FOUND ===========")
+            print(len(stuff))
+            for thing in stuff:
+                print(thing.get_attribute('outerHTML'))
             
             selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
             print(selectedBook)
