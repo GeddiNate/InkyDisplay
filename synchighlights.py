@@ -90,6 +90,7 @@ def syncKindleHighlights(library, settings):
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
     driver = webdriver.Firefox(service=service, options=fireFoxOpts)
+    driver.set_window_size(1024, 768)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
