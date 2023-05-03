@@ -192,8 +192,9 @@ def syncKindleHighlights(library, settings):
                 # slice all text after the first occurance
                 title = title[:min(indexs[0], indexs[1])]
             
-            driver.execute_script("arguments[0].scrollIntoView();", selectedBook)
-            selectedBook.click()
+            #driver.execute_script("arguments[0].scrollIntoView();", selectedBook)
+            driver.execute_script("arguments[0].click();", selectedBook)
+            #selectedBook.click()
 
             # load Highlights for this book
             # selectedBook.location_once_scrolled_into_view
