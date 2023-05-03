@@ -194,7 +194,14 @@ def syncKindleHighlights(library, settings):
             
             #driver.execute_script("arguments[0].scrollIntoView();", selectedBook)
             #driver.execute_script("arguments[0].click();", selectedBook)
-            if selectedBook.is_displayed:
+
+
+            if selectedBook.is_enabled():
+                print("ENABLED")
+            else:
+                print("NOT ENABLED")
+                quit()
+            if selectedBook.is_displayed():
                 print("DISPLAYED")
                 selectedBook.click()
             else:
