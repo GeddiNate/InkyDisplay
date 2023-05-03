@@ -193,8 +193,13 @@ def syncKindleHighlights(library, settings):
                 title = title[:min(indexs[0], indexs[1])]
             
             #driver.execute_script("arguments[0].scrollIntoView();", selectedBook)
-            driver.execute_script("arguments[0].click();", selectedBook)
-            #selectedBook.click()
+            #driver.execute_script("arguments[0].click();", selectedBook)
+            if selectedBook.is_displayed:
+                print("DISPLAYED")
+                selectedBook.click()
+            else:
+                print("NOT DISPLAYED")
+                quit()
 
             # load Highlights for this book
             # selectedBook.location_once_scrolled_into_view
