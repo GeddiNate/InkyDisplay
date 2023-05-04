@@ -65,6 +65,12 @@ def syncKindleHighlights(library, settings):
     driver.get("https://read.amazon.com/")
     time.sleep(SLEEP_TIME) # wait for loading
 
+    # Load cookies from the JSON file and add them to the driver
+    with open("cookies.json", "r") as f:
+        cookies = json.load(f)
+    for cookie in cookies:
+        driver.add_cookie(cookie)
+
     # check if driver on kindle landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
         logging.info("Arrived on landing page")
@@ -206,10 +212,11 @@ def syncKindleHighlights(library, settings):
             # notes = []
             # for note in driver.find_elements(By.ID, "note"):
             #     notes.append(note.text)
-    # get login cookie
-    cookies = driver.get_cookies()
-    print(cookies) 
 
+    # Serialize cookies to JSON and save to a file
+    cookies = driver.get_cookies()
+    with open("cookies.json", "w") as f:
+        json.dump(cookies, f)
 
     # close the browser
     driver.quit()
