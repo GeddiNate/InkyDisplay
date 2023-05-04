@@ -51,8 +51,8 @@ def syncKindleHighlights(library, settings):
 
     #fireFoxOpts = webdriver.FirefoxOptions()
     opts = Options()
-    #opts.add_argument(r'--user-data-dir=C:\Users\nathan.geddis\AppData\Local\Google\Chrome\User Data\Profile 2')
-    opts.add_argument('--headless')
+    opts.add_argument(r'--user-data-dir=C:\Users\nathan.geddis\AppData\Local\Google\Chrome\User Data\Selenium')
+    #opts.add_argument('--headless')
 
     profile = None
     if profile != None:
