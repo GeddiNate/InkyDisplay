@@ -3,7 +3,7 @@ import json
 import time
 import logging
 import datetime
-import undetected_chromedriver as uc
+import undetected_chromedriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from ast import literal_eval
@@ -13,6 +13,9 @@ DATE_FORMAT = "%A %B %d, %Y"
 
 # time to wait for webpages to load
 SLEEP_TIME = 5
+
+#
+logging.basicConfig(filename='sync.log', encoding='utf-8', level=logging.DEBUG)
 
 def loadSettings():
     """Load user settings and crednetials for syncing highlights
@@ -44,43 +47,19 @@ def syncKindleHighlights(library, settings):
     :return BookList: an updated libray containing new synced data 
     """
 
-    logging.info("Begin sync")
-
-
+    logging.info("Begin Kindle sync")
 
     #fireFoxOpts = webdriver.FirefoxOptions()
     opts = Options()
     #opts.add_argument(r'--user-data-dir=C:\Users\nathan.geddis\AppData\Local\Google\Chrome\User Data\Profile 2')
     opts.add_argument('--headless')
 
-
-    #fireFoxOpts.add_argument("--headless")
-
     profile = None
     if profile != None:
         opts.add_argument(f"--user-data-dir={profile}")
 
-    # myProxy = "10.0.x.x:yyyy"
-    # proxy = Proxy({
-    # 'proxyType': ProxyType.MANUAL,
-    #     'httpProxy': myProxy,
-    #     'ftpProxy': myProxy,
-    #     'sslProxy': myProxy,
-    #     'noProxy': ''
-    # })
-    # driver = webdriver.Firefox(proxy=proxy)
-
-
-
-    # # set chrome webdriver options
-    # profile = settings["profile"]   
-    # opts = webdriver.FirefoxOptions()
-    # chromeOptions.add_argument('--no-sandbox')
-    # 
-
     # Start webdriver
-    #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
-    driver = uc.Chrome(options=opts)
+    driver = undetected_chromedriver.Chrome(options=opts)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
@@ -88,7 +67,7 @@ def syncKindleHighlights(library, settings):
 
     # check if driver on kindle landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
-        print("On landing page")
+        logging.info("Arrived on landing page")
 
         # click sign in button
         driver.find_element(By.ID, "top-sign-in-btn").click()
@@ -96,7 +75,7 @@ def syncKindleHighlights(library, settings):
 
         # if on sign in page attempt to sign in
         if "Amazon Sign-In" in driver.title:
-            print("on Sign in page")
+            logging.info("Arrived on sign in page")
 
             # enter login info, click remember me and submit
             driver.find_element(By.ID, "ap_email").send_keys(settings["email"])
@@ -108,7 +87,7 @@ def syncKindleHighlights(library, settings):
         # if 2FA required notify user
         if "Two-Step Verification" in driver.title:
             # TODO send notification if this is reached
-            logging.warning(f"Manual 2FA required for {profile}")
+            logging.warning("Manual 2FA required")
             print("Enter 2FA code:")
             otpcode=input()
             driver.find_element(By.ID, "auth-mfa-otpcode").send_keys(otpcode)
@@ -116,14 +95,13 @@ def syncKindleHighlights(library, settings):
             driver.find_element(By.ID, "auth-signin-button").click()
             time.sleep(SLEEP_TIME)
             
-
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
-        print("Login successful")
+        logging.info("Login successful")
    
     # if log in failed notify user
     else:
-        print("Login failed")
+        logging.ERROR("Login failed, ending sync")
         # TODO send notification if this is reached
         driver.quit()
         return library
@@ -137,25 +115,22 @@ def syncKindleHighlights(library, settings):
 
     # check if on highlights page
     if "Your Notes and Highlights" in driver.title:
-        print("Reached Notes page successful")
+        logging.info("Arrived on notes page")
 
         # get list of books from sidebar
         booklist = driver.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
-        print(booklist)
-        print('got booklist')
-
-        
+        logging.info('Got list of books to sync')
 
         # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
             selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
-            print('got book')
+            logging.info('Selected a book')
             
             # select the book so content is displayed
             selectedBook.click()
+            time.sleep(SLEEP_TIME) # wait for loading
         
-            
             # get title and author from the link
             tmp = selectedBook.text.splitlines()
             title = tmp[0].strip()
@@ -177,13 +152,12 @@ def syncKindleHighlights(library, settings):
             else:
                 # slice all text after the first occurance
                 title = title[:min(indexs[0], indexs[1])]
+            logging.info("Got author and title")
 
-
-            time.sleep(SLEEP_TIME) # wait for loading
 
             # get the date the book was last accessed as python date object
             lastAccessed = datetime.datetime.strptime(driver.find_element(By.ID, "kp-notebook-annotated-date").text, DATE_FORMAT).date()
-            print('got last accessed')
+            logging.info('Got last accessed date')
 
             # sync all books that have been updated since last successful sync
             if lastAccessed > library.lastSuccessfulSync:
@@ -191,35 +165,32 @@ def syncKindleHighlights(library, settings):
                 newBook = highlight.Book(title, author)
                 # get number of of highlights in this book
                 numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
-                print('got num highlights')
+                logging.info('Got number of highlights')
             
                 # get highlight text, color and, notes
                 highlightTexts = driver.find_elements(By.ID, "highlight")
                 colors = driver.find_elements(By.ID, "annotationHighlightHeader")
                 notes = driver.find_elements(By.ID, "note")
-                print('got book data')
+                logging.info('Got book data')
 
                 # the color is the first word in the text
                 colors = [color.text.split(" ", 1)[0] for color in colors]
 
-                assert (numHighlights == len(colors) and numHighlights == len(highlightTexts) and numHighlights == len(notes))
+                # add highlights to book object
                 for i in range(numHighlights):
                     # if color is in list of colors to sync
                     if colors[i] in settings["colorsToSync"]:
-                        newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, colors[i], notes[i].text))
-                
-
-                # add book to library
+                        newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, colors[i], notes[i].text))    
 
                 # attempt to find book with matching title 
                 # TODO books may have matching titles this will keep only one of those books check if subtitle and author matches as well
                 foundBook = library.findBook(title)
                 # if book already exist remove it
+                # TODO create a merge book method rather than replacing the book
                 if foundBook != None:
                     library.removeBook(foundBook)
                 library.addBook(newBook)
                 
-
             # ==== Keeping this till TODO test a note without highlight in kindle
             # # get color of highlight
             # colors = []
@@ -239,6 +210,7 @@ def syncKindleHighlights(library, settings):
 
     # close the browser
     driver.quit()
+    # update last successful sync to today
     library.lastSuccessfulSync = datetime.date.today()
 
     # return new data
