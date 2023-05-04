@@ -51,7 +51,7 @@ def syncKindleHighlights(library, settings):
 
     #fireFoxOpts = webdriver.FirefoxOptions()
     opts = Options()
-    opts.add_argument(r'--user-data-dir=C:\Users\nathan.geddis\AppData\Local\Google\Chrome\User Data\Selenium')
+    opts.add_argument(r'--user-data-dir=/home/conch/.config/google-chrome/Selenium')
     #opts.add_argument('--headless')
 
     profile = None
@@ -153,7 +153,6 @@ def syncKindleHighlights(library, settings):
                 # slice all text after the first occurance
                 title = title[:min(indexs[0], indexs[1])]
             logging.info("Got author and title")
-
 
             # get the date the book was last accessed as python date object
             lastAccessed = datetime.datetime.strptime(driver.find_element(By.ID, "kp-notebook-annotated-date").text, DATE_FORMAT).date()
