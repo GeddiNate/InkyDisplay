@@ -51,7 +51,7 @@ def syncKindleHighlights(library, settings):
 
     #fireFoxOpts = webdriver.FirefoxOptions()
     opts = Options()
-    opts.add_argument(r'--user-data-dir=/home/conch/.config/google-chrome/Selenium')
+    #opts.add_argument(r'--user-data-dir=/home/conch/.config/google-chrome/Selenium')
     opts.add_argument('--headless')
 
     profile = None
@@ -206,6 +206,10 @@ def syncKindleHighlights(library, settings):
             # notes = []
             # for note in driver.find_elements(By.ID, "note"):
             #     notes.append(note.text)
+    # get login cookie
+    cookies = driver.get_cookies()
+    print(cookies) 
+
 
     # close the browser
     driver.quit()
