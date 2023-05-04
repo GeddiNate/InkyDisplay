@@ -148,15 +148,11 @@ def syncKindleHighlights(library, settings):
         # for each book (books are already sorted by most recently accessed)
         for book in booklist:
             # select link to highlights for this book
-            stuff = book.find_elements(By.CLASS_NAME, "a-link-normal")
-            print("NUM LINKS FOUND ===========")
-            print(len(stuff))
-            for thing in stuff:
-                print(thing.get_attribute('outerHTML'))
-            
             selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
-            print(selectedBook)
             print('got book')
+            
+            # select the book so content is displayed
+            selectedBook.click()
         
             
             # get title and author from the link
@@ -180,33 +176,7 @@ def syncKindleHighlights(library, settings):
             else:
                 # slice all text after the first occurance
                 title = title[:min(indexs[0], indexs[1])]
-            
-            #driver.execute_script("arguments[0].scrollIntoView();", selectedBook)
-            #driver.execute_script("arguments[0].click();", selectedBook)
 
-
-            if selectedBook.is_enabled():
-                print("ENABLED")
-            else:
-                print("NOT ENABLED")
-                quit()
-            if selectedBook.is_displayed():
-                print("DISPLAYED")
-                selectedBook.click()
-            else:
-                print("NOT DISPLAYED")
-                quit()
-
-            # load Highlights for this book
-            # selectedBook.location_once_scrolled_into_view
-            # wait = WebDriverWait(driver, 10)
-            # element = wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'a-link-normal')))
-            # element.click()
-            # try:
-            #     selectedBook.click()
-            # except Exception as e:
-            #     print(e)
-            
 
             time.sleep(SLEEP_TIME) # wait for loading
 
@@ -265,16 +235,6 @@ def syncKindleHighlights(library, settings):
             # notes = []
             # for note in driver.find_elements(By.ID, "note"):
             #     notes.append(note.text)
-
-            
-
-  
-    # id=annotationHighlightHeader contains highlight color, page number
-    # id=annotationNoteHeader contains note page number
-    # id=highlight contains highlight text
-    # id="note" contains note text
-
-    
 
     # close the browser
     driver.quit()
