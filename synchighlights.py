@@ -105,7 +105,7 @@ def syncKindleHighlights(library, settings):
         # TODO send notification if this is reached
         driver.quit()
         return library
-    x=input()
+    x=input("stuff here")
     # navigate to notes page
     driver.find_element(By.ID, "notes_button").click()
     time.sleep(SLEEP_TIME) # wait for loading
