@@ -3,14 +3,9 @@ import json
 import time
 import logging
 import datetime
-# import undetected_chromedriver as webdriver
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.firefox.service import Service
-#from webdriver_manager.chrome import ChromeDriverManager
+import undetected_chromedriver as uc
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from ast import literal_eval
 
 # strs to be removed from kindle date
@@ -54,20 +49,15 @@ def syncKindleHighlights(library, settings):
 
 
     #fireFoxOpts = webdriver.FirefoxOptions()
-    fireFoxOpts = webdriver.firefox.options.Options()
-    fireFoxOpts.binary_location = r"C:\Program Files\Mozilla Firefox\firefox.exe"
-    fireFoxOpts.add_argument('--profile')
-    fireFoxOpts.add_argument(r'C:\SeleniumProfile')
-    #fireFoxOpts.set_preference('profile', r'C:\SeleniumProfile')
-    
+    opts = Options()
+    opts.add_argument(r'--user-data-dir=C:\Users\nathan.geddis\AppData\Local\Google\Chrome\User Data\Profile 2')
 
-    service = Service(r'C:\WebDrivers\geckodriver.exe')
 
     #fireFoxOpts.add_argument("--headless")
 
     profile = None
     if profile != None:
-        fireFoxOpts.add_argument(f"--user-data-dir={profile}")
+        opts.add_argument(f"--user-data-dir={profile}")
 
     # myProxy = "10.0.x.x:yyyy"
     # proxy = Proxy({
@@ -89,8 +79,7 @@ def syncKindleHighlights(library, settings):
 
     # Start webdriver
     #driver = webdriver.Chrome(executable_path='chromedriver_linux64/chromedriver', service=ChromeService(ChromeDriverManager().install()), options=chromeOptions)
-    driver = webdriver.Firefox(service=service, options=fireFoxOpts)
-    driver.set_window_size(1024, 768)
+    driver = uc.Chrome(options=opts)
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
