@@ -37,7 +37,7 @@ def loadSettings():
     return settings
 
 def syncKindleHighlights(library, settings):
-    """function to sync local saved highlights with Kindle app
+    """function to sync local saved highlights with Kindle app only adds data since most recent sync
 
     :param BookList library: a BookList object containg all synced books and highlights
     :param dictionary settings: a dict containing system settings (requires profile, colors, email, password)
@@ -50,7 +50,8 @@ def syncKindleHighlights(library, settings):
 
     #fireFoxOpts = webdriver.FirefoxOptions()
     opts = Options()
-    opts.add_argument(r'--user-data-dir=C:\Users\nathan.geddis\AppData\Local\Google\Chrome\User Data\Profile 2')
+    #opts.add_argument(r'--user-data-dir=C:\Users\nathan.geddis\AppData\Local\Google\Chrome\User Data\Profile 2')
+    opts.add_argument('--headless')
 
 
     #fireFoxOpts.add_argument("--headless")
