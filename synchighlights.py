@@ -48,10 +48,9 @@ def syncKindleHighlights(library, settings):
     """
 
     logging.info("Begin Kindle sync")
-
+#10.0.0.241
     #fireFoxOpts = webdriver.FirefoxOptions()
     opts = Options()
-    #opts.add_argument(r'--user-data-dir=/home/conch/.config/google-chrome/Selenium')
     opts.add_argument('--headless')
 
     profile = None
@@ -83,11 +82,14 @@ def syncKindleHighlights(library, settings):
 
         # if on sign in page attempt to sign in
         if "Amazon Sign-In" in driver.title:
-            logging.info("Arrived on sign in page")
-
+            logging.warn("Arrived on sign in page, manual credential entry required")
+            
             # enter login info, click remember me and submit
-            driver.find_element(By.ID, "ap_email").send_keys(settings["email"])
-            driver.find_element(By.ID, "ap_password").send_keys(settings["password"])
+            email = input("Amazon account email: ")
+            password = input("Amazon account password: ")
+            
+            driver.find_element(By.ID, "ap_email").send_keys(email)
+            driver.find_element(By.ID, "ap_password").send_keys(password)
             driver.find_element(By.NAME, "rememberMe").click()
             driver.find_element(By.ID, "signInSubmit").click()
             time.sleep(SLEEP_TIME) # wait for loading
