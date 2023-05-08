@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import subprocess
+
 
 # Main controller for my InkyPi project.
 # Main loop will wait for user user inputs/ timer events and then execute appropriate code.
@@ -12,6 +14,20 @@ import RPi.GPIO as GPIO
 import highlight
 import synchighlights
 import displayControler
+
+def GetHighlights():
+    # Set the source and destination paths
+    source_path = '' #TODO get from credentials file
+    destination_path = '/path/to/destination/on/Raspberry/Pi'
+
+    # Define the command to execute
+    command = ['scp', source_path, destination_path]
+
+    # Execute the command and capture the output
+    output = subprocess.check_output(command)
+
+    # Print the output
+    print(output)
 
 # Shutdown the device 
 def Shutdown():  

@@ -80,11 +80,15 @@ class BookList:
 
     # Filename where data should be stored and read from
     # TODO if there are multipule BookList's this may break
-    FILENAME = 'notebookData.json'
+    FILENAME = 'book_highlight_data.json'
 
-    def __init__(self):
+    def __init__(self, filePath = ""):
         """Constructor
+
+        :param str filePath: path to where the highlight data is stored, defaults to ""
         """
+        # path to where the highlights are stored only used if they are not in working directory
+        self.filePath = filePath
         # a list of Book objects with all the books synced
         self.books = []
         # set last synced to min data so all data will be synced
@@ -136,7 +140,7 @@ class BookList:
     def save(self):
         """serialize object to JSON and write to file
         """
-        with open(self.FILENAME, "w") as jsonFile:
+        with open(self.filePath + self.FILENAME, "w") as jsonFile:
             jsonFile.write(json.dumps(self.toJSON()))
 
     def load(self):
@@ -144,7 +148,7 @@ class BookList:
         """
         try:
             # open file and load data
-            with open(self.FILENAME) as jsonFile:
+            with open(self.filePath + self.FILENAME) as jsonFile:
                 data = json.load(jsonFile)
                 self.lastSuccessfulSync = date.fromisoformat(data["lastSuccessfulSync"])
                 # for each book in file create book object

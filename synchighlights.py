@@ -14,6 +14,8 @@ DATE_FORMAT = "%A %B %d, %Y"
 # time to wait for webpages to load
 SLEEP_TIME = 5
 
+DATA_FILE_PATH = "/srv/samba/closet/highlights/"
+
 #
 logging.basicConfig(filename='sync.log', encoding='utf-8', level=logging.DEBUG)
 
@@ -30,13 +32,6 @@ def loadSettings():
         settings["profile"] = data["profile"]
         settings["colorsToSync"] = data["colorsToSync"]
 
-    # get credentials for JSON file
-    with open("credentials.json") as json_file:
-        data = json.load(json_file)
-
-        # get email and password from settings
-        settings["email"] = data["email"]
-        settings["password"] = data["password"]
     return settings
 
 def syncKindleHighlights(library, settings):
@@ -234,7 +229,7 @@ def main():
     """Loads settings and book data, syncs data with kindle and Clippit, saves data
     """
     settings = loadSettings()
-    library = highlight.BookList()
+    library = highlight.BookList(DATA_FILE_PATH)
     library.load()
     library = syncKindleHighlights(library, settings)
     # add sync from Clippit
