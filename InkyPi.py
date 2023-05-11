@@ -32,26 +32,15 @@ def getHighlightFile():
         logging.log(output)
         print(output)
 
-def GetHighlights():
-    # Set the source and destination paths
-    source_path = '' #TODO get from credentials file
-    destination_path = '/path/to/destination/on/Raspberry/Pi'
-
-    # Define the command to execute
-    command = ['scp', source_path, destination_path]
-
-    # Execute the command and capture the output
-    output = subprocess.check_output(command)
-
-    # Print the output
-    print(output)
 
 # Shutdown the device 
 def Shutdown():  
     os.system("sudo shutdown -h now")  
 
-library = highlight.BookList()
-library.load()
+getHighlightFile()
+
+# library = highlight.BookList()
+# library.load()
 
 # Gpio pins for each button (from top to bottom)
 BUTTONS = [5, 6, 16, 24]
