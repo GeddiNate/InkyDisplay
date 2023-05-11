@@ -14,6 +14,23 @@ import RPi.GPIO as GPIO
 import highlight
 import synchighlights
 import displayControler
+import subprocess
+
+
+def getHighlightFile():
+    # Set the source and destination paths
+    with open("credentials.json") as f:
+        paths = json.load(f)
+        source_path = paths["data_location"]
+        destination_path = paths["pi_storage"]
+
+        # Define the command to execute
+        command = ['scp', source_path, destination_path]
+
+        # Execute the command and capture the output
+        output = subprocess.check_output(command)
+        logging.log(output)
+        print(output)
 
 def GetHighlights():
     # Set the source and destination paths

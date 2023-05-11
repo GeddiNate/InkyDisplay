@@ -14,7 +14,7 @@ DATE_FORMAT = "%A %B %d, %Y"
 # time to wait for webpages to load
 SLEEP_TIME = 5
 
-DATA_FILE_PATH = "/srv/samba/closet/highlights/"
+DATA_FILE_PATH = "/srv/samba/highlights/"
 
 #
 logging.basicConfig(filename='sync.log', encoding='utf-8', level=logging.DEBUG)
@@ -43,8 +43,7 @@ def syncKindleHighlights(library, settings):
     """
 
     logging.info("Begin Kindle sync")
-#10.0.0.241
-    #fireFoxOpts = webdriver.FirefoxOptions()
+
     opts = Options()
     opts.add_argument('--headless')
 
@@ -110,7 +109,7 @@ def syncKindleHighlights(library, settings):
         # TODO send notification if this is reached
         driver.quit()
         return library
-    x=input("stuff here")
+
     # navigate to notes page
     driver.find_element(By.ID, "notes_button").click()
     time.sleep(SLEEP_TIME) # wait for loading
