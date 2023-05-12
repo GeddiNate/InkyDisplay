@@ -134,4 +134,5 @@ output.json
 imageOut.png
 imageOutBad.png
 notebookData.json
+book_highlight_data.json
 .vscode/

@@ -38,6 +38,10 @@ def Shutdown():
     os.system("sudo shutdown -h now")  
 
 getHighlightFile()
+library = highlight.BookList()
+library.load()
+randHighlight = library.randomHighlight()
+displayControler.displayhighlight(randHighlight[0], randHighlight[1])
 
 # library = highlight.BookList()
 # library.load()
