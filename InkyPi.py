@@ -28,7 +28,7 @@ def getHighlightFile():
 
         # Execute the command and capture the output
         output = subprocess.check_output(command)
-        logging.log(output)
+        #logging.log(output)
         print(output)
 
 
