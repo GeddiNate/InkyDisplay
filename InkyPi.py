@@ -71,7 +71,7 @@ for pin in BUTTONS:
 
 # Finally, since button handlers don't require a "while True" loop,
 # we pause the script to prevent it exiting immediately.
-signal.pause()
+# signal.pause()
 
 
 
