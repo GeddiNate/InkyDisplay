@@ -37,11 +37,7 @@ def getHighlightFile():
 def Shutdown():  
     os.system("sudo shutdown -h now")  
 
-getHighlightFile()
-library = highlight.BookList()
-library.load()
-randHighlight = library.randomHighlight()
-displayControler.displayhighlight(randHighlight[0], randHighlight[1])
+
 
 # library = highlight.BookList()
 # library.load()
@@ -97,3 +93,13 @@ signal.pause()
 # b = [book for book in library.books if book.title == "A Compact Guide to the Whole Bible"]
 # q = [highlight for highlight in b[0].highlights if highlight.text == "A third quality of God is God\u2019s power, but this quality can be both positive and negative. God\u2019s power to create, to rescue, and to punish the wicked is seen as a positive thing, but God\u2019s power is also frightening, particularly when it is directed against humans (cf. Job 9:1\u201319)."]
 # displayControler.displayHighlight(q[0],b[0])
+
+def main():
+    getHighlightFile()
+    library = highlight.BookList()
+    library.load()
+    randHighlight = library.randomHighlight()
+    displayControler.displayhighlight(randHighlight[0], randHighlight[1])
+
+if __name__ == "__main__":
+    main()
