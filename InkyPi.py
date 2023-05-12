@@ -12,7 +12,6 @@ import logging
 import RPi.GPIO as GPIO
 
 import highlight
-import synchighlights
 import displayControler
 import subprocess
 
