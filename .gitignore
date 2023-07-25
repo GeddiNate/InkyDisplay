@@ -130,6 +130,7 @@ dmypy.json
 
 # user settings
 credentials.json
+cookies.json
 output.json
 imageOut.png
 imageOutBad.png

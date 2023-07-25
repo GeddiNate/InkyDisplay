@@ -15,6 +15,7 @@ DATE_FORMAT = "%A %B %d, %Y"
 SLEEP_TIME = 5
 
 DATA_FILE_PATH = "/srv/samba/highlights/"
+TEST_FILE_PATH = ""
 
 #
 logging.basicConfig(filename='sync.log', encoding='utf-8', level=logging.DEBUG)
@@ -106,6 +107,8 @@ def syncKindleHighlights(library, settings):
     # if log in failed notify user
     else:
         logging.ERROR("Login failed, ending sync")
+        with open("html.json", 'w') as f:
+            f.write(driver.page_source)
         # TODO send notification if this is reached
         driver.quit()
         return library
@@ -228,7 +231,7 @@ def main():
     """Loads settings and book data, syncs data with kindle and Clippit, saves data
     """
     settings = loadSettings()
-    library = highlight.BookList(DATA_FILE_PATH)
+    library = highlight.BookList(TEST_FILE_PATH)
     library.load()
     library = syncKindleHighlights(library, settings)
     # add sync from Clippit
