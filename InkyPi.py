@@ -2,7 +2,7 @@
 import subprocess
 
 
-# Main controller for my InkyPi project.
+# Main controller for my InkyPi project. 
 # Main loop will wait for user user inputs/ timer events and then execute appropriate code.
 
 import os
