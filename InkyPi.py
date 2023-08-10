@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 import subprocess
 
+import schedule
+import time
 
 # Main controller for my InkyPi project. 
 # Main loop will wait for user user inputs/ timer events and then execute appropriate code.
@@ -92,13 +94,20 @@ for pin in BUTTONS:
 # b = [book for book in library.books if book.title == "A Compact Guide to the Whole Bible"]
 # q = [highlight for highlight in b[0].highlights if highlight.text == "A third quality of God is God\u2019s power, but this quality can be both positive and negative. God\u2019s power to create, to rescue, and to punish the wicked is seen as a positive thing, but God\u2019s power is also frightening, particularly when it is directed against humans (cf. Job 9:1\u201319)."]
 # displayControler.displayHighlight(q[0],b[0])
-
+def displayRandomHighlight(lib):
+    randHighlight = lib.randomHighlight()
+    displayControler.displayhighlight(randHighlight[0], randHighlight[1])
 def main():
+    
     getHighlightFile()
     library = highlight.BookList()
     library.load()
     randHighlight = library.randomHighlight()
     displayControler.displayhighlight(randHighlight[0], randHighlight[1])
+    schedule.every(1).hours().do(displayRandomHighlight(library))
+    while 2<3:
+        schedule.run_pending()
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()
