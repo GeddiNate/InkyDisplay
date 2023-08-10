@@ -70,3 +70,4 @@ def displayhighlight(q, b):
     img.save("resources//imageOut.png")
     display.set_image(img)
     display.show()
+
