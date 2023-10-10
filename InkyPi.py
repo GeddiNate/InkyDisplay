@@ -40,21 +40,20 @@ def Shutdown():
 
 
 
-# library = highlight.BookList()
-# library.load()
+
 
 # Gpio pins for each button (from top to bottom)
-#BUTTONS = [5, 6, 16, 24]
+BUTTONS = [5, 6, 16, 24]
 
 # These correspond to buttons A, B, C and D respectively
-#LABELS = ['A', 'B', 'C', 'D']
+LABELS = ['A', 'B', 'C', 'D']
 
 # Set up RPi.GPIO with the "BCM" numbering scheme
-#GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM)
 
 # Buttons connect to ground when pressed, so we should set them up
 # with a "PULL UP", which weakly pulls the input signal to 3.3V.
-#GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 
 # "handle_button" will be called every time a button is pressed
@@ -104,7 +103,7 @@ def main():
     library.load()
     randHighlight = library.randomHighlight()
     displayControler.displayhighlight(randHighlight[0], randHighlight[1])
-    schedule.every(1).hours().do(displayRandomHighlight(library))
+    schedule.every(3).hours().do(displayRandomHighlight(library))
     while 2<3:
         schedule.run_pending()
         time.sleep(1)

@@ -46,14 +46,15 @@ def syncKindleHighlights(library, settings):
     logging.info("Begin Kindle sync")
 
     opts = Options()
-    opts.add_argument('--headless')
+    #opts.add_argument('--headless')
 
     profile = None
     if profile != None:
         opts.add_argument(f"--user-data-dir={profile}")
 
     # Start webdriver
-    driver = undetected_chromedriver.Chrome(options=opts)
+    #driver = undetected_chromedriver.Chrome(options=opts)
+    driver = undetected_chromedriver.Chrome()
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
@@ -103,7 +104,11 @@ def syncKindleHighlights(library, settings):
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
         logging.info("Login successful")
-   
+         # Serialize cookies to JSON and save to a file
+        cookies = driver.get_cookies()
+        with open("cookies.json", "w") as f:
+            json.dump(cookies, f)
+    
     # if log in failed notify user
     else:
         logging.ERROR("Login failed, ending sync")
@@ -161,6 +166,9 @@ def syncKindleHighlights(library, settings):
                 title = title[:min(indexs[0], indexs[1])]
             logging.info("Got author and title")
 
+            # trim trailing whitespace 
+            title = title.strip()
+
             # get the date the book was last accessed as python date object
             lastAccessed = datetime.datetime.strptime(driver.find_element(By.ID, "kp-notebook-annotated-date").text, DATE_FORMAT).date()
             logging.info('Got last accessed date')
@@ -179,11 +187,17 @@ def syncKindleHighlights(library, settings):
                 notes = driver.find_elements(By.ID, "note")
                 logging.info('Got book data')
 
+
                 # the color is the first word in the text
                 colors = [color.text.split(" ", 1)[0] for color in colors]
 
                 # add highlights to book object
                 for i in range(numHighlights):
+                    x=input()
+                    # if highlight contains an alert that the text cannot be displayed skip the highlight
+                    if len(highlightTexts[i].find_elements(By.CLASS_NAME, 'a-alert-container')) !=0:
+                        continue
+
                     # if color is in list of colors to sync
                     if colors[i] in settings["colorsToSync"]:
                         newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, colors[i], notes[i].text))    
@@ -231,7 +245,7 @@ def main():
     """Loads settings and book data, syncs data with kindle and Clippit, saves data
     """
     settings = loadSettings()
-    library = highlight.BookList(TEST_FILE_PATH)
+    library = highlight.BookList()
     library.load()
     library = syncKindleHighlights(library, settings)
     # add sync from Clippit

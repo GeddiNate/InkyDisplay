@@ -3,8 +3,8 @@ from PIL import Image, ImageDraw, ImageFont
 import highlight
 import random
 
-WIDTH = 600 
-HEIGHT = 448
+WIDTH = 800
+HEIGHT = 480
 H_MARGIN = 30
 V_MARGIN = 30
 FONT_SIZE = 24
@@ -15,7 +15,10 @@ display = auto()
 def displayhighlight(q, b):
 
     # Load the image and resize it to fit screen
-    img = Image.open("resources//nightSkytest.png")
+    try:
+        img = Image.open(f"resources//{b.title}.png")
+    except:
+        img = Image.open("resources//nightSkytest.png")
     img = img.resize((WIDTH, HEIGHT)) # TODO move elsewhere
 
     # Get the width and height of the image
@@ -67,7 +70,7 @@ def displayhighlight(q, b):
         yText += lineHeight
 
     # Save the image with the text
-    img.save("resources//imageOut.png")
+    #img.save("resources//imageOut.png")
     display.set_image(img)
     display.show()
 
