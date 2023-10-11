@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 
-import sched
+import schedule
 import time
 
 # Main controller for my InkyPi project. 
