@@ -103,7 +103,7 @@ def main():
     library.load()
     randHighlight = library.randomHighlight()
     displayControler.displayhighlight(randHighlight[0], randHighlight[1])
-    schedule.every(3).hours().do(displayRandomHighlight(library))
+    schedule.every(3).hours.do(displayRandomHighlight(library))
     print('SETUP COMPLETE')
     while 2<3:
         schedule.run_pending()
