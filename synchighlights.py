@@ -176,7 +176,7 @@ def syncKindleHighlights(library, settings):
             # sync all books that have been updated since last successful sync
             if lastAccessed > library.lastSuccessfulSync:
                 # sync new book data
-                newBook = highlight.Book(title, author)
+                newBook = None
                 # get number of of highlights in this book
                 numHighlights = literal_eval(driver.find_element(By.ID, "kp-notebook-highlights-count").text)
                 logging.info('Got number of highlights')
@@ -193,23 +193,25 @@ def syncKindleHighlights(library, settings):
 
                 # add highlights to book object
                 for i in range(numHighlights):
-                    x=input()
                     # if highlight contains an alert that the text cannot be displayed skip the highlight
                     if len(highlightTexts[i].find_elements(By.CLASS_NAME, 'a-alert-container')) !=0:
                         continue
 
                     # if color is in list of colors to sync
                     if colors[i] in settings["colorsToSync"]:
+                        if newBook == None: #only create book if there is at least one quote to add
+                            newBook = highlight.Book(title, author)
                         newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, colors[i], notes[i].text))    
 
                 # attempt to find book with matching title 
                 # TODO books may have matching titles this will keep only one of those books check if subtitle and author matches as well
-                foundBook = library.findBook(title)
-                # if book already exist remove it
-                # TODO create a merge book method rather than replacing the book
-                if foundBook != None:
-                    library.removeBook(foundBook)
-                library.addBook(newBook)
+                # foundBook = library.findBook(title)
+                # # if book already exist remove it
+                # # TODO create a merge book method rather than replacing the book
+                # if foundBook != None:
+                #     library.removeBook(foundBook)
+                if newBook != None:
+                    library.addBook(newBook)
                 
             # ==== Keeping this till TODO test a note without highlight in kindle
             # # get color of highlight
