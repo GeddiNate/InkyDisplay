@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 
-import schedule
+import sched
 import time
 
 # Main controller for my InkyPi project. 
@@ -93,17 +93,26 @@ def handle_button(pin):
 # b = [book for book in library.books if book.title == "A Compact Guide to the Whole Bible"]
 # q = [highlight for highlight in b[0].highlights if highlight.text == "A third quality of God is God\u2019s power, but this quality can be both positive and negative. God\u2019s power to create, to rescue, and to punish the wicked is seen as a positive thing, but God\u2019s power is also frightening, particularly when it is directed against humans (cf. Job 9:1\u201319)."]
 # displayControler.displayHighlight(q[0],b[0])
+
+# Define a function to schedule the task every 3 hours
+def schedule_task(lib):
+    # Schedule the task to run every 3 hours
+    s.enter(3 * 3600, 1, schedule_task)
+    displayRandomHighlight(lib)
+
 def displayRandomHighlight(lib):
     randHighlight = lib.randomHighlight()
     displayControler.displayhighlight(randHighlight[0], randHighlight[1])
+
 def main():
     
     # getHighlightFile()
     library = highlight.BookList()
     library.load()
-    randHighlight = library.randomHighlight()
-    displayControler.displayhighlight(randHighlight[0], randHighlight[1])
-    schedule.every(3).hours.do(displayRandomHighlight(library))
+
+    #s = sched.scheduler(time.time, time.sleep)
+
+    schedule.every(3).hours.do(lambda: displayRandomHighlight(library))
     print('SETUP COMPLETE')
     while 2<3:
         schedule.run_pending()
