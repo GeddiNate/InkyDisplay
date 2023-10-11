@@ -16,7 +16,7 @@ def displayhighlight(q, b):
 
     # Load the image and resize it to fit screen
     try:
-        img = Image.open(f"resources//{b.title}.png")
+        img = Image.open(f"resources//{b.title}.jpg")
     except:
         img = Image.open("resources//nightSkytest.png")
     img = img.resize((WIDTH, HEIGHT)) # TODO move elsewhere
