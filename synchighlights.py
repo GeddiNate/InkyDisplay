@@ -201,7 +201,7 @@ def syncKindleHighlights(library, settings):
                     if colors[i] in settings["colorsToSync"]:
                         if newBook == None: #only create book if there is at least one quote to add
                             newBook = highlight.Book(title, author)
-                        newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, colors[i], notes[i].text))    
+                        newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, newbook, colors[i], notes[i].text))    
 
                 # attempt to find book with matching title 
                 # TODO books may have matching titles this will keep only one of those books check if subtitle and author matches as well
