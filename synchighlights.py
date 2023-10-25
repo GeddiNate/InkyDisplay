@@ -1,4 +1,4 @@
-import highlight
+from booklist import BookList, Book, Highlight
 import json
 import time
 import logging
@@ -7,6 +7,8 @@ import undetected_chromedriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from ast import literal_eval
+import re
+
 
 # strs to be removed from kindle date
 DATE_FORMAT = "%A %B %d, %Y"
@@ -20,37 +22,33 @@ TEST_FILE_PATH = ""
 #
 logging.basicConfig(filename='sync.log', encoding='utf-8', level=logging.DEBUG)
 
-def loadSettings():
-    """Load user settings and crednetials for syncing highlights
-
-    :return dictionary: contains browser profile, colors of highlights to sycn and login credentrials
+def loadSettings(settings_file="settings.json"):
     """
-    # get settings from JSON file
-    settings = {}
-    with open("settings.json") as json_file:
-        data = json.load(json_file)
+    Load user settings and credentials for syncing highlights
 
+    return:
+        Dictionary containing user settings
+    """
+    settings = {}
+    with open(settings_file) as json_file:
+        data = json.load(json_file)
         settings["profile"] = data["profile"]
         settings["colorsToSync"] = data["colorsToSync"]
 
     return settings
 
 def syncKindleHighlights(library, settings):
-    """function to sync local saved highlights with Kindle app only adds data since most recent sync
-
-    :param BookList library: a BookList object containg all synced books and highlights
-    :param dictionary settings: a dict containing system settings (requires profile, colors, email, password)
-    :return BookList: an updated libray containing new synced data 
+    """
+    Syncs local saved highlights with Kindle app only adds data updated since most recent sync.
+    args:
+        library: A BookList object containg all currently synced books and highlights.
+        settings: A dictionary containing system settings.
+    return: An updated libray containing new synced data 
     """
 
     logging.info("Begin Kindle sync")
-
     opts = Options()
     #opts.add_argument('--headless')
-
-    profile = None
-    if profile != None:
-        opts.add_argument(f"--user-data-dir={profile}")
 
     # Start webdriver
     #driver = undetected_chromedriver.Chrome(options=opts)
@@ -58,17 +56,16 @@ def syncKindleHighlights(library, settings):
 
     # Go to kindle website
     driver.get("https://read.amazon.com/")
-    time.sleep(SLEEP_TIME) # wait for loading
+    time.sleep(SLEEP_TIME) 
     try:
-        # Load cookies from the JSON file and add them to the driver
+        # Load cookies from the JSON file and add them to the driver.
         with open("cookies.json", "r") as f:
             cookies = json.load(f)
         for cookie in cookies:
             driver.add_cookie(cookie)
     except:
-        logging.error("cookies.json file not found")
+        logging.warning("cookies.json file not found")
 
-    # check if driver on kindle landing page (not auto logged in)
     if "Amazon Kindle" in driver.title and "landing" in driver.current_url:
         logging.info("Arrived on landing page")
 
@@ -78,9 +75,8 @@ def syncKindleHighlights(library, settings):
 
         # if on sign in page attempt to sign in
         if "Amazon Sign-In" in driver.title:
-            logging.warn("Arrived on sign in page, manual credential entry required")
-            
-            # enter login info, click remember me and submit
+            logging.warn("Arrived on sign in page, credential entry required.")
+        
             email = input("Amazon account email: ")
             password = input("Amazon account password: ")
             
@@ -92,8 +88,7 @@ def syncKindleHighlights(library, settings):
 
         # if 2FA required notify user
         if "Two-Step Verification" in driver.title:
-            # TODO send notification if this is reached
-            logging.warning("Manual 2FA required")
+            logging.warning("2FA required.")
             print("Enter 2FA code:")
             otpcode=input()
             driver.find_element(By.ID, "auth-mfa-otpcode").send_keys(otpcode)
@@ -104,47 +99,41 @@ def syncKindleHighlights(library, settings):
     # check if past login page
     if "kindle-library" in driver.current_url and "Kindle" in driver.title:
         logging.info("Login successful")
-         # Serialize cookies to JSON and save to a file
+        # Dump cookies to JSON file.
         cookies = driver.get_cookies()
         with open("cookies.json", "w") as f:
             json.dump(cookies, f)
     
-    # if log in failed notify user
+    # if log in failed dump page source and exit
     else:
-        logging.ERROR("Login failed, ending sync")
-        with open("html.json", 'w') as f:
+        logging.ERROR("Login failed, ending sync.")
+        with open("html.json", 'w') as f: 
             f.write(driver.page_source)
-        # TODO send notification if this is reached
         driver.quit()
         return library
 
-    # navigate to notes page
+    # navigate to notes page which opens in a new tab
     driver.find_element(By.ID, "notes_button").click()
-    time.sleep(SLEEP_TIME) # wait for loading
-
-    # this opens in new tab so switch tabs
+    time.sleep(SLEEP_TIME)
     driver.switch_to.window(driver.window_handles[1])
 
-    # check if on highlights page
+    # Check if driver is on highlights page.
     if "Your Notes and Highlights" in driver.title:
-        logging.info("Arrived on notes page")
+        logging.info("Arrived on highlights page.")
 
         # get list of books from sidebar
-        booklist = driver.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
-        logging.info('Got list of books to sync')
+        availible_books = driver.find_elements(By.CLASS_NAME, "kp-notebook-library-each-book")
+        logging.info('Got list of books to sync.')
 
-        # for each book (books are already sorted by most recently accessed)
-        for book in booklist:
-            # select link to highlights for this book
-            selectedBook = book.find_element(By.CLASS_NAME, "a-link-normal")
-            logging.info('Selected a book')
-            
-            # select the book so content is displayed
-            selectedBook.click()
-            time.sleep(SLEEP_TIME) # wait for loading
+        for book in availible_books:
+            selected_book = book.find_element(By.CLASS_NAME, "a-link-normal")
+            selected_book.click()
+            time.sleep(SLEEP_TIME)
+            logging.info('Selected a book.')
         
-            # get title and author from the link
-            tmp = selectedBook.text.splitlines()
+            # get title and authors from the link
+            tmp = re.split(r'[:\(\n]',selected_book.text)
+            print(tmp)
             title = tmp[0].strip()
             # remove By: from author string and leading space
             author = tmp[1][tmp[1].find(':') + 2:]
@@ -174,7 +163,7 @@ def syncKindleHighlights(library, settings):
             logging.info('Got last accessed date')
 
             # sync all books that have been updated since last successful sync
-            if lastAccessed > library.lastSuccessfulSync:
+            if lastAccessed > library.last_successful_sync:
                 # sync new book data
                 newBook = None
                 # get number of of highlights in this book
@@ -200,8 +189,8 @@ def syncKindleHighlights(library, settings):
                     # if color is in list of colors to sync
                     if colors[i] in settings["colorsToSync"]:
                         if newBook == None: #only create book if there is at least one quote to add
-                            newBook = highlight.Book(title, author)
-                        newBook.addHighlight(highlight.Highlight(highlightTexts[i].text, newbook, colors[i], notes[i].text))    
+                            newBook = Book(title, author)
+                        newBook.addHighlight(Highlight(highlightTexts[i].text, newBook, colors[i], notes[i].text))    
 
                 # attempt to find book with matching title 
                 # TODO books may have matching titles this will keep only one of those books check if subtitle and author matches as well
@@ -247,7 +236,7 @@ def main():
     """Loads settings and book data, syncs data with kindle and Clippit, saves data
     """
     settings = loadSettings()
-    library = highlight.BookList()
+    library = BookList()
     library.load()
     library = syncKindleHighlights(library, settings)
     # add sync from Clippit

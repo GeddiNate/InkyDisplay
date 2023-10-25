@@ -12,14 +12,14 @@ class Book:
         """
         self.title = title
         self.subtitle = subtitle
-        self.author = authors
+        self.authors = authors
         self.highlights = []
     
     def __str__(self):
         """
         Returns a string representation of the Book object for display.
         """
-        return f"{self.title} \nBy: {self.author}" #TODO list to str in visually appealing way
+        return f"{self.title} \nBy: {self.authors}" #TODO list to str in visually appealing way
     
 
     def toJSON(self):
@@ -28,7 +28,8 @@ class Book:
         return: 
             A dictionary representation of the Book object.
         """
-        retval = {'title': self.title, 'author':self.author}
+        retval = {'title': self.title}
+        retval['authors'] = [author for author in self.authors]
         retval['highlights'] = [highlight.toJSON() for highlight in self.highlights]
         return retval
     
