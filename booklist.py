@@ -25,7 +25,7 @@ class BookList:
         # set last synced to min data so all data will be synced if no data is loaded
         self.last_successful_sync = date.min
     
-    def findBook(self, book_title: str):
+    def findBook(self, book_title):
         """
         Seach this BookList for a book with a title that matches the argument.
         args:

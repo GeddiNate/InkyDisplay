@@ -1,13 +1,14 @@
 
 # class for storing all highlights from a particular book
 class Book:
-    def __init__(self, title: str, authors:list[str], subtitle: str=None) -> None:
+    def __init__(self, title, authors, subtitle=None):
         """
         Constructor
         Args:
             title: The title of the book.
-            subtitle: The subtitle of the book.
             authors: An array containing the author(s) of the book.
+            subtitle: The subtitle of the book.
+            
         """
         self.title = title
         self.subtitle = subtitle
@@ -35,6 +36,6 @@ class Book:
         """
         Add a highlight to the Book.
         args:
-            highlight: Highlight object to be added to this Book.
+            highlight: The highlight object to be added to this Book.
         """
         self.highlights.append(highlight)

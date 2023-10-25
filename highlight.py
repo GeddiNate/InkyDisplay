@@ -2,7 +2,7 @@ from book import Book
 
 class Highlight:
 
-    def __init__(self, text: str, book: Book, color: str, note: str=None) -> None:
+    def __init__(self, text, book, color, note=None):
         """
         Constructor
         args:
@@ -16,7 +16,7 @@ class Highlight:
         self.color = color
         self.note = note
     
-    def __str__(self) -> str:
+    def __str__(self):
         """
         Returns string representation of Highlight object for display.
         """
