@@ -22,7 +22,7 @@ def handle_button(pin):
     displayControler.displayHighlight(LIBRARY.randomHighlight())
 
 
-LIBRARY = highlight.BookList()
+LIBRARY = Library()
 LIBRARY.load()
 
 # Gpio pins for each button (from top to bottom)
