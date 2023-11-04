@@ -4,13 +4,13 @@ from highlight import Highlight
 import random
 
 class DisplayControler:
-    WIDTH = 800
-    HEIGHT = 480
-    H_MARGIN = 30
-    V_MARGIN = 30
-    FONT_SIZE = 24
-    LINE_PADDING = 6
-    FONT_LOC = "resources//DejaVuSerif.ttf"
+    self.WIDTH = 800
+    self.HEIGHT = 480
+    self.H_MARGIN = 30
+    self.V_MARGIN = 30
+    self.FONT_SIZE = 24
+    self.LINE_PADDING = 6
+    self.FONT_LOC = "resources//DejaVuSerif.ttf"
     #TODO seperate displayhiglight into various class functions
     def __init__(self):
         self.display = auto()
@@ -22,7 +22,7 @@ class DisplayControler:
             img = Image.open(f"resources//{b.title}.jpg")
         except:
             img = Image.open("resources//nightSkytest.png")
-        img = img.resize((WIDTH, HEIGHT)) # TODO move elsewhere
+        img = img.resize((self.WIDTH, self.HEIGHT)) # TODO move elsewhere
 
         # Get the width and height of the image
         width, height = img.size
@@ -31,9 +31,9 @@ class DisplayControler:
         draw = ImageDraw.Draw(img)
 
         # Define the font and size for the text
-        textFont = ImageFont.truetype(FONT_LOC, FONT_SIZE)
-        titleFont = ImageFont.truetype(FONT_LOC, round(FONT_SIZE*0.6))
-        authorFont = ImageFont.truetype(FONT_LOC, round(FONT_SIZE*0.4))
+        textFont = ImageFont.truetype(self.FONT_LOC, self.FONT_SIZE)
+        titleFont = ImageFont.truetype(self.FONT_LOC, round(self.FONT_SIZE*0.6))
+        authorFont = ImageFont.truetype(self.FONT_LOC, round(self.FONT_SIZE*0.4))
 
         # display book title and author
         authors = ', '.join(highlight.book.authors)
@@ -42,8 +42,20 @@ class DisplayControler:
         authorHeight = titleFont.getbbox(author)[3]
         titleHeight = titleFont.getbbox(highlight.book.title)[3] + authorHeight
 
-        draw.text((WIDTH - H_MARGIN - length, HEIGHT - V_MARGIN - titleHeight), highlight.book.title, font=titleFont, fill=(255, 255, 0))
-        draw.text((WIDTH - H_MARGIN - length, HEIGHT - V_MARGIN - authorHeight), author, font=authorFont, fill=(255, 255, 0))
+        # draw highlight text
+        draw.text(
+            (self.WIDTH - self.H_MARGIN - self.length, 
+            self.HEIGHT - self.V_MARGIN - titleHeight), 
+            highlight.book.title, 
+            font=titleFont, fill=(255, 255, 0)
+            )
+        # draw authors and book title
+        draw.text(
+            (self.WIDTH - self.H_MARGIN - self.length, 
+            self.HEIGHT - self.V_MARGIN - authorHeight),
+            author, 
+            font=authorFont, fill=(255, 255, 0)
+            )
 
         # Wrap the text to fit on the image
         lines = []
@@ -52,7 +64,7 @@ class DisplayControler:
         # for each word in the highlight
         for word in words[1:]:
             # if the current line plus the next word is shorter than the image width minus the hoizontal padding
-            if textFont.getlength(currentLine + " " + word) < width - (H_MARGIN * 2):
+            if textFont.getlength(currentLine + " " + word) < width - (self.H_MARGIN * 2):
                 # add word to current line
                 currentLine += " " + word
             else:
@@ -63,12 +75,12 @@ class DisplayControler:
 
         # Draw the text on the image
         #yText = height - (len(lines) * 30) # adjust the 30 value to set the line spacing
-        yText = V_MARGIN
+        yText = self.V_MARGIN
         # for each line
         for line in lines:
             # get witdth and hiehgt of line
             lineWidth, lineHeight = textFont.getbbox(line)[2:]
-            xText = H_MARGIN
+            xText = self.H_MARGIN
             draw.text((xText, yText), line, font=textFont, fill=(255, 255, 255))
             yText += lineHeight
 
