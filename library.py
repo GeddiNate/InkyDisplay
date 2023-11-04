@@ -87,7 +87,7 @@ class Library:
                 self.last_successful_sync = date.fromisoformat(data["last_successful_sync"])
                 # for each book in file create book object
                 for item in data["books"]:
-                    b = Book(item['title'], item['author'])
+                    b = Book(item['title'], item['authors'])
                     # for each highlight in book create a highlight object
                     for h in item['highlights']:
                         b.addHighlight(Highlight(h['text'], b, h['color'], h['note']))

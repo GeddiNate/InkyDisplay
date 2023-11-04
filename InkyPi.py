@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
 import signal
-from booklist import Library, Book, Highlight
+from library import Library
 import displayControler
 
 # Define a function to schedule the task every 3 hours

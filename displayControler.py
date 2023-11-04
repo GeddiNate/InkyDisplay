@@ -1,6 +1,6 @@
 from inky.auto import auto
 from PIL import Image, ImageDraw, ImageFont
-from booklist import Library, Book, Highlight
+from highlight import Highlight
 import random
 
 class DisplayControler:

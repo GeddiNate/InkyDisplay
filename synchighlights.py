@@ -1,4 +1,4 @@
-from booklist import Library, Book, Highlight
+from library import Library
 import json
 import time
 import logging
