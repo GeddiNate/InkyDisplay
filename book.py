@@ -22,15 +22,13 @@ class Book:
         return f"{self.title} \nBy: {self.authors}" #TODO list to str in visually appealing way
     
 
-    def toJSON(self):
+    def toDict(self):
         """
-        Converts the Book object to a dictionary for serialization.
-        return: 
-            A dictionary representation of the Book object.
+        Returns a dictionary representation of this object.
         """
         retval = {'title': self.title}
         retval['authors'] = [author for author in self.authors]
-        retval['highlights'] = [highlight.toJSON() for highlight in self.highlights]
+        retval['highlights'] = [highlight.toDict() for highlight in self.highlights]
         return retval
     
     def addHighlight(self, highlight):

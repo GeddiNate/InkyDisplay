@@ -1,9 +1,9 @@
 from inky.auto import auto
 from PIL import Image, ImageDraw, ImageFont
-import highlight
+from booklist import Library, Book, Highlight
 import random
 
-class Display_Controler:
+class DisplayControler:
     WIDTH = 800
     HEIGHT = 480
     H_MARGIN = 30
@@ -15,7 +15,7 @@ class Display_Controler:
     def __init__(self):
         self.display = auto()
 
-    def displayhighlight(self, quote, book):
+    def displayHighlight(self, highlight):
 
         # Load the image and resize it to fit screen
         try:
@@ -36,18 +36,18 @@ class Display_Controler:
         authorFont = ImageFont.truetype(FONT_LOC, round(FONT_SIZE*0.4))
 
         # display book title and author
-        title, author = str(b).splitlines()
+        authors = ', '.join(highlight.book.authors)
 
-        length = max(titleFont.getlength(title), authorFont.getlength(author))
+        length = max(titleFont.getlength(highlight.book.title), authorFont.getlength(author))
         authorHeight = titleFont.getbbox(author)[3]
-        titleHeight = titleFont.getbbox(title)[3] + authorHeight
+        titleHeight = titleFont.getbbox(highlight.book.title)[3] + authorHeight
 
-        draw.text((WIDTH - H_MARGIN - length, HEIGHT - V_MARGIN - titleHeight), title, font=titleFont, fill=(255, 255, 0))
+        draw.text((WIDTH - H_MARGIN - length, HEIGHT - V_MARGIN - titleHeight), highlight.book.title, font=titleFont, fill=(255, 255, 0))
         draw.text((WIDTH - H_MARGIN - length, HEIGHT - V_MARGIN - authorHeight), author, font=authorFont, fill=(255, 255, 0))
 
         # Wrap the text to fit on the image
         lines = []
-        words = str(q).replace('\n',' ').split(" ")
+        words = str(highlight.text).replace('\n',' ').split(' ')
         currentLine = words[0]
         # for each word in the highlight
         for word in words[1:]:

@@ -1,4 +1,4 @@
-from booklist import BookList, Book, Highlight
+from booklist import Library, Book, Highlight
 import json
 import time
 import logging
@@ -135,25 +135,13 @@ def syncKindleHighlights(library, settings):
             tmp = re.split(r'[:\(\n]',selected_book.text)
             print(tmp)
             title = tmp[0].strip()
-            # remove By: from author string and leading space
-            author = tmp[1][tmp[1].find(':') + 2:]
+            subtitle = tmp[1].strip()
+            authors = tmp[-1].split(' and ')
 
-            # remove subtitle from title
-            # TODO add subtitle support to highlight object
-            indexs = (title.find(":"), title.find("(")) 
-
-            # if ':' and '(' not found assume no subtitle
-            if indexs[0] < 0 and indexs[1] < 0:
-                title = title
-            # if one of the values is negative (only one found)
-            elif indexs[0] * indexs[1] < 0:
-                # slice all text after the largest value
-                title = title[:max(indexs[0], indexs[1])]
-            # if both ':' and '(' found
-            else:
-                # slice all text after the first occurance
-                title = title[:min(indexs[0], indexs[1])]
-            logging.info("Got author and title")
+            if subtitle == 'By':
+                subtitle = ''
+            
+            logging.info("Got authors, title and subtitle")
 
             # trim trailing whitespace 
             title = title.strip()
@@ -176,7 +164,6 @@ def syncKindleHighlights(library, settings):
                 notes = driver.find_elements(By.ID, "note")
                 logging.info('Got book data')
 
-
                 # the color is the first word in the text
                 colors = [color.text.split(" ", 1)[0] for color in colors]
 
@@ -189,8 +176,8 @@ def syncKindleHighlights(library, settings):
                     # if color is in list of colors to sync
                     if colors[i] in settings["colorsToSync"]:
                         if newBook == None: #only create book if there is at least one quote to add
-                            newBook = Book(title, author)
-                        newBook.addHighlight(Highlight(highlightTexts[i].text, newBook, colors[i], notes[i].text))    
+                            newBook = Book(title=title, authors=authors)
+                        newBook.addHighlight(Highlight(text=highlightTexts[i].text, book=newBook, color=colors[i], note=notes[i].text))    
 
                 # attempt to find book with matching title 
                 # TODO books may have matching titles this will keep only one of those books check if subtitle and author matches as well
@@ -225,7 +212,7 @@ def syncKindleHighlights(library, settings):
         json.dump(cookies, f)
 
     # close the browser
-    driver.quit()
+    #driver.quit()
     # update last successful sync to today
     library.lastSuccessfulSync = datetime.date.today()
 
@@ -236,7 +223,7 @@ def main():
     """Loads settings and book data, syncs data with kindle and Clippit, saves data
     """
     settings = loadSettings()
-    library = BookList()
+    library = Library()
     library.load()
     library = syncKindleHighlights(library, settings)
     # add sync from Clippit

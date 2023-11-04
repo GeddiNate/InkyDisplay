@@ -7,10 +7,10 @@ from highlight import Highlight
 
 
 # class to contain a collection of books and methods to interact with them
-class BookList:
+class Library:
 
     # Filename where data should be stored and read from
-    # TODO if there are multipule BookList's this may break
+    # TODO if there are multipule Library's this may break
     FILE_NAME = 'book_highlight_data.json'
 
     # TODO is file_path needed
@@ -27,7 +27,7 @@ class BookList:
     
     def findBook(self, book_title):
         """
-        Seach this BookList for a book with a title that matches the argument.
+        Seach this Library for a book with a title that matches the argument.
         args:
             book_title The title of the book to find.
         return:
@@ -41,20 +41,20 @@ class BookList:
     
     def addBook(self, book):
         """
-        Append a Book object to this BookList object.
+        Append a Book object to this Library object.
         """
         self.books.append(book)
     
     def removeBook(self, b):
         """
-        Remove a Book object from this Booklist.
+        Remove a Book object from this Library.
         """
         # TODO if fail
         self.books.remove(b)
 
     def randomHighlight(self):
         """
-        Get a random Highlight from all the Highlights in all the Books in this BookList.
+        Get a random Highlight from all the Highlights in all the Books in this Library.
         return:
             The randomly selected Highlight object.
         """
@@ -71,14 +71,14 @@ class BookList:
 
     def save(self):
         """
-        Serialize this BookList object to JSON and write it to a file.
+        Serialize this Library object to JSON and write it to a file.
         """
         with open(self.file_path + self.FILE_NAME, "w") as json_file:
-            json_file.write(json.dumps(self.toJSON()))
+            json_file.write(json.dumps(self.toDict()))
 
     def load(self):
         """
-        Attempt to load a BookList object from JSON file.
+        Attempt to load a Library object from JSON file.
         """
         try:
             # open file and load data
@@ -95,13 +95,10 @@ class BookList:
         except Exception as e:
             logging.exception(e)
 
-    def toJSON(self):
+    def toDict(self):
         """
-        Convert BookList to a dictionary for serialization.
-
-        :return 
-            A dictionary representation of this BookList object.
+        Returns a dictionary representation of this object.
         """
         retval = {'last_successful_sync': self.last_successful_sync.isoformat()}
-        retval['books'] = [book.toJSON() for book in self.books]
+        retval['books'] = [book.toDict() for book in self.books]
         return retval

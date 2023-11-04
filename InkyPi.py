@@ -1,46 +1,29 @@
 #!/usr/bin/env python3
-import subprocess
-
-import schedule
-import time
-
-# Main controller for my InkyPi project. 
-# Main loop will wait for user user inputs/ timer events and then execute appropriate code.
-
-import os
-import json
-import signal
-import logging
 import RPi.GPIO as GPIO
-
-import highlight
+import signal
+from booklist import Library, Book, Highlight
 import displayControler
-import subprocess
+
+# Define a function to schedule the task every 3 hours
+def schedule_task(lib):
+    # Schedule the task to run every 3 hours
+    s.enter(3 * 3600, 1, schedule_task)
+    displayRandomHighlight(lib)
+
+def displayRandomHighlight(lib):
+    randHighlight = lib.randomHighlight()
+    displayControler.displayhighlight(randHighlight[0], randHighlight[1])
+
+# "handle_button" will be called every time a button is pressed
+# It receives one argument: the associated input pin.
+def handle_button(pin):
+    label = LABELS[BUTTONS.index(pin)]
+    print("Button press detected on pin: {} label: {}".format(pin, label))
+    displayControler.displayHighlight(LIBRARY.randomHighlight())
 
 
-def getHighlightFile():
-    # Set the source and destination paths
-    with open("credentials.json") as f:
-        paths = json.load(f)
-        source_path = paths["data_location"]
-        destination_path = paths["pi_storage"]
-
-        # Define the command to execute
-        command = ['scp', source_path, destination_path]
-
-        # Execute the command and capture the output
-        output = subprocess.check_output(command)
-        #logging.log(output)
-        print(output)
-
-
-# Shutdown the device 
-def Shutdown():  
-    os.system("sudo shutdown -h now")  
-
-
-
-
+LIBRARY = highlight.BookList()
+LIBRARY.load()
 
 # Gpio pins for each button (from top to bottom)
 BUTTONS = [5, 6, 16, 24]
@@ -55,68 +38,12 @@ GPIO.setmode(GPIO.BCM)
 # with a "PULL UP", which weakly pulls the input signal to 3.3V.
 GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-
-# "handle_button" will be called every time a button is pressed
-# It receives one argument: the associated input pin.
-def handle_button(pin):
-    q = library.randomHighlight()
-    displayControler.displayHighlight(q[0],q[1])
-    print("Button press detected on pin: {pin}")
-
-
 # Loop through out buttons and attach the "handle_button" function to each
 # We're watching the "FALLING" edge (transition from 3.3V to Ground) and
 # picking a generous bouncetime of 250ms to smooth out button presses.
-#for pin in BUTTONS:
-#    GPIO.add_event_detect(pin, GPIO.FALLING, handle_button, bouncetime=250)
+for pin in BUTTONS:
+    GPIO.add_event_detect(pin, GPIO.FALLING, handle_button, bouncetime=250)
 
 # Finally, since button handlers don't require a "while True" loop,
 # we pause the script to prevent it exiting immediately.
-# signal.pause()
-
-
-
-
-# FOR TESTING sync highlights
-# library = syncnotes.syncHighlights(library, loadSettings())
-# library.save()
-
-# FOR TESTING random highlight
-# l = library.randomHighlight()
-# print(l[0].text, l[1].title, l[1].author)
-
-# FOR TESTING display a random highlight
-# q = library.randomHighlight()
-# displayControler.displayHighlight(q[0],q[1])
-
-# FOR TESTING find a specific highlight
-# b = [book for book in library.books if book.title == "A Compact Guide to the Whole Bible"]
-# q = [highlight for highlight in b[0].highlights if highlight.text == "A third quality of God is God\u2019s power, but this quality can be both positive and negative. God\u2019s power to create, to rescue, and to punish the wicked is seen as a positive thing, but God\u2019s power is also frightening, particularly when it is directed against humans (cf. Job 9:1\u201319)."]
-# displayControler.displayHighlight(q[0],b[0])
-
-# Define a function to schedule the task every 3 hours
-def schedule_task(lib):
-    # Schedule the task to run every 3 hours
-    s.enter(3 * 3600, 1, schedule_task)
-    displayRandomHighlight(lib)
-
-def displayRandomHighlight(lib):
-    randHighlight = lib.randomHighlight()
-    displayControler.displayhighlight(randHighlight[0], randHighlight[1])
-
-def main():
-    
-    # getHighlightFile()
-    library = highlight.BookList()
-    library.load()
-
-    #s = sched.scheduler(time.time, time.sleep)
-
-    schedule.every(3).hours.do(lambda: displayRandomHighlight(library))
-    print('SETUP COMPLETE')
-    while 2<3:
-        schedule.run_pending()
-        time.sleep(1)
-
-if __name__ == "__main__":
-    main()
+signal.pause()

@@ -24,14 +24,12 @@ class Highlight:
             return self.text
         return f"{self.text} - {self.note}"
 
-    def toJSON(self):
+    def toDict(self):
         """
-        Convert Highlight to dictionary for serialization.
-        :return 
-            Dictrionary representation of the Highlight object.
+        Return a Dictrionary representation of this object .
         """
         return {
             'text': self.text, 
-            'book': self.book, 
             'color': self.color, 
-            'note': self.note}
+            'note': self.note
+            }
