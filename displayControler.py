@@ -19,7 +19,7 @@ class DisplayControler:
 
         # Load the image and resize it to fit screen
         try:
-            img = Image.open(f"resources//{b.title}.jpg")
+            img = Image.open(f"resources//{highlight.book.title}.jpg")
         except:
             img = Image.open("resources//nightSkytest.png")
         img = img.resize((DisplayControler.WIDTH, DisplayControler.HEIGHT)) # TODO move elsewhere
