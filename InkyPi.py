@@ -19,7 +19,7 @@ def displayRandomHighlight(lib):
 def handle_button(pin):
     label = LABELS[BUTTONS.index(pin)]
     print("Button press detected on pin: {} label: {}".format(pin, label))
-    DisplayControler.displayHighlight(LIBRARY.randomHighlight())
+    DisplayControler.displayHighlight(highlight=LIBRARY.randomHighlight())
 
 
 LIBRARY = Library()
