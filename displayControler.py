@@ -44,14 +44,14 @@ class DisplayControler:
 
         # draw highlight text
         draw.text(
-            (DisplayControler.WIDTH - DisplayControler.H_MARGIN - DisplayControler.length, 
+            (DisplayControler.WIDTH - DisplayControler.H_MARGIN - length, 
             DisplayControler.HEIGHT - DisplayControler.V_MARGIN - titleHeight), 
             highlight.book.title, 
             font=titleFont, fill=(255, 255, 0)
             )
         # draw authors and book title
         draw.text(
-            (DisplayControler.WIDTH - DisplayControler.H_MARGIN - DisplayControler.length, 
+            (DisplayControler.WIDTH - DisplayControler.H_MARGIN - length, 
             DisplayControler.HEIGHT - DisplayControler.V_MARGIN - authorHeight),
             authors, 
             font=authorFont, fill=(255, 255, 0)
