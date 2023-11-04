@@ -38,8 +38,8 @@ class DisplayControler:
         # display book title and author
         authors = ', '.join(highlight.book.authors)
 
-        length = max(titleFont.getlength(highlight.book.title), authorFont.getlength(author))
-        authorHeight = titleFont.getbbox(author)[3]
+        length = max(titleFont.getlength(highlight.book.title), authorFont.getlength(authors))
+        authorHeight = titleFont.getbbox(authors)[3]
         titleHeight = titleFont.getbbox(highlight.book.title)[3] + authorHeight
 
         # draw highlight text
@@ -53,7 +53,7 @@ class DisplayControler:
         draw.text(
             (DisplayControler.WIDTH - DisplayControler.H_MARGIN - DisplayControler.length, 
             DisplayControler.HEIGHT - DisplayControler.V_MARGIN - authorHeight),
-            author, 
+            authors, 
             font=authorFont, fill=(255, 255, 0)
             )
 
