@@ -19,11 +19,12 @@ def displayRandomHighlight(lib):
 def handle_button(pin):
     label = LABELS[BUTTONS.index(pin)]
     print("Button press detected on pin: {} label: {}".format(pin, label))
-    DisplayControler.displayHighlight(highlight=LIBRARY.randomHighlight())
+    DISPLAY_CONTROLER.displayHighlight(highlight=LIBRARY.randomHighlight())
 
 
 LIBRARY = Library()
 LIBRARY.load()
+DISPLAY_CONTROLER = displayControler()
 
 # Gpio pins for each button (from top to bottom)
 BUTTONS = [5, 6, 16, 24]
