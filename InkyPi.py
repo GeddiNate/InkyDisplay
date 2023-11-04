@@ -24,7 +24,7 @@ def handle_button(pin):
 
 LIBRARY = Library()
 LIBRARY.load()
-DISPLAY_CONTROLER = displayControler()
+DISPLAY_CONTROLER = DisplayControler()
 
 # Gpio pins for each button (from top to bottom)
 BUTTONS = [5, 6, 16, 24]
