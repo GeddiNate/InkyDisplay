@@ -86,6 +86,6 @@ class DisplayControler:
 
         # Save the image with the text
         #img.save("resources//imageOut.png")
-        display.set_image(img)
-        display.show()
+        self.display.set_image(img)
+        self.display.show()
 
