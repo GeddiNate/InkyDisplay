@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import signal
 from library import Library
-import displayControler
+from displayControler import DisplayControler
 
 # Define a function to schedule the task every 3 hours
 def schedule_task(lib):
@@ -19,7 +19,7 @@ def displayRandomHighlight(lib):
 def handle_button(pin):
     label = LABELS[BUTTONS.index(pin)]
     print("Button press detected on pin: {} label: {}".format(pin, label))
-    displayControler.displayHighlight(LIBRARY.randomHighlight())
+    DisplayControler.displayHighlight(LIBRARY.randomHighlight())
 
 
 LIBRARY = Library()
