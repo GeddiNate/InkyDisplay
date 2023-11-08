@@ -1,0 +1,1 @@
+@reboot /bin/sleep 10; /usr/bin/python3 /home/pi/InkyPi/InkyPi.py >> /home/pi/InkyPi/mycronlog.txt 2>&1
