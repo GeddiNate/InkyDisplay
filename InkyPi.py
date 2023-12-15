@@ -3,24 +3,18 @@ import RPi.GPIO as GPIO
 import signal
 from library import Library
 from displayControler import DisplayControler
+import schedule
 
 # Define a function to schedule the task every 3 hours
-def schedule_task(lib):
-    # Schedule the task to run every 3 hours
-    s.enter(3 * 3600, 1, schedule_task)
-    displayRandomHighlight(lib)
-
-def displayRandomHighlight(lib):
-    randHighlight = lib.randomHighlight()
-    displayControler.displayhighlight(randHighlight[0], randHighlight[1])
+def rand_highlight():
+    DISPLAY_CONTROLER.displayHighlight(highlight=LIBRARY.randomHighlight())
 
 # "handle_button" will be called every time a button is pressed
 # It receives one argument: the associated input pin.
 def handle_button(pin):
     label = LABELS[BUTTONS.index(pin)]
     print("Button press detected on pin: {} label: {}".format(pin, label))
-    DISPLAY_CONTROLER.displayHighlight(highlight=LIBRARY.randomHighlight())
-
+    rand_highlight()
 
 LIBRARY = Library()
 LIBRARY.load()
@@ -45,6 +39,10 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 for pin in BUTTONS:
     GPIO.add_event_detect(pin, GPIO.FALLING, handle_button, bouncetime=250)
 
+schedule.every(1).minutes.do(rand_highlight())
 # Finally, since button handlers don't require a "while True" loop,
 # we pause the script to prevent it exiting immediately.
-signal.pause()
+#signal.pause()
+while True: 
+    schedule.run_pending() 
+    time.sleep(1) 
