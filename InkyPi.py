@@ -10,6 +10,9 @@ import time
 def rand_highlight():
     DISPLAY_CONTROLER.displayHighlight(highlight=LIBRARY.randomHighlight())
 
+def test():
+    print("test Run")
+
 # "handle_button" will be called every time a button is pressed
 # It receives one argument: the associated input pin.
 def handle_button(pin):
@@ -40,7 +43,7 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 for pin in BUTTONS:
     GPIO.add_event_detect(pin, GPIO.FALLING, handle_button, bouncetime=250)
 
-schedule.every(5).minutes.do(rand_highlight)
+schedule.every(1).minutes.do(test)
 # Finally, since button handlers don't require a "while True" loop,
 # we pause the script to prevent it exiting immediately.
 #signal.pause()
