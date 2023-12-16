@@ -10,8 +10,13 @@ import time
 def rand_highlight():
     DISPLAY_CONTROLER.displayHighlight(highlight=LIBRARY.randomHighlight())
 
+def run_threaded(job_func):
+    job_thread = threading.Thread(target=job_func)
+    job_thread.start()
+
 def test():
     print("test Run")
+    print("I'm running on thread %s" % threading.current_thread())
 
 # "handle_button" will be called every time a button is pressed
 # It receives one argument: the associated input pin.
@@ -43,7 +48,8 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 for pin in BUTTONS:
     GPIO.add_event_detect(pin, GPIO.FALLING, handle_button, bouncetime=250)
 
-schedule.every(1).minutes.do(test)
+schedule.every(5).minutes.do(run_threaded, test)
+schedule.every(5).minutes.do(run_threaded, test)
 # Finally, since button handlers don't require a "while True" loop,
 # we pause the script to prevent it exiting immediately.
 #signal.pause()
