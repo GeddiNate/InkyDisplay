@@ -49,7 +49,7 @@ GPIO.setup(BUTTONS, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 for pin in BUTTONS:
     GPIO.add_event_detect(pin, GPIO.FALLING, handle_button, bouncetime=250)
 
-schedule.every(5).minutes.do(run_threaded, test)
+schedule.every(5).minutes.do(run_threaded, rand_highlight)
 schedule.every(5).minutes.do(run_threaded, test)
 # Finally, since button handlers don't require a "while True" loop,
 # we pause the script to prevent it exiting immediately.
