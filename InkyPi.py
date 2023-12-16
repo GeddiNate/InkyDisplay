@@ -5,6 +5,7 @@ from library import Library
 from displayControler import DisplayControler
 import schedule
 import time
+import threading
 
 # Define a function to schedule the task every 3 hours
 def rand_highlight():
