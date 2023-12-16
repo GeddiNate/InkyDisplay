@@ -4,6 +4,7 @@ import signal
 from library import Library
 from displayControler import DisplayControler
 import schedule
+import time
 
 # Define a function to schedule the task every 3 hours
 def rand_highlight():
@@ -43,6 +44,8 @@ schedule.every(1).minutes.do(rand_highlight())
 # Finally, since button handlers don't require a "while True" loop,
 # we pause the script to prevent it exiting immediately.
 #signal.pause()
+start_time = time.time()
 while True: 
+    print(time.time()-start_time)
     schedule.run_pending() 
     time.sleep(1) 
