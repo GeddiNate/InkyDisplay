@@ -1,0 +1,5 @@
+undetected_chromedriver
+selenium
+datetime
+inky[rpi,example-depends]
+pillow

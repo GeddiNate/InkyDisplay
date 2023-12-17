@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO
-import signal
 from library import Library
 from displayControler import DisplayControler
 import schedule

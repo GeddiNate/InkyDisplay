@@ -4,9 +4,12 @@ After=multi-user.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /home/inky/InkyPi/InkyPi.py
+ExecStartPre=/home/inky/InkyPi/inky_display/bin/activate
+ExecStart=/home/inky/InkyPi/inky_display/bin/python /home/inky/InkyPi/InkyPi.py
 Restart=on-failure
 RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
+
+

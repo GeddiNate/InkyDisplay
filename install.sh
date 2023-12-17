@@ -1,4 +1,19 @@
 #!/bin/bash
+
+# Create a virtual environment
+VENV_DIR="inky_display"
+python3 -m venv "$VENV_DIR"
+
+source "$VENV_DIR/bin/activate"
+
+# Install dependencies from requirements.txt
+pip install -r requirements.txt
+
+# Deactivate the virtual environment
+deactivate
+
+
+#create python vitual environment
 SERVICE_NAME=inky_display
 
 # Check if the service file exists
