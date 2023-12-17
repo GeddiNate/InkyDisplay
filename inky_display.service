@@ -1,0 +1,12 @@
+[Unit]
+Description=Start InkyPi Service
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/inky/InkyPi/InkyPi.py
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
