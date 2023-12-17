@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/inky/InkyPi/inky_display/bin/env python
 import RPi.GPIO as GPIO
 from library import Library
 from displayControler import DisplayControler
