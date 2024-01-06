@@ -4,3 +4,4 @@ datetime
 inky[rpi,example-depends]
 pillow
 numpy
+flask

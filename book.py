@@ -1,4 +1,3 @@
-
 # class for storing all highlights from a particular book
 class Book:
     def __init__(self, title, authors, subtitle=None):
