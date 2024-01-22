@@ -21,23 +21,23 @@
             <div id="changes"></div>
                 File uploads
             </div>
-            <div class="content_section_text">
-                <button type="button">Upload Quote data</button> 
-            </div>
             <div class="content_section_text"></div>
             <h2>Upload book cover</h2>
-                <form action="/upload" method="post" enctype="multipart/form-data">
+                <form action="/uploadimg" method="post" enctype="multipart/form-data">
                     <!-- File Input -->
                     <label for="file">Choose a file:</label>
-                    <input type="file" value="Upload">
+                    <input type="file" name="file">
             
-                    <br>
-            
-                    <!-- Text Input -->
-                    <label for="text">Title of Book:</label>
-                    <input type="text" name="text" id="text" size="50">
-            
-                    <br>
+                    <!-- Submit Button -->
+                    <input type="submit" value="Upload">
+                </form>
+            </div>
+            <div class="content_section_text"></div>
+            <h2>Upload highlight data</h2>
+                <form action="/uploadhighlight" method="post" enctype="multipart/form-data">
+                    <!-- File Input -->
+                    <label for="file">Choose a file:</label>
+                    <input type="file" name="file">
             
                     <!-- Submit Button -->
                     <input type="submit" value="Upload">
