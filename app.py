@@ -1,5 +1,6 @@
 import os
 import sys
+import sqlite3
 from flask import Flask, flash, request, redirect, render_template, url_for
 from werkzeug.utils import secure_filename
 
@@ -10,6 +11,11 @@ ALLOWED_TEXT_EXTENSIONS = {'txt'}
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row 
+    return conn
 
 def allowed_file(filename, extensions):
     return '.' in filename and \
@@ -39,7 +45,12 @@ def upload_file():
             return redirect(request.url)
     return 'File uploaded successfully'
 
-
+@app.route('/highlights')
+def highlights():
+    conn = get_db_connection()
+    highlights = conn.execute('SELECT * FROM highlights').fetchall()
+    conn.close()
+    return render_template('highlights.html', highlights=highlights)
 @app.route('/test')
 def test():
     print('test')

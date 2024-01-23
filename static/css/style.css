@@ -1,6 +1,19 @@
 h1 {
-    border: 2px #eee solid;
-    color: brown;
-    text-align: center;
-    padding: 10px;
+  border: 2px #eee solid;
+  color: brown;
+  text-align: center;
+  padding: 10px;
+}
+
+.highlight {
+  padding: 10px;
+  margin: 5px;
+  background-color: #f3f3f3;
+}
+
+nav a {
+  color: #d64161;
+  font-size: 3em;
+  margin-left: 50px;
+  text-decoration: none;
 }
