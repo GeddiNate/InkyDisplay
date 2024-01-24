@@ -9,7 +9,8 @@ DROP TABLE IF EXISTS book_art;
 CREATE TABLE highlights (
     highlight_id INTEGER PRIMARY KEY AUTOINCREMENT,
     content TEXT NOT NULL,
-    visible INT NOT NULL DEFAULT TRUE,
+    location INTEGER NOT NULL,
+    visible INTEGER NOT NULL DEFAULT TRUE,
     created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     note TEXT DEFAULT NULL,
     book_id INTEGER,
@@ -19,13 +20,13 @@ CREATE TABLE highlights (
 -- Table to store information about books
 CREATE TABLE books (
     book_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    subtitle TEXT NOT NULL
+    title VARCHAR(255) NOT NULL,
+    subtitle VARCHAR(255) NOT NULL
 );
 
 -- Table to store information about authors
 CREATE TABLE authors (
-    author_id INT PRIMARY KEY,
+    author_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) NOT NULL
 );
 
@@ -39,8 +40,8 @@ CREATE TABLE artwork (
 
 -- Junction table linking books and authors
 CREATE TABLE book_authors (
-    book_id INT,
-    author_id INT,
+    book_id INTEGER,
+    author_id INTEGER,
     PRIMARY KEY (book_id, author_id),
     FOREIGN KEY (book_id) REFERENCES books(book_id),
     FOREIGN KEY (author_id) REFERENCES authors(author_id)
@@ -48,8 +49,8 @@ CREATE TABLE book_authors (
 
 -- Junction table linking books and artwork
 CREATE TABLE book_art (
-    book_id INT,
-    art_id INT,
+    book_id INTEGER,
+    art_id INTEGER,
     PRIMARY KEY (book_id, art_id),
     FOREIGN KEY (book_id) REFERENCES books(book_id),
     FOREIGN KEY (art_id) REFERENCES artwork(art_id)
