@@ -15,7 +15,7 @@ class DisplayControler:
     def __init__(self):
         self.display = auto()
 
-    def displayHighlight(self, highlight):
+    def displayHighlight(self):
 
         # Load the image and resize it to fit screen
         try:

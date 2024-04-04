@@ -3,6 +3,7 @@ import sys
 import sqlite3
 from flask import Flask, flash, request, redirect, render_template, url_for
 from werkzeug.utils import secure_filename
+from displayControler import DisplayControler
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_IMG_EXTENSIONS = {'jpg', 'jpeg', 'png'}
@@ -12,14 +13,20 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+display_controler = DisplayControler()
+
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row 
-    return conn
+    connection = sqlite3.connect('database.db')
+    connection.row_factory = sqlite3.Row 
+    return connection
 
 def allowed_file(filename, extensions):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in extensions
+
+
+conn = get_db_connection()
+
 
 @app.route('/')
 def index():
@@ -51,6 +58,7 @@ def highlights():
     highlights = conn.execute('SELECT * FROM highlights').fetchall()
     conn.close()
     return render_template('highlights.html', highlights=highlights)
+
 @app.route('/test')
 def test():
     print('test')
@@ -59,8 +67,5 @@ def test():
     return "Test Page"
 
 
-
-
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', use_reloader=False)
